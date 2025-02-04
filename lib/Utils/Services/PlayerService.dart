@@ -31,9 +31,11 @@ class PlayerService extends GetxService {
 
   /// Creates and initializes the playlist
   Future<void> createPlaylist(dynamic data, int index, {String type = 'song'}) async {
+    if(audioPlayer.sequenceState?.currentSource?.tag.id!=null){
+      audioPlayer.stop();
+    }
     try {
       _resetPlaylist();
-
       final List<dynamic> decodedData = jsonDecode(jsonEncode(data));;
 
       //  print(jsonEncode(data));
