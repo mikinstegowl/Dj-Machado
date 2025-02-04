@@ -345,25 +345,12 @@ class BaseController extends GetxController {
     }
   }
 
-
-
   deleteList ({int? index, String? path,int? albumId}){
     numbers.remove(index);
     songData.removeWhere((v)=>v['song_id']== index);
     deleteAlbumSong(songId: index, isAlbum: true,filePath: path,number: numbers,albumId: albumId);
     update();
   }
-
-  // deletePlayList ({int? index, String? path,int? playListId}){
-  //   numbers.remove(index);
-  //   Get.find<MyLibraryController>().playListSongData.removeWhere((v)=>v['song_id']== index);
-  //   // deletePlayListSong(songId: index, isAlbum: true,filePath: path,number: numbers,playListId: playListId);
-  //   // Get.find<MyLibraryController>().update();
-  //   print(numbers);
-  // }
-
-
-
   TermsAndPrivacyDataModel? termsAndPrivacyDataModel;
   Future<void>termsAndPrivacy({required String value,required AuthChopperService authChopperService})async{
     try{

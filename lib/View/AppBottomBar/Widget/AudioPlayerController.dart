@@ -167,98 +167,6 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                   width: double.maxFinite,
                                 ),
                                 const Spacer(),
-                                // SizedBox(
-                                //   height: 250.h,
-                                //   child: GridView.builder(
-                                //       padding: EdgeInsets.zero,
-                                //       itemCount:
-                                //       Get.find<HomeController>()
-                                //           .songDetailDataModel
-                                //           ?.data?[0]
-                                //           .featureArtists
-                                //           ?.length,
-                                //       scrollDirection: Axis.horizontal,
-                                //       shrinkWrap: true,
-                                //       gridDelegate:
-                                //           SliverGridDelegateWithMaxCrossAxisExtent(
-                                //               maxCrossAxisExtent:
-                                //                   double.maxFinite,
-                                //               mainAxisExtent: 120.w,
-                                //               crossAxisSpacing: 10.h,
-                                //               mainAxisSpacing: 0.h),
-                                //       itemBuilder: (context, index) {
-                                //         return Column(
-                                //           mainAxisSize: MainAxisSize.min,
-                                //           children: [
-                                //             Container(
-                                //               width: 80.h,
-                                //               height: 80.h,
-                                //               clipBehavior: Clip.antiAlias,
-                                //               decoration: const BoxDecoration(
-                                //                   color: AppColors.white,
-                                //                   shape: BoxShape.circle),
-                                //               child: CachedNetworkImageWidget(
-                                //                 image: Get.find<
-                                //                             HomeController>()
-                                //                         .songDetailDataModel
-                                //                         ?.data?[0]
-                                //                         .featureArtists?[index]
-                                //                         .originalImage ??
-                                //                     '',
-                                //                 width: 50.h,
-                                //                 height: 50.h,
-                                //                 fit: Platform.isAndroid
-                                //                     ? BoxFit.cover
-                                //                     : BoxFit.contain,
-                                //               ),
-                                //             ),
-                                //             25.verticalSpace,
-                                //             Flexible(
-                                //               child: AppTextWidget(
-                                //                   textAlign: TextAlign.center,
-                                //                   maxLine: 1,
-                                //                   txtTitle: Get.find<
-                                //                               HomeController>()
-                                //                           .songDetailDataModel
-                                //                           ?.data?[0]
-                                //                           .featureArtists?[
-                                //                               index]
-                                //                           .artistsName ??
-                                //                       'fvmoim'),
-                                //             ),
-                                //             GestureDetector(
-                                //               // onTap: () => _controller.animateToPage(entry.artistsId??0),
-                                //               child: Container(
-                                //                 width: 12.0,
-                                //                 height: 12.0,
-                                //                 margin: EdgeInsets.symmetric(
-                                //                     vertical: 8.0,
-                                //                     horizontal: 4.0),
-                                //                 decoration: BoxDecoration(
-                                //                     shape: BoxShape.circle,
-                                //                     color: (Theme.of(context)
-                                //                                 .brightness ==
-                                //                             Brightness.dark
-                                //                         ? Colors.white
-                                //                         : Colors.black)
-                                //                     //     .withOpacity(index ? 0.9 : 0.4),
-                                //                     ),
-                                //               ),
-                                //             ),
-                                //             // Row(
-                                //             //   mainAxisAlignment: MainAxisAlignment.center,
-                                //             //   children: (Get.find<HomeController>()
-                                //             //       .songDetailDataModel
-                                //             //       ?.data?[0]
-                                //             //       .featureArtists ?? [])
-                                //             //       .map((entry) {
-                                //             //     return
-                                //             //   }).toList(),
-                                //             // ),
-                                //           ],
-                                //         );
-                                //       }),
-                                // ),
                                 Get.find<HomeController>()
                                                 .songDetailDataModel
                                                 ?.data?[0]
@@ -270,7 +178,12 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                 ?.data?[0]
                                                 .featureArtists
                                                 ?.length ==
-                                            1
+                                            1||Get.find<HomeController>()
+                                    .songDetailDataModel
+                                    ?.data?[0]
+                                    .featureArtists
+                                    ?.length ==
+                                    3
                                     ? Padding(
                                         padding: EdgeInsets.only(top: 10.0),
                                         child: Container(
@@ -285,11 +198,12 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                   ?.data?[0]
                                                   .featureArtists
                                                   ?.length ==
-                                                  2 ?2:1 , // Adjust based on your requirement
-                                              // crossAxisSpacing: 10,
-                                              // mainAxisSpacing: 10,
-                                              // childAspectRatio:
-                                              //     0.8,8 // Adjust aspect ratio for proper spacing
+                                                  2 ?2:Get.find<HomeController>()
+                                                  .songDetailDataModel
+                                                  ?.data?[0]
+                                                  .featureArtists
+                                                  ?.length ==
+                                                  1 ?1:3 , // Adjust based on your requirement
                                             ),
                                             itemCount: Get.find<HomeController>()
                                                     .songDetailDataModel

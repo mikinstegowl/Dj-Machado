@@ -60,7 +60,7 @@ class HomeTrackWidget extends StatelessWidget {
                 return MostPlayedSongsWidget(
                   onTap: (){
 
-                    PlayerService.instance.createPlaylist(data, index);
+                    PlayerService.instance.createPlaylist(data, index: index,id:data?[index].songId );
                   },
                   title: data?[index]
                       .songName,

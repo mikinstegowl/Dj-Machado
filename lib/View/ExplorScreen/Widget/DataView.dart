@@ -60,7 +60,7 @@ class ExplorDataView extends StatelessWidget {
                 return InkWell(
                   onTap: () async {
                     if (data?[index].trendingsradioUrl != null) {
-                      PlayerService.instance.createPlaylist(data, index);
+                      PlayerService.instance.createPlaylist(data, index: index,id: data?[index].songId);
                     } else {
                       await Get.find<ExplorController>()
                           .selectedGenreSongsApi(data?[index].genresId ?? 0)

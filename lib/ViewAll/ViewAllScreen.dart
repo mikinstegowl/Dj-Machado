@@ -249,7 +249,10 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                   //     Get.toNamed(RoutesName.songsAlbumsScreen,arguments: {'isGenre':true});
                   //   });
                   // });
-                  PlayerService.instance.createPlaylist(Get.find<HomeController>().viewAllDataModel?.data, index,type: "radio");
+                  PlayerService.instance.createPlaylist(Get.find<HomeController>().viewAllDataModel?.data, index: index,type: "radio",id: Get.find<HomeController>()
+                      .viewAllDataModel
+                      ?.data?[index]
+                      .songId);
                 },
                 title: Get.find<HomeController>()
                     .viewAllDataModel
@@ -288,7 +291,10 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                   //     Get.toNamed(RoutesName.songsAlbumsScreen,arguments: {'isGenre':true});
                   //   });
                   // });
-                  PlayerService.instance.createPlaylist(Get.find<HomeController>().viewAllDataModel?.data, index,);
+                  PlayerService.instance.createPlaylist(Get.find<HomeController>().viewAllDataModel?.data, index: index,id: Get.find<HomeController>()
+                      .viewAllDataModel
+                      ?.data?[index]
+                      .songId);
                 },
                 title: Get.find<HomeController>()
                     .viewAllDataModel

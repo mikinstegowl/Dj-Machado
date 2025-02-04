@@ -6,15 +6,12 @@ import 'package:audio_service/audio_service.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:newmusicappmachado/Controller/BaseController.dart';
 import 'package:newmusicappmachado/Controller/HomeController.dart';
-import 'package:newmusicappmachado/Utils/Constants/AppAssets.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:get/get.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:newmusicappmachado/main.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:rxdart/src/streams/value_stream.dart';
 
 class PlayerService extends GetxService {
   static final PlayerService _singleton = PlayerService._internal();
@@ -25,20 +22,21 @@ class PlayerService extends GetxService {
 
   static PlayerService get instance => _singleton;
 
-    AudioPlayer audioPlayer = AudioPlayer(); // Audio player instance
+  AudioPlayer audioPlayer = AudioPlayer(); // Audio player instance
   final List<AudioSource> playlist = []; // Playlist
   int currentSongIndex = 0; // Current song index
 
   /// Creates and initializes the playlist
-  Future<void> createPlaylist(dynamic data, int index, {String type = 'song'}) async {
-    if(audioPlayer.sequenceState?.currentSource?.tag.id!=null){
-      audioPlayer.stop();
+  Future<void> createPlaylist(dynamic data,
+      {int? index, id, String type = 'song'}) async {
+    if (audioPlayer.sequenceState?.currentSource?.tag.id.toString() ==
+        id.toString()) {
+      return;
     }
     try {
       _resetPlaylist();
-      final List<dynamic> decodedData = jsonDecode(jsonEncode(data));;
-
-      //  print(jsonEncode(data));
+      final List<dynamic> decodedData = jsonDecode(jsonEncode(data));
+      ;
       if (decodedData.isEmpty) {
         log('Error: No data found to create a playlist.');
         return;
@@ -50,8 +48,8 @@ class PlayerService extends GetxService {
       // Map data to AudioSource list
       playlist.addAll(decodedData.map((item) => _mapToAudioSource(item, type)));
 
-      currentSongIndex = index; // Update current index
-      await _initializePlayer(index); // Initialize player
+      currentSongIndex = index ?? 0; // Update current index
+      await _initializePlayer(index ?? 0); // Initialize player
     } catch (e) {
       log('Error creating playlist: $e');
     }
@@ -64,23 +62,19 @@ class PlayerService extends GetxService {
   }
 
   /// Maps a data item to an AudioSource object
-  AudioSource _mapToAudioSource(Map<String, dynamic> item, String type)  {
+  AudioSource _mapToAudioSource(Map<String, dynamic> item, String type) {
     switch (type) {
       case 'song':
-        return
-
-          AudioSource.uri(
-          Uri.parse(item['song'] ?? ''),
-          tag:  MediaItem(
+        return AudioSource.uri(Uri.parse(item['song'] ?? ''),
+            tag: MediaItem(
               id: item['song_id'].toString(),
               title: item['song_name'],
-            artUri: Uri.tryParse(item['song_image']),
-            artist: item['song_artist'] ?? item['artist_name'] ,
-          )
-        );
+              artUri: Uri.tryParse(item['song_image']),
+              artist: item['song_artist'] ?? item['artist_name'],
+            ));
       case 'radio':
         return AudioSource.uri(
-            Uri.parse(item['trendingsradio_url'] ?? ''),
+          Uri.parse(item['trendingsradio_url'] ?? ''),
           tag: MediaItem(
             isLive: true,
             id: item['trendingsradio_id'].toString(),
@@ -91,14 +85,12 @@ class PlayerService extends GetxService {
       default:
         func();
         return AudioSource.file(item['file_path'],
-          tag: MediaItem(
-            id: item['song_id'].toString(),
-            title: item['song_name'],
-            artUri: artUri,
-            artist: item['song_artist'] ?? item['artist_name'] ,
-            // artist: item['song_artist'],
-          )
-        );
+            tag: MediaItem(
+              id: item['song_id'].toString(),
+              title: item['song_name'],
+              artUri: artUri,
+              artist: item['song_artist'] ?? item['artist_name'],
+            ));
     }
   }
 
@@ -117,17 +109,15 @@ class PlayerService extends GetxService {
     return Uri.file(filePath);
   }
 
-
   Uri? artUri;
-  Future<Uri> func () async {
+  Future<Uri> func() async {
     artUri = await _getAssetImageUri("assets/image/placeholder.png");
-    return artUri??Uri();
+    return artUri ?? Uri();
   }
 
   /// Initializes the audio player
   Future<void> _initializePlayer(int index) async {
     try {
-
       if (playlist.isEmpty) {
         log('Error: Playlist is empty.');
         return;
@@ -138,17 +128,24 @@ class PlayerService extends GetxService {
       );
       Get.find<BaseController>().showMusicMenu.value = true;
       // audioPlayer.setLoopMode(LoopMode.one);
-      Get.find<BaseController>().connectivityResult[0] != ConnectivityResult.none? await Get.find<HomeController>().songDetailsDataApi(
-        songId: int.tryParse(audioPlayer.sequenceState?.currentSource?.tag.id) ?? 0,
-      ).then((_)async {
-        await  _logButtonClick(songId: audioPlayer.sequenceState?.currentSource?.tag.id,songName: audioPlayer.sequenceState?.currentSource?.tag.title).then((_){
-          print("Button click event logged");
-        });
-      }):null;
-      // await Get.find<HomeController>().fetchUsers(
-      //   int.tryParse(audioPlayer.sequenceState?.currentSource?.tag.id) ?? 0,
-      // );
-
+      Get.find<BaseController>().connectivityResult[0] !=
+              ConnectivityResult.none
+          ? await Get.find<HomeController>()
+              .songDetailsDataApi(
+              songId: int.tryParse(
+                      audioPlayer.sequenceState?.currentSource?.tag.id) ??
+                  0,
+            )
+              .then((_) async {
+              await _logButtonClick(
+                      songId: audioPlayer.sequenceState?.currentSource?.tag.id,
+                      songName:
+                          audioPlayer.sequenceState?.currentSource?.tag.title)
+                  .then((_) {
+                print("Button click event logged");
+              });
+            })
+          : null;
       await audioPlayer.play();
 
       log("Player initialized and song started.");
@@ -158,17 +155,17 @@ class PlayerService extends GetxService {
   }
 
   Future<void> _logButtonClick({String? songName, String? songId}) async {
-    await  MyApp.analytics.logEvent(
+    await MyApp.analytics.logEvent(
       name: 'song_detail',
       parameters: {
-        'song_name': songName??"",
-        'song_id': songId??"",
+        'song_name': songName ?? "",
+        'song_id': songId ?? "",
       },
-    ).then((_){
+    ).then((_) {
       print("Button click event logged: $songName, $songId");
     });
-
   }
+
   /// Plays the current song
   Future<void> play() async {
     try {
@@ -201,6 +198,7 @@ class PlayerService extends GetxService {
       await _initializePlayer(currentSongIndex);
     }
   }
+
   /// Skips to the next song
   Future<void> nextSong() async {
     try {

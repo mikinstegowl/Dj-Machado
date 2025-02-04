@@ -63,7 +63,8 @@ class ViewAllRecentPlayedScreen extends StatelessWidget {
                       itemBuilder: (context,index){
                         return  MostPlayedSongsWidget(
                           onTap: () {
-                            PlayerService.instance.createPlaylist(Get.find<HomeController>().homeDataModel?.recentPlayed, index,);
+                            PlayerService.instance.createPlaylist(Get.find<HomeController>().homeDataModel?.recentPlayed, index: index,id:Get.find<HomeController>().homeDataModel?.recentPlayed?[index]
+                                .songId );
                           },
                           title: Get.find<HomeController>().homeDataModel?.recentPlayed?[index]
                               .songName,

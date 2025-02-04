@@ -360,7 +360,8 @@ class AlbumTrackScreen extends GetView<ArtistsController> {
                                 ),
                                 onTap: () {
                                   PlayerService.instance.createPlaylist(
-                                      controller.albumTrackSongData?.data, index);
+                                      controller.albumTrackSongData?.data, index: index,id:controller
+                                      .albumTrackSongData?.data?[index].songId );
                                 },
                               ),
                               const Divider(

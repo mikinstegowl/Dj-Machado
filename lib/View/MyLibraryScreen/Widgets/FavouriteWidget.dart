@@ -119,7 +119,7 @@ class FavouriteWidget extends StatelessWidget {
                   //     .databaseDownloadedSongList
                   //     .any((e) => e['song_id'] ==  tracksDataModel.data?[index].songId));
                   PlayerService.instance
-                      .createPlaylist(favouriteSongDataModel?.data, index);
+                      .createPlaylist(favouriteSongDataModel?.data, index: index,id: favouriteSongDataModel?.data?[index].songId);
                 },
               ),
               const Divider(

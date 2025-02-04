@@ -259,7 +259,7 @@ class OfflineAlbumDetailScreen extends GetView<BaseController> {
                           ),
                           onTap: () {
                             PlayerService.instance
-                                .createPlaylist(Get.find<BaseController>().databaseDownloadedSongList, index,type: 'offline');
+                                .createPlaylist(Get.find<BaseController>().databaseDownloadedSongList, index: index,type: 'offline',id: Get.find<BaseController>().databaseDownloadedSongList[index]['song_id']);
                           },
                         ),
                         const Divider(

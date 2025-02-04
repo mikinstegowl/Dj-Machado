@@ -129,7 +129,7 @@ class OptionDialog extends StatelessWidget {
                                   padding: EdgeInsets.symmetric(vertical: 12.h),
                                   onPressed: () {
                                     PlayerService.instance.createPlaylist(
-                                        listOfTrackData, index ?? 0,
+                                        listOfTrackData, index:index ?? 0,
                                         type: type);
                                     Get.back();
                                   },

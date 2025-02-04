@@ -81,7 +81,6 @@ class BottomBarWidget extends GetView<BaseController> {
           ],
           currentIndex: Get.find<BaseController>().selectedIndex.value,
           // Set the current
-      // pindex
         onTap: (index) {
             print(Get.find<BaseController>().connectivityResult[0] == ConnectivityResult.none);
           Get.find<BaseController>().connectivityResult[0] == ConnectivityResult.none ?

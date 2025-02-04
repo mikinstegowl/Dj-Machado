@@ -168,7 +168,7 @@ class _SongsAlbumsScreenState extends State<SongsAlbumsScreen> {
                                             },
                                             onTap: () {
                                               PlayerService.instance.createPlaylist(
-                                                  songsDataModel?.mostPlayed, index);
+                                                  songsDataModel?.mostPlayed, index: index,id:  songsDataModel?.mostPlayed?[index].songId);
                                             },
                                             image: songsDataModel
                                                 ?.mostPlayed?[index].originalImage,

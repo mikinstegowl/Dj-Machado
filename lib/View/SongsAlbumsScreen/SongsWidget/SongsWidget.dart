@@ -131,7 +131,7 @@ class SongsWidget extends StatelessWidget {
                   //     .databaseDownloadedSongList
                   //     .any((e) => e['song_id'] ==  tracksDataModel.data?[index].songId));
                   PlayerService.instance
-                      .createPlaylist(tracksDataModel?.data, index);
+                      .createPlaylist(tracksDataModel?.data, index: index,id: tracksDataModel?.data?[index].songId);
                 },
               ),
               const Divider(

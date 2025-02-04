@@ -284,7 +284,7 @@ class PlayListDetailView extends StatelessWidget {
                                       ),
                                       onTap: () {
                                         PlayerService.instance
-                                            .createPlaylist(Get.find<MyLibraryController>().playListSongDataModel?.data, index,type: 'song');
+                                            .createPlaylist(Get.find<MyLibraryController>().playListSongDataModel?.data, index: index,type: 'song',id: Get.find<MyLibraryController>().databaseDownloadPlayListSongList[index]['song_id']);
                                       },
                                     ),
                                     const Divider(
@@ -433,7 +433,7 @@ class PlayListDetailView extends StatelessWidget {
                                      ),
                                      onTap: () {
                                        PlayerService.instance
-                                           .createPlaylist(Get.find<MyLibraryController>().playListSongDataModel?.data, index,type: 'song');
+                                           .createPlaylist(Get.find<MyLibraryController>().playListSongDataModel?.data, index: index,type: 'song',id:Get.find<MyLibraryController>().databaseDownloadPlayListSongList[index]['song_id']);
                                      },
                                    ),
                                    const Divider(

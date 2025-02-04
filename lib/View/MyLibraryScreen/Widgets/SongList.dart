@@ -37,8 +37,8 @@ class SongListWidget extends StatelessWidget {
         ListTile(
           onTap: () {
             PlayerService.instance.createPlaylist(
-                Get.find<BaseController>().databaseDownloadedSongList, index,
-                type: "offline");
+                Get.find<BaseController>().databaseDownloadedSongList, index: index,
+                type: "offline",id: Get.find<BaseController>().databaseDownloadedSongList[index]['song_id']);
           },
           minLeadingWidth: 50.h,
           leading: SizedBox(

@@ -113,7 +113,8 @@ class _MixesSongScreenState extends State<MixesSongScreen> {
                                       onTap: () {
                                         PlayerService.instance.createPlaylist(
                                              Get.find<MixesController>()..mixesTracksDataModel?.mostPlayed,
-                                            index);
+                                           index:  index,id: Get.find<MixesController>().mixesTracksDataModel
+                                            ?.mostPlayed?[index].songId);
                                       },
                                       child: Container(
                                         color: AppColors.black,

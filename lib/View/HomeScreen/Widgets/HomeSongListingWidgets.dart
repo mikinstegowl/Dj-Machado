@@ -82,12 +82,12 @@ class HomeSongListingWidgets extends StatelessWidget {
                     ),));
                   },
                   onTap: () async {
-                    if (PlayerService.instance.audioPlayer.playing) {
-                      await PlayerService.instance.audioPlayer.stop();
-                      await PlayerService.instance.audioPlayer.dispose();
-                      PlayerService.instance.audioPlayer = AudioPlayer(); // Reinitialize
-                    }
-                    PlayerService.instance.createPlaylist(data, index);
+                    // if (PlayerService.instance.audioPlayer.playing) {
+                    //   await PlayerService.instance.audioPlayer.stop();
+                    //   await PlayerService.instance.audioPlayer.dispose();
+                    //   PlayerService.instance.audioPlayer = AudioPlayer(); // Reinitialize
+                    // }
+                    PlayerService.instance.createPlaylist(data, index: index,id:data?[index].songId);
                   },
                   title: data?[index].songName,
                   image: data?[index].songImage,
