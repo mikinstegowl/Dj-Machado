@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "346294344834",
+    "project_id": "machado-29d1c",
+    "storage_bucket": "machado-29d1c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:346294344834:android:6b57f9ecccb296987de89b",
+        "android_client_info": {
+          "package_name": "com.example.newmusicappmachado"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6pDUWtuVJZtp939L4WIe4qEugmMJjmyU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
