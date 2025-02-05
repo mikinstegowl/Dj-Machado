@@ -67,6 +67,7 @@ class ExplorScreen extends GetView<ExplorController> {
                                       AppColors.primary),
                                 )),
                               ),
+                        50.verticalSpace,
 
                       ],
                     ),

@@ -198,7 +198,10 @@ class HomeController extends BaseController {
       if (response.body?.status == 200) {
         songDetailDataModel = response.body;
         recentPlayedApi(songId: songId);
-      }update(['SongScreen']);
+      }
+      update(['SongScreen']);
+      Get.find<BaseController>().update();
+      update();
     } catch (e) {
       log("", error: e.toString(), name: "Song Details Api Error");
     }

@@ -454,6 +454,7 @@ class OptionDialog extends StatelessWidget {
                                           DownloadService.instance.downloadSong(
                                               downloadSongUrl: track?.song,
                                               SongData: track);
+                                          Get.back();
                                         },
                                         btnName: "",
                                         child: Padding(
@@ -500,6 +501,7 @@ class OptionDialog extends StatelessWidget {
                                                       track?.songId),
                                               isAlbum: false,
                                               index: index);
+                                          Get.back();
                                         },
                                         btnName: "",
                                         child: Padding(
@@ -548,7 +550,8 @@ class OptionDialog extends StatelessWidget {
                                         borderRadius: 10.r,
                                         padding: EdgeInsets.symmetric(
                                             vertical: 12.h),
-                                        onPressed: () async {
+                                        onPressed: () async
+                                        {
                                           await Get.find<ArtistsController>()
                                               .albumTrackSongApi(
                                                   artistsId: track?.id ?? 0,
@@ -565,6 +568,7 @@ class OptionDialog extends StatelessWidget {
                                           print(
                                               "this is id${track?.id}, this is album id ${track?.albumsId},this is genereid ${track?.genresId}");
                                           // DownloadService.instance.downloadAllSongs(tracksDataMode:);
+                                          Get.back();
                                         },
                                         btnName: "",
                                         child: Padding(
@@ -611,6 +615,7 @@ class OptionDialog extends StatelessWidget {
                                                       track?.songId),
                                               isAlbum: false,
                                               index: index);
+                                          Get.back();
                                         },
                                         btnName: "",
                                         child: Padding(

@@ -31,29 +31,45 @@ class MostPlayedSongsWidget extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
               Container(
+                height: 50.h,
                 color: AppColors.newdarkgrey,
-                padding: EdgeInsets.symmetric(horizontal: 10.w,vertical: subtitle!=''?0:10.h),
+                padding: EdgeInsets.symmetric(horizontal: 10.w,),
                 width: double.maxFinite,
                 child: Column(
-                  mainAxisSize: MainAxisSize.min,
+                  // mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Flexible(
                       child: AppTextWidget(
+                        fontWeight: FontWeight.bold,
                         // fontFamily: 'Century Gothic',
-                        txtTitle: title ?? '',
+                        txtTitle: "${title}" ?? '',
                         maxLine: 1,
+                        letterSpacing: 1,
                         fontSize: 14,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    Visibility(
-                      visible:subtitle!='' ,
+                    subtitle != ''? Flexible(
                       child: AppTextWidget(
-                        txtTitle: subtitle ?? '',
-                        txtColor: AppColors.primary,
+                        // fontFamily: 'Century Gothic',
+                        txtTitle: subtitle != ''? subtitle??"" :'',
+                        maxLine: 1,
+                        letterSpacing: 1,
                         fontSize: 14,
+                        txtColor: AppColors.primary,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    )
+                    ): SizedBox.shrink(),
+                    // Visibility(
+                    //   visible:subtitle!='' ,
+                    //   child: AppTextWidget(
+                    //     txtTitle: subtitle ?? '',
+                    //     txtColor: AppColors.primary,
+                    //     fontSize: 14,
+                    //   ),
+                    // )
                   ],
                 ),
               )

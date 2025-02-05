@@ -29,7 +29,7 @@ class MostPopularArtistWidget extends GetView<ArtistsController> {
           child: const AppTextWidget(txtTitle: "Most Popular Artist"),
         ),
         SizedBox(
-          height: 210.h,
+          height: 230.h,
           child: GridView.builder(
               padding: EdgeInsets.only(left: 10.w),
               itemCount: data?.length,

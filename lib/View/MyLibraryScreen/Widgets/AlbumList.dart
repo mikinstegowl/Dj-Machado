@@ -1,3 +1,4 @@
+import 'package:newmusicappmachado/Utils/Services/DatabaseService.dart';
 import 'package:newmusicappmachado/Utils/Styling/AppColors.dart';
 import 'package:newmusicappmachado/Utils/Widgets/AppTextWidget.dart';
 import 'package:newmusicappmachado/Utils/Widgets/CachedNetworkImageWidget.dart';
@@ -8,11 +9,13 @@ class AlbumListWidget extends StatelessWidget {
   final String title;
   final String imageUrl;
   final String dataLength;
+
+  final Function() onMoreTap;
   const AlbumListWidget(
       {super.key,
       required this.title,
       required this.imageUrl,
-      required this.dataLength});
+      required this.dataLength,  required this.onMoreTap});
 
   @override
   Widget build(BuildContext context) {
@@ -45,16 +48,19 @@ class AlbumListWidget extends StatelessWidget {
                         Positioned(
                           top: 8,
                           right: 8,
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              color: Colors.black,
-                              shape: BoxShape.circle,
-                            ),
-                            padding: const EdgeInsets.all(4),
-                            child: const Icon(
-                              Icons.more_horiz,
-                              color: Colors.white,
-                              size: 16,
+                          child: InkWell(
+                            onTap: onMoreTap,
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                color: Colors.black,
+                                shape: BoxShape.circle,
+                              ),
+                              padding: const EdgeInsets.all(4),
+                              child: const Icon(
+                                Icons.more_horiz,
+                                color: Colors.white,
+                                size: 16,
+                              ),
                             ),
                           ),
                         ),

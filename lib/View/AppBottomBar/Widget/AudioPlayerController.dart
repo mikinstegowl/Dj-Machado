@@ -8,6 +8,7 @@ import 'package:newmusicappmachado/Controller/ArtistsController.dart';
 import 'package:newmusicappmachado/Controller/BaseController.dart';
 import 'package:newmusicappmachado/Controller/HomeController.dart';
 import 'package:newmusicappmachado/Controller/MyLibraryController.dart';
+import 'package:newmusicappmachado/Utils/Constants/AppAssets.dart';
 import 'package:newmusicappmachado/Utils/Models/MixesTracksDataModel.dart';
 import 'package:newmusicappmachado/Utils/Router/RouteName.dart';
 import 'package:newmusicappmachado/Utils/Services/DownloadService.dart';
@@ -39,6 +40,34 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
 
   final PageController _pageController = PageController();
   int _currentPage = 0;
+  int? lastSongId;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    PlayerService.instance.audioPlayer.sequenceStateStream.listen((sequenceState) {
+      final currentSongId = int.tryParse(sequenceState?.currentSource?.tag.id ?? '');
+
+      if (currentSongId != null && currentSongId != lastSongId) {
+        lastSongId = currentSongId;  // ✅ Update last song ID
+        // ✅ Allow API hit only once per song
+       Get.find<BaseController>().update();
+       Get.find<HomeController>().update();
+       print("this is song $lastSongId");
+        // PlayerService.instance.songDetail(); // ✅ Call API when new song starts
+      }
+    });
+    // PlayerService.instance.audioPlayer.sequenceStateStream.listen((sequenceState) {
+    //   if (sequenceState?.currentSource != null) {
+    //     String newTrackId = sequenceState!.currentSource!.tag.id ?? '';
+    //
+    //     if (newTrackId.isNotEmpty) {
+    //       Get.find<BaseController>().updateCurrentTrack(newTrackId);
+    //     }
+    //   }
+    // });
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -84,7 +113,8 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                           : null,
                       color: Get.find<BaseController>().containerHeight! > 1
                           ? AppColors.black
-                          : AppColors.primary,
+                          : Color(0xff0f0b0b),
+                      border: Border(top: BorderSide(color: AppColors.primary,width: 3)),
                       borderRadius: BorderRadiusDirectional.only(
                           topStart: Radius.circular(10.r),
                           topEnd: Radius.circular(10.r)),
@@ -96,51 +126,59 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Row(
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        setState(() {
-                                          Get.find<BaseController>()
-                                              .containerHeight
-                                              ?.value = 0;
-                                        });
-                                      },
-                                      child: Icon(
-                                        Icons.keyboard_arrow_down,
-                                        size: 30.r,
-                                        color: AppColors.white,
+                                Padding(
+                                  padding: EdgeInsets.only(left: 8.0.w,top: 30.h),
+                                  child: Row(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            Get.find<BaseController>()
+                                                .containerHeight
+                                                ?.value = 0;
+                                          });
+                                        },
+                                        child: Transform.rotate(
+                                          angle: 55,
+                                          child: Image.asset(
+                                            height: 30.h,
+                                            width: 30.h,
+                                            AppAssets.backIcon,
+                                            // size: 30.r,
+                                            // color: AppColors.white,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                    const Spacer(),
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: AppTextWidget(
-                                        txtTitle: PlayerService
-                                                .instance
-                                                .audioPlayer
-                                                .sequenceState
-                                                ?.currentSource
-                                                ?.tag
-                                                .title ??
-                                            '',
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w800,
+                                      const Spacer(),
+                                      Align(
+                                        alignment: Alignment.center,
+                                        child: AppTextWidget(
+                                          txtTitle: PlayerService
+                                                  .instance
+                                                  .audioPlayer
+                                                  .sequenceState
+                                                  ?.currentSource
+                                                  ?.tag
+                                                  .title ??
+                                              '',
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w800,
+                                        ),
                                       ),
-                                    ),
-                                    const Spacer(),
-                                    InkWell(
-                                      onTap: () {
-                                        Get.toNamed(RoutesName.cueScreen);
-                                      },
-                                      child: Icon(
-                                        Icons.queue_music,
-                                        size: 30.r,
-                                        color: AppColors.white,
+                                      const Spacer(),
+                                      InkWell(
+                                        onTap: () {
+                                          Get.toNamed(RoutesName.cueScreen);
+                                        },
+                                        child: Icon(
+                                          Icons.queue_music,
+                                          size: 35.r,
+                                          color: AppColors.white,
+                                        ),
                                       ),
-                                    ),
-                                    10.horizontalSpace
-                                  ],
+                                      10.horizontalSpace
+                                    ],
+                                  ),
                                 ),
                                 10.verticalSpace,
                                 AppTextWidget(
@@ -152,7 +190,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,
                                 ),
-                                const Spacer(),
+                                50.verticalSpace,
                                 CachedNetworkImageWidget(
                                   image: PlayerService
                                           .instance
@@ -163,10 +201,10 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                           .artUri
                                           .toString() ??
                                       '',
-                                  height: 400.h,
-                                  width: double.maxFinite,
+                                  height: 300.h,
+                                  width: 300.h,
                                 ),
-                                const Spacer(),
+                                30.verticalSpace,
                                 Get.find<HomeController>()
                                                 .songDetailDataModel
                                                 ?.data?[0]
@@ -190,6 +228,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                           height: 150.h,
                                           child: GridView.builder(
                                             shrinkWrap: true,
+                                            physics: NeverScrollableScrollPhysics(),
                                             gridDelegate:
                                                 SliverGridDelegateWithFixedCrossAxisCount(
                                               crossAxisCount:
@@ -251,8 +290,8 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                   mainAxisSize: MainAxisSize.min,
                                                   children: [
                                                     Container(
-                                                      width: 80.h,
-                                                      height: 80.h,
+                                                      width: 95.h,
+                                                      height: 95.h,
                                                       clipBehavior:
                                                           Clip.antiAlias,
                                                       decoration: BoxDecoration(
@@ -267,9 +306,10 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                         fit: BoxFit.cover,
                                                       ),
                                                     ),
-                                                    20.verticalSpace,
+                                                    5.verticalSpace,
                                                     Flexible(
                                                       child: AppTextWidget(
+                                                        fontSize: 12,
                                                         textAlign:
                                                             TextAlign.center,
                                                         maxLine: 1,
@@ -386,6 +426,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                       25.verticalSpace,
                                                       Flexible(
                                                         child: AppTextWidget(
+                                                          fontSize: 12,
                                                           textAlign:
                                                               TextAlign.center,
                                                           maxLine: 1,
@@ -737,7 +778,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                             thumbColor: AppColors.grey,
                                             baseBarColor: Colors.white,
                                             timeLabelTextStyle: const TextStyle(
-                                                fontFamily: 'Century Gothic',
+                                                // fontFamily: 'Century Gothic',
                                                 color: Colors.white),
                                             progress: PlayerService
                                                 .instance.audioPlayer.position,
@@ -819,7 +860,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                       },
                                       child: Icon(
                                         Icons.shuffle,
-                                        size: 27.r,
+                                        size: 35.r,
                                         color: PlayerService.instance
                                                 .audioPlayer.shuffleModeEnabled
                                             ? AppColors.primary
@@ -832,40 +873,83 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                       },
                                       child: Icon(
                                         Icons.skip_previous,
-                                        size: 30.r,
+                                        size: 35.r,
                                         color: AppColors.white,
                                       ),
                                     ),
+                                    // StreamBuilder(
+                                    //     stream: PlayerService
+                                    //         .instance.audioPlayer.playingStream,
+                                    //     builder: (context, snapPlaying) {
+                                    //       print("song stream ${PlayerService.instance.audioPlayer.sequenceState?.currentSource?.duration !=
+                                    //           null}");
+                                    //       print("song stream1 ${snapPlaying.hasData}");
+                                    //       if (!snapPlaying.hasData ||
+                                    //           PlayerService.instance.audioPlayer.sequenceState?.currentSource?.duration ==
+                                    //               null) {
+                                    //         return  CircularProgressIndicator(
+                                    //           color: AppColors.primary,
+                                    //         );
+                                    //       }
+                                    //       return InkWell(
+                                    //         onTap: () {
+                                    //           snapPlaying.data ?? false
+                                    //               ? PlayerService
+                                    //                   .instance.audioPlayer
+                                    //                   .pause()
+                                    //               : PlayerService
+                                    //                   .instance.audioPlayer
+                                    //                   .play();
+                                    //         },
+                                    //         child: Icon(
+                                    //           PlayerService.instance.audioPlayer
+                                    //                   .playing
+                                    //               ? Icons.pause
+                                    //               : Icons.play_arrow,
+                                    //           size: 50.r,
+                                    //           color: AppColors.white,
+                                    //         ),
+                                    //       );
+                                    //     }),
                                     StreamBuilder(
-                                        stream: PlayerService
-                                            .instance.audioPlayer.playingStream,
-                                        builder: (context, snapPlaying) {
-                                          if (!snapPlaying.hasData ||
-                                              PlayerService.instance.audioPlayer
-                                                      .duration ==
-                                                  null) {
-                                            return const CircularProgressIndicator();
-                                          }
-                                          return InkWell(
-                                            onTap: () {
-                                              snapPlaying.data ?? false
-                                                  ? PlayerService
-                                                      .instance.audioPlayer
-                                                      .pause()
-                                                  : PlayerService
-                                                      .instance.audioPlayer
-                                                      .play();
-                                            },
-                                            child: Icon(
-                                              PlayerService.instance.audioPlayer
-                                                      .playing
-                                                  ? Icons.pause
-                                                  : Icons.play_arrow,
-                                              size: 35.r,
-                                              color: AppColors.white,
-                                            ),
+                                      stream: PlayerService.instance.audioPlayer.sequenceStateStream,
+                                      builder: (context, snapState) {
+                                        final sequenceState = snapState.data;
+                                        final currentSource = sequenceState?.currentSource;
+
+                                        if (currentSource == null || PlayerService.instance.audioPlayer.duration == null) {
+                                          return CircularProgressIndicator(
+                                            color: AppColors.primary,
                                           );
-                                        }),
+                                        }
+
+                                        return GetBuilder<BaseController>( // ✅ UI will update when track changes
+                                          builder: (controller) {
+                                            return StreamBuilder<bool>(
+                                              stream: PlayerService.instance.audioPlayer.playingStream,
+                                              builder: (context, snapPlaying) {
+                                                final isPlaying = snapPlaying.data ?? false;
+                                                return InkWell(
+                                                  onTap: () {
+                                                    isPlaying
+                                                        ? PlayerService.instance.audioPlayer.pause()
+                                                        : PlayerService.instance.audioPlayer.play();
+                                                    controller.update(); // ✅ Force UI update
+                                                  },
+                                                  child: Icon(
+                                                    isPlaying ? Icons.pause : Icons.play_arrow,
+                                                    size: 50.r,
+                                                    color: AppColors.white,
+                                                  ),
+                                                );
+                                              },
+                                            );
+                                          },
+                                        );
+                                      },
+                                    ),
+
+
                                     InkWell(
                                       onTap: () {
                                         PlayerService.instance.nextSong();
@@ -873,7 +957,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                       },
                                       child: Icon(
                                         Icons.skip_next,
-                                        size: 30.r,
+                                        size: 35.r,
                                         color: AppColors.white,
                                       ),
                                     ),
@@ -889,7 +973,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                       },
                                       child: Icon(
                                         Icons.repeat,
-                                        size: 27.r,
+                                        size: 35.r,
                                         color: PlayerService.instance
                                                     .audioPlayer.loopMode ==
                                                 LoopMode.off
@@ -950,9 +1034,9 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                     ?.tag
                                                     .title ??
                                                 '',
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w700,
-                                            txtColor: AppColors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            txtColor: AppColors.white,
                                           ),
                                           Visibility(
                                             visible: PlayerService
@@ -964,7 +1048,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                     .artist !=
                                                 '',
                                             child: AppTextWidget(
-                                              fontWeight: FontWeight.w700,
+                                              fontWeight: FontWeight.bold,
                                               txtTitle: PlayerService
                                                       .instance
                                                       .audioPlayer
@@ -974,7 +1058,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                       .artist ??
                                                   '',
                                               fontSize: 12,
-                                              txtColor: AppColors.black,
+                                              txtColor: AppColors.white,
                                             ),
                                           )
                                         ],
@@ -986,12 +1070,13 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                             InkWell(
                                               onTap: () {
                                                 PlayerService.instance
-                                                    .previousSong();
-                                                setState(() {});
+                                                    .audioPlayer.seekToPrevious();
+                                                setState(() {
+                                                });
                                               },
                                               child: Icon(
                                                 Icons.skip_previous,
-                                                size: 30.r,
+                                                size: 45.r,
                                                 color: AppColors.white,
                                               ),
                                             ),
@@ -1007,7 +1092,9 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                               .audioPlayer
                                                               .duration ==
                                                           null) {
-                                                    return const CircularProgressIndicator();
+                                                    return  CircularProgressIndicator(
+                                                      color: AppColors.primary,
+                                                    );
                                                   }
                                                   return InkWell(
                                                     onTap: () {
@@ -1021,26 +1108,26 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                               .audioPlayer
                                                               .play();
                                                     },
-                                                    child: Container(
-                                                      padding:
-                                                          EdgeInsets.all(10.r),
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                              color: AppColors
-                                                                  .white,
-                                                              shape: BoxShape
-                                                                  .circle),
-                                                      child: Icon(
-                                                        PlayerService
-                                                                .instance
-                                                                .audioPlayer
-                                                                .playing
-                                                            ? Icons.pause
-                                                            : Icons.play_arrow,
-                                                        size: 30.r,
-                                                        color: AppColors.black,
-                                                      ),
-                                                    ),
+                                                    // child: Container(
+                                                    //   padding:
+                                                    //       EdgeInsets.all(10.r),
+                                                    //   decoration:
+                                                    //       const BoxDecoration(
+                                                    //           color: AppColors
+                                                    //               .white,
+                                                    //           shape: BoxShape
+                                                    //               .circle),
+                                                    //   child: Icon(
+                                                    //     PlayerService
+                                                    //             .instance
+                                                    //             .audioPlayer
+                                                    //             .playing
+                                                    //         ? Icons.pause
+                                                    //         : Icons.play_arrow,
+                                                    //     size: 40.r,
+                                                    //     color: AppColors.black,
+                                                    //   ),
+                                                    // ),
                                                   );
                                                 }),
                                             15.horizontalSpace,
@@ -1052,7 +1139,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                               },
                                               child: Icon(
                                                 Icons.skip_next,
-                                                size: 30.r,
+                                                size: 45.r,
                                                 color: AppColors.white,
                                               ),
                                             ),
@@ -1121,9 +1208,9 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                   ?.tag
                                                   .title ??
                                               '',
-                                          fontSize: 12,
+                                          fontSize: 16,
                                           fontWeight: FontWeight.w700,
-                                          txtColor: AppColors.black,
+                                          txtColor: AppColors.white,
                                         ),
                                         Visibility(
                                           visible: PlayerService
@@ -1145,7 +1232,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                     .artist ??
                                                 '',
                                             fontSize: 12,
-                                            txtColor: AppColors.black,
+                                            txtColor: AppColors.white,
                                           ),
                                         )
                                       ],
@@ -1157,12 +1244,14 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                           InkWell(
                                             onTap: () {
                                               PlayerService.instance
-                                                  .previousSong();
-                                              setState(() {});
+                                                  .audioPlayer.seekToPrevious();
+                                              setState(() {
+
+                                              });
                                             },
                                             child: Icon(
                                               Icons.skip_previous,
-                                              size: 30.r,
+                                              size: 45.r,
                                               color: AppColors.white,
                                             ),
                                           ),
@@ -1177,7 +1266,9 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                             .audioPlayer
                                                             .duration ==
                                                         null) {
-                                                  return const CircularProgressIndicator();
+                                                  return  CircularProgressIndicator(
+                                                    color: AppColors.primary,
+                                                  );
                                                 }
                                                 return InkWell(
                                                   onTap: () {
@@ -1190,23 +1281,25 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                             .play();
                                                   },
                                                   child: Container(
-                                                    padding:
-                                                        EdgeInsets.all(10.r),
+                                                    height: 50.h,
+                                                    width: 50.h,
                                                     decoration:
                                                         const BoxDecoration(
                                                             color:
-                                                                AppColors.white,
+                                                                AppColors.darkgrey,
                                                             shape: BoxShape
                                                                 .circle),
-                                                    child: Icon(
-                                                      PlayerService
-                                                              .instance
-                                                              .audioPlayer
-                                                              .playing
-                                                          ? Icons.pause
-                                                          : Icons.play_arrow,
-                                                      size: 30.r,
-                                                      color: AppColors.black,
+                                                    child: Center(
+                                                      child: Icon(
+                                                        PlayerService
+                                                                .instance
+                                                                .audioPlayer
+                                                                .playing
+                                                            ? Icons.pause
+                                                            : Icons.play_arrow,
+                                                        size: 40.r,
+                                                        color: AppColors.primary,
+                                                      ),
                                                     ),
                                                   ),
                                                 );
@@ -1219,7 +1312,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                             },
                                             child: Icon(
                                               Icons.skip_next,
-                                              size: 30.r,
+                                              size: 45.r,
                                               color: AppColors.white,
                                             ),
                                           ),

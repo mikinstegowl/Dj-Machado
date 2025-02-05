@@ -67,16 +67,19 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                     ),
                     leadingWidth: 140.w,
                     leading: InkWell(
+                      splashColor: AppColors.primary,
                       onTap: () {
                         Get.back();
                       },
                       child: Row(
                         children: [
-                          Icon(
-                            AppIcons.navigate_before,
-                            size: 28.r,
-                            color: AppColors.white,
+                          Image.asset(
+                            height: 25.h,
+                            width: 25.h,
+                            AppAssets.backIcon,
+                            // size: 28.r,
                           ),
+                          5.horizontalSpace,
                           const AppTextWidget(
                             fontWeight: FontWeight.w600,
                             txtTitle: "Back",
@@ -118,7 +121,7 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                             image: AssetImage(AppAssets.backGroundImage))
                     ),
                     child: Padding(
-                      padding: EdgeInsets.only(top: 10.h,left: 10.w,right: 10.w),
+                      padding: EdgeInsets.only(top: 10.h,left: 0.w,right: 0.w),
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
@@ -128,6 +131,7 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                                 width: double.maxFinite,
                                 child: AdWidget(ad: Get.find<BaseController>().bannerAd),
                               ),
+                            10.verticalSpace,
                             trendingSCategoryWidget(),
                           ],
                         ),
@@ -156,8 +160,8 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                 Get.find<HomeController>().viewAllDataModel?.data?.length,
             scrollDirection: Axis.vertical,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                mainAxisExtent: 210.w,
+                crossAxisCount: 2,
+                mainAxisExtent: 230.w,
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10),
             itemBuilder: (context, index) {
@@ -195,7 +199,7 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
             scrollDirection: Axis.vertical,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                mainAxisExtent: 210.w,
+                mainAxisExtent: 230.w,
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10),
             itemBuilder: (context, index) {
@@ -233,8 +237,8 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
             Get.find<HomeController>().viewAllDataModel?.data?.length,
             scrollDirection: Axis.vertical,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                mainAxisExtent: 210.w,
+                crossAxisCount: 2,
+                mainAxisExtent: 230.w,
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10),
             itemBuilder: (context, index) {
@@ -276,21 +280,12 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
             scrollDirection: Axis.vertical,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
-                mainAxisExtent: 210.w,
+                mainAxisExtent: 230.w,
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10),
             itemBuilder: (context, index) {
               return MostPlayedSongsWidget(
                 onTap: () {
-                  // Get.find<ExplorController>().selectedGenreAlbumApi(Get.find<HomeController>()
-                  //     .viewAllDataModel
-                  //     ?.data?[index].genresId??0).then((_){
-                  //   Get.find<ExplorController>().selectedGenreSongsApi(Get.find<HomeController>()
-                  //       .viewAllDataModel
-                  //       ?.data?[index].genresId??0).then((_){
-                  //     Get.toNamed(RoutesName.songsAlbumsScreen,arguments: {'isGenre':true});
-                  //   });
-                  // });
                   PlayerService.instance.createPlaylist(Get.find<HomeController>().viewAllDataModel?.data, index: index,id: Get.find<HomeController>()
                       .viewAllDataModel
                       ?.data?[index]
@@ -315,13 +310,14 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
         return  GridView.builder(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
+            padding: EdgeInsets.zero,
             // padding: EdgeInsets.only(left: 10.w),
             itemCount:
             Get.find<HomeController>().viewAllDataModel?.data?.length,
-            scrollDirection: Axis.vertical,
+            // scrollDirection: Axis.vertical,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
-                mainAxisExtent: 210.w,
+                mainAxisExtent: 230.w,
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10
             ),
@@ -360,7 +356,7 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
             scrollDirection: Axis.vertical,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                mainAxisExtent: 210.w,
+                mainAxisExtent: 230.w,
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10),
             itemBuilder: (context, index) {
@@ -399,7 +395,7 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
             scrollDirection: Axis.vertical,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
-                mainAxisExtent: 210.w,
+                mainAxisExtent: 230.w,
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10),
             itemBuilder: (context, index) {

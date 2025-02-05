@@ -53,6 +53,7 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ):
        showBack? InkWell(
+         splashColor: AppColors.primary,
           onTap: () {
             Get.back();
           },

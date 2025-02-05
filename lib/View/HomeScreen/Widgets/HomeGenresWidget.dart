@@ -43,6 +43,7 @@ class HomeGenreWidget extends StatelessWidget {
                     child: const AppTextWidget(
                       txtTitle: "View All",
                       fontSize: 15,
+                      fontWeight: FontWeight.bold,
                       txtColor: AppColors.primary,
                     ),
                   )
@@ -50,7 +51,7 @@ class HomeGenreWidget extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 210.h,
+              height: 230.h,
               child: GridView.builder(
                   padding:
                   EdgeInsets.only(left: 10.w),

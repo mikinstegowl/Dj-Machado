@@ -15,11 +15,12 @@ class OptionInAudioPlayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  SizedBox(
-      height: 80.h,
+      height: 90.h,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
            Icon(
+             size: 35.r,
             icons??Icons.cloud_outlined,
             color: color??AppColors.white,
           ),
@@ -29,8 +30,8 @@ class OptionInAudioPlayer extends StatelessWidget {
             title??'Download',fontSize: 13,),
           5.verticalSpace,
           AppTextWidget(
-            txtColor: AppColors.primary,
-              fontSize: 12,
+            txtColor: AppColors.white,
+              fontSize: 14,
               txtTitle:
             ( count ?? Get.find<HomeController>()
                   .songDetailDataModel

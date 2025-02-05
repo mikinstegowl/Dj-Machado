@@ -74,7 +74,12 @@ class BaseController extends GetxController {
     super.onInit();
   }
 
+  var currentTrack = ''.obs; // Store current track ID or name
 
+  void updateCurrentTrack(String track) {
+    currentTrack.value = track; // Update when song changes
+    update(); // Force UI rebuild
+  }
   googleAd(){
     bannerAd = BannerAd(
       adUnitId: Platform.isAndroid ? (Get.find<BaseController>().googleAdsModel?.data?[0].androidKey??"") : (Get.find<BaseController>().googleAdsModel?.data?[0].iosKey??""), // Replace with `android_key`
@@ -410,4 +415,12 @@ class BaseController extends GetxController {
       log('',name: 'Download Ads',error: e.toString());
     }
   }
+  Future<void> deleteAlbum({bool? isLibrary, int? albumId, int? index}) async {
+    print(index);
+    await SongDatabaseService()
+        .deleteAlbum(albumId??0);
+     fetchDatabaseAlbumSong();
+    Get.find<BaseController>().update();
+  }
+
 }

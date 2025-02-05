@@ -1,6 +1,7 @@
 import 'package:newmusicappmachado/Controller/BaseController.dart';
 import 'package:newmusicappmachado/Utils/Router/RouteName.dart';
 import 'package:newmusicappmachado/Utils/Widgets/AppTextWidget.dart';
+import 'package:newmusicappmachado/Utils/Widgets/Dialogs/YesNoDialog.dart';
 import 'package:newmusicappmachado/View/MyLibraryScreen/Widgets/AlbumList.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,7 +12,7 @@ class AlbumDownloadWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Get.find<BaseController>().databaseDownloadedAlbumSongList.isNotEmpty? GridView.builder(
+    return  Obx(()=>Get.find<BaseController>().databaseDownloadedAlbumSongList.isNotEmpty? GridView.builder(
         itemCount: Get.find<BaseController>().databaseDownloadedAlbumSongList.length,
         padding: EdgeInsets.only(
             left: 20.w, right: 20.w, top: 10.h),
@@ -39,11 +40,20 @@ class AlbumDownloadWidget extends StatelessWidget {
               });
             },
             child: AlbumListWidget(
+              onMoreTap: (){
+                Get.dialog(
+                    YesNoDialog(onYesCalled: (){
+                      Get.find<BaseController>().deleteAlbum(albumId: Get.find<BaseController>().databaseDownloadedAlbumSongList[index]['album_id']);
+                      Get.back();
+                    }, message: 'Are you sure you want to delete this album')
+                );
+              },
+              // albumId: Get.find<BaseController>().databaseDownloadedAlbumSongList[index]['album_id'],
               title: Get.find<BaseController>().databaseDownloadedAlbumSongList[index]['album_name'],
               imageUrl: Get.find<BaseController>().databaseDownloadedAlbumSongList[index]['imageUrl'],
               dataLength: '',
             ),
           );
-        }):Center(child: AppTextWidget(txtTitle: "No Albums Downloaded !"));
+        }):Center(child: AppTextWidget(txtTitle: "No Albums Downloaded !")));
   }
 }

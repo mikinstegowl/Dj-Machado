@@ -126,8 +126,11 @@ class PlayerService extends GetxService {
         ConcatenatingAudioSource(children: playlist),
         initialIndex: index,
       );
+
       Get.find<BaseController>().showMusicMenu.value = true;
       // audioPlayer.setLoopMode(LoopMode.one);
+      listenToSongChanges();
+
       Get.find<BaseController>().connectivityResult[0] !=
               ConnectivityResult.none
           ? await Get.find<HomeController>()
@@ -238,5 +241,24 @@ class PlayerService extends GetxService {
       log('Error fetching song metadata: $e');
       return null;
     }
+  }
+  void listenToSongChanges() {
+    audioPlayer.currentIndexStream.listen((index) {
+      if (index != null && playlist.isNotEmpty) {
+        final currentSong = playlist[index];
+        final currentSource = audioPlayer.sequenceState?.currentSource;
+        final songId = currentSource?.tag.id;
+        // Call the API to update song details
+        Get.find<HomeController>().songDetailsDataApi(songId: int.tryParse(songId) ?? 0).then((_){
+          Get.find<BaseController>().update();
+          Get.find<HomeController>().update();
+        });
+        //Optional: Log event
+        _logButtonClick(
+          songId: songId,
+          songName: currentSource?.tag.title,
+        );
+      }
+    });
   }
 }

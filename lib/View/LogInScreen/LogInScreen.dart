@@ -22,7 +22,6 @@ class LogInScreen extends GetView<AuthController> {
     return Stack(
       children: [
         Scaffold(
-
           body: Container(
             height: MediaQuery.sizeOf(context).height,
             decoration:const BoxDecoration(

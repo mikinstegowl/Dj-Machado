@@ -16,7 +16,7 @@ class HomeSongListingWidgets extends StatelessWidget {
 
   final List<MostPlayed>? data;
 
-  const HomeSongListingWidgets({super.key, this.categoryTitle, this.data,});
+  const   HomeSongListingWidgets({super.key, this.categoryTitle, this.data,});
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +36,10 @@ class HomeSongListingWidgets extends StatelessWidget {
                   onTap: (){
                     Get.toNamed(RoutesName.viewAllRecentPlayedScreen);
                   },
-                  child: const AppTextWidget(
+                  child:  AppTextWidget(
                     txtTitle: "View All",
                     fontSize: 15,
+                    fontWeight: FontWeight.bold,
                     txtColor: AppColors.primary,
                   ),
                 ),
@@ -47,7 +48,7 @@ class HomeSongListingWidgets extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: 210.h,
+          height: 230.h,
           child: GridView.builder(
             shrinkWrap: true,
               padding: EdgeInsets.only(left: 10.w),

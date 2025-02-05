@@ -134,6 +134,7 @@ class AuthController extends BaseController {
 
   Future<void> skipUser() async {
     try {
+      showLoader(true);
       String? fcm = '';
       if (Platform.isIOS) {
         fcm = await FirebaseMessaging.instance.getAPNSToken();
@@ -168,8 +169,12 @@ class AuthController extends BaseController {
         Get.offNamed(RoutesName.homeScreen);
         await _logButtonClick(userName: '',deviceType:Platform.isAndroid ? "Android" : "IOS",type: 'Skip' );
 
+        showLoader(false);
+        update();
       }
     } catch (e) {
+      showLoader(false);
+      update();
       Utility.showSnackBar(e.toString(), isError: true);
       Get.dialog(SomethingWentWrongDialog());
       log('', error: e.toString(), name: 'Skip User Api Error');

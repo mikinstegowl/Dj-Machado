@@ -28,7 +28,7 @@ class ViewAllRecentPlayedScreen extends StatelessWidget {
         appBar:CommonAppBar(title: 'Recent Played',),
         body: Container(
           height: MediaQuery.sizeOf(context).height,
-          padding: EdgeInsets.only(top:AppBar().preferredSize.height.h+85.h),
+          padding: EdgeInsets.only(top:AppBar().preferredSize.height.h+15.h),
       
           decoration: const BoxDecoration(
               image: DecorationImage(
@@ -36,7 +36,7 @@ class ViewAllRecentPlayedScreen extends StatelessWidget {
                   image: AssetImage(AppAssets.backGroundImage))
           ),
           child: Padding(
-            padding:  EdgeInsets.symmetric(horizontal: 10.0.w,vertical: 10.h),
+            padding:  EdgeInsets.symmetric(horizontal: 10.0.w,vertical: 5.h),
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -54,7 +54,7 @@ class ViewAllRecentPlayedScreen extends StatelessWidget {
                       scrollDirection: Axis.vertical,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
-                        mainAxisExtent: 210.w,
+                        mainAxisExtent: 230.w,
                         crossAxisSpacing: 10,
                         mainAxisSpacing: 10,
                       ),

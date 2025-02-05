@@ -40,53 +40,6 @@ class OfflineAlbumDetailScreen extends GetView<BaseController> {
               CommonAppBar(
                 title: Get.arguments['songList']['album_name'] ?? '',
               ),
-          // AppBar(
-          //   backgroundColor: AppColors.transparent,
-          //   centerTitle: true,
-          //   title: AppTextWidget(
-          //     txtTitle: Get.arguments['songList']['album_name'] ?? '',
-          //   ),
-          //   leadingWidth: 120.w,
-          //   leading: Row(
-          //     children: [
-          //       InkWell(
-          //         onTap: () {
-          //           Get.back();
-          //         },
-          //         child: Row(
-          //           children: [
-          //             Icon(
-          //               Icons.navigate_before,
-          //               size: 28.r,
-          //               color: AppColors.white,
-          //             ),
-          //             const AppTextWidget(
-          //               fontWeight: FontWeight.w600,
-          //               txtTitle: "Back",
-          //               txtColor: AppColors.white,
-          //               fontSize: 18,
-          //             )
-          //           ],
-          //         ),
-          //       )
-          //     ],
-          //   ),
-          //   actions: [
-          //     Padding(
-          //       padding: const EdgeInsets.only(right: 20),
-          //       child: InkWell(
-          //         onTap: () {
-          //           Get.toNamed(RoutesName.advanceSearchScreen);
-          //         },
-          //         child: Icon(
-          //           Icons.search,
-          //           size: 50.r,
-          //           color: AppColors.primary,
-          //         ),
-          //       ),
-          //     )
-          //   ],
-          // ),
           body:
           Container(
             height: MediaQuery.sizeOf(context).height,
@@ -154,9 +107,11 @@ class OfflineAlbumDetailScreen extends GetView<BaseController> {
                     width: double.maxFinite,
                     child: AdWidget(ad: Get.find<BaseController>().bannerAd),
                   ),
+            10.verticalSpace,
             Expanded(
               child:
               Obx(()=> ListView.builder(
+                padding: EdgeInsets.zero,
                   physics: const ClampingScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: Get.find<BaseController>().songData.length,
@@ -244,16 +199,18 @@ class OfflineAlbumDetailScreen extends GetView<BaseController> {
                                 ),
                               ),
 
-                              10.horizontalSpace,
-                              InkWell(
-                                onTap: () {},
-                                child: Icon(
-                                  weight: 15,
-                                  Icons.more_vert,
-                                  color: AppColors.white,
-                                  size: 30.r,
-                                ),
-                              ),
+                              // 10.horizontalSpace,
+                              // InkWell(
+                              //   onTap: () {
+                              //
+                              //   },
+                              //   child: Icon(
+                              //     weight: 15,
+                              //     Icons.more_vert,
+                              //     color: AppColors.white,
+                              //     size: 30.r,
+                              //   ),
+                              // ),
                               10.horizontalSpace,
                             ],
                           ),
