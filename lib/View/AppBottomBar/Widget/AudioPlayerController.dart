@@ -48,15 +48,17 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    PlayerService.instance.audioPlayer.sequenceStateStream.listen((sequenceState) {
-      final currentSongId = int.tryParse(sequenceState?.currentSource?.tag.id ?? '');
+    PlayerService.instance.audioPlayer.sequenceStateStream
+        .listen((sequenceState) {
+      final currentSongId =
+          int.tryParse(sequenceState?.currentSource?.tag.id ?? '');
 
       if (currentSongId != null && currentSongId != lastSongId) {
-        lastSongId = currentSongId;  // ✅ Update last song ID
+        lastSongId = currentSongId; // ✅ Update last song ID
         // ✅ Allow API hit only once per song
-       Get.find<BaseController>().update();
-       Get.find<HomeController>().update();
-       print("this is song $lastSongId");
+        Get.find<BaseController>().update();
+        Get.find<HomeController>().update();
+        print("this is song $lastSongId");
         // PlayerService.instance.songDetail(); // ✅ Call API when new song starts
       }
     });
@@ -70,6 +72,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
     //   }
     // });
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -116,7 +119,8 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                       color: Get.find<BaseController>().containerHeight! > 1
                           ? AppColors.black
                           : Color(0xff0f0b0b),
-                      border: Border(top: BorderSide(color: AppColors.primary,width: 3)),
+                      border: Border(
+                          top: BorderSide(color: AppColors.primary, width: 3)),
                       borderRadius: BorderRadiusDirectional.only(
                           topStart: Radius.circular(10.r),
                           topEnd: Radius.circular(10.r)),
@@ -129,7 +133,8 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.only(left: 8.0.w,top: 30.h),
+                                  padding:
+                                      EdgeInsets.only(left: 8.0.w, top: 30.h),
                                   child: Row(
                                     children: [
                                       InkWell(
@@ -218,40 +223,47 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                 ?.data?[0]
                                                 .featureArtists
                                                 ?.length ==
-                                            1||Get.find<HomeController>()
-                                    .songDetailDataModel
-                                    ?.data?[0]
-                                    .featureArtists
-                                    ?.length ==
-                                    3
+                                            1 ||
+                                        Get.find<HomeController>()
+                                                .songDetailDataModel
+                                                ?.data?[0]
+                                                .featureArtists
+                                                ?.length ==
+                                            3
                                     ? Padding(
                                         padding: EdgeInsets.only(top: 10.0),
                                         child: Container(
                                           height: 150.h,
                                           child: GridView.builder(
                                             shrinkWrap: true,
-                                            physics: NeverScrollableScrollPhysics(),
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
                                             gridDelegate:
                                                 SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount:
-                                              Get.find<HomeController>()
-                                                  .songDetailDataModel
-                                                  ?.data?[0]
-                                                  .featureArtists
-                                                  ?.length ==
-                                                  2 ?2:Get.find<HomeController>()
-                                                  .songDetailDataModel
-                                                  ?.data?[0]
-                                                  .featureArtists
-                                                  ?.length ==
-                                                  1 ?1:3 , // Adjust based on your requirement
+                                              crossAxisCount: Get.find<
+                                                              HomeController>()
+                                                          .songDetailDataModel
+                                                          ?.data?[0]
+                                                          .featureArtists
+                                                          ?.length ==
+                                                      2
+                                                  ? 2
+                                                  : Get.find<HomeController>()
+                                                              .songDetailDataModel
+                                                              ?.data?[0]
+                                                              .featureArtists
+                                                              ?.length ==
+                                                          1
+                                                      ? 1
+                                                      : 3, // Adjust based on your requirement
                                             ),
-                                            itemCount: Get.find<HomeController>()
-                                                    .songDetailDataModel
-                                                    ?.data?[0]
-                                                    .featureArtists
-                                                    ?.length ??
-                                                0,
+                                            itemCount:
+                                                Get.find<HomeController>()
+                                                        .songDetailDataModel
+                                                        ?.data?[0]
+                                                        .featureArtists
+                                                        ?.length ??
+                                                    0,
                                             itemBuilder: (context, index) {
                                               final artist =
                                                   Get.find<HomeController>()
@@ -260,11 +272,11 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                       .featureArtists?[index];
                                               return InkWell(
                                                 onTap: () async {
-                                                  await Get
-                                                          .find<
-                                                              ArtistsController>()
+                                                  await Get.find<
+                                                          ArtistsController>()
                                                       .trackSongApi(
-                                                          artist?.artistsId ?? 0)
+                                                          artist?.artistsId ??
+                                                              0)
                                                       .then((_) async {
                                                     await Get.find<
                                                             ArtistsController>()
@@ -273,8 +285,9 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                                 0)
                                                         .then((_) {
                                                       Get.find<BaseController>()
-                                                          .initialListOfBool(Get.find<
-                                                                      ArtistsController>()
+                                                          .initialListOfBool(Get
+                                                                      .find<
+                                                                          ArtistsController>()
                                                                   .tracksDataModel
                                                                   ?.data
                                                                   ?.length ??
@@ -289,7 +302,8 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                   });
                                                 },
                                                 child: Column(
-                                                  mainAxisSize: MainAxisSize.min,
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
                                                   children: [
                                                     Container(
                                                       width: 95.h,
@@ -315,9 +329,9 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                         textAlign:
                                                             TextAlign.center,
                                                         maxLine: 1,
-                                                        txtTitle:
-                                                            artist?.artistsName ??
-                                                                '',
+                                                        txtTitle: artist
+                                                                ?.artistsName ??
+                                                            '',
                                                       ),
                                                     ),
                                                   ],
@@ -473,7 +487,6 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                           ),
                                         ],
                                       ),
-
                                 10.verticalSpace,
                                 Get.find<BaseController>()
                                             .connectivityResult[0] ==
@@ -589,42 +602,54 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                                 .id))
                                                 ? () {}
                                                 : () async {
-                                                    await DownloadService.instance.downloadSong(
-                                                        downloadSongUrl:
-                                                            Get.find<HomeController>()
+                                                    await DownloadService.instance
+                                                        .downloadSong(
+                                                            downloadSongUrl:
+                                                                Get.find<HomeController>()
+                                                                        .songDetailDataModel
+                                                                        ?.data?[
+                                                                            0]
+                                                                        .song ??
+                                                                    "",
+                                                            SongData: MixesTracksData(
+                                                                song: Get.find<HomeController>()
                                                                     .songDetailDataModel
                                                                     ?.data?[0]
-                                                                    .song ??
-                                                                "",
-                                                        SongData: MixesTracksData(
-                                                            song: Get.find<HomeController>()
-                                                                .songDetailDataModel
-                                                                ?.data?[0]
-                                                                .song,
-                                                            songId: Get.find<HomeController>()
-                                                                .songDetailDataModel
-                                                                ?.data?[0]
-                                                                .songId,
-                                                            songImage:
-                                                                Get.find<HomeController>()
+                                                                    .song,
+                                                                songId: Get.find<HomeController>()
+                                                                    .songDetailDataModel
+                                                                    ?.data?[0]
+                                                                    .songId,
+                                                                songImage: Get.find<HomeController>()
                                                                     .songDetailDataModel
                                                                     ?.data?[0]
                                                                     .songImage,
-                                                            songName:
-                                                                Get.find<HomeController>()
+                                                                songName: Get.find<
+                                                                        HomeController>()
                                                                     .songDetailDataModel
                                                                     ?.data?[0]
                                                                     .songName,
-                                                            songArtist: Get.find<
-                                                                    HomeController>()
-                                                                .songDetailDataModel
-                                                                ?.data?[0]
-                                                                .songArtist)).then((_){
-                                                                  Get.find<HomeController>().downloadAPi(homeChopperService: AppChopperClient().getChopperService<HomeChopperService>(),songId:int.tryParse( PlayerService.instance.audioPlayer.sequenceState?.currentSource?. tag.id)).then((_){
-                                                                    setState(() {
-
-                                                                    });
-                                                                  });
+                                                                songArtist: Get.find<
+                                                                        HomeController>()
+                                                                    .songDetailDataModel
+                                                                    ?.data?[0]
+                                                                    .songArtist))
+                                                        .then((_) {
+                                                      Get.find<HomeController>()
+                                                          .downloadAPi(
+                                                              homeChopperService:
+                                                                  AppChopperClient()
+                                                                      .getChopperService<
+                                                                          HomeChopperService>(),
+                                                              songId: int.tryParse(
+                                                                  PlayerService
+                                                                      .instance
+                                                                      .audioPlayer
+                                                                      .sequenceState
+                                                                      ?.currentSource
+                                                                      ?.tag
+                                                                      .id))
+                                                          .then((_) {});
                                                     });
 
                                                     Get.back();
@@ -665,8 +690,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                                   .id))
                                                   ? AppColors.primary
                                                   : AppColors.white,
-                                              icons:
-                                              Get.find<BaseController>()
+                                              icons: Get.find<BaseController>()
                                                       .isDownload(
                                                           songId: int.tryParse(
                                                               PlayerService
@@ -922,47 +946,77 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                     //       );
                                     //     }),
                                     StreamBuilder(
-                                      stream: PlayerService.instance.audioPlayer.sequenceStateStream,
+                                      stream: PlayerService.instance.audioPlayer
+                                          .sequenceStateStream,
                                       builder: (context, snapState) {
                                         final sequenceState = snapState.data;
-                                        final currentSource = sequenceState?.currentSource;
+                                        final currentSource =
+                                            sequenceState?.currentSource;
 
-                                        if (currentSource == null || PlayerService.instance.audioPlayer.duration == null) {
-                                          return CircularProgressIndicator(
-                                            color: AppColors.primary,
-                                          );
-                                        }
-
-                                        return GetBuilder<BaseController>( // ✅ UI will update when track changes
-                                          builder: (controller) {
-                                            return StreamBuilder<bool>(
-                                              stream: PlayerService.instance.audioPlayer.playingStream,
-                                              builder: (context, snapPlaying) {
-                                                final isPlaying = snapPlaying.data ?? false;
-                                                return InkWell(
-                                                  onTap: () {
-                                                    isPlaying
-                                                        ? PlayerService.instance.audioPlayer.pause()
-                                                        : PlayerService.instance.audioPlayer.play();
-                                                    controller.update(); // ✅ Force UI update
-                                                  },
-                                                  child: Icon(
-                                                    isPlaying ? Icons.pause : Icons.play_arrow,
-                                                    size: 50.r,
-                                                    color: AppColors.white,
-                                                  ),
+                                        return StreamBuilder<Duration?>(
+                                            stream: PlayerService.instance
+                                                .audioPlayer.durationStream,
+                                            builder: (context, snapDuration) {
+                                              if (currentSource == null ||
+                                                  snapDuration.data == null||PlayerService.instance.audioPlayer.duration == null) {
+                                                return CircularProgressIndicator(
+                                                  color: AppColors.primary,
                                                 );
-                                              },
-                                            );
-                                          },
-                                        );
+                                              }
+                                              // if (currentSource == null || PlayerService.instance.audioPlayer.duration == null) {
+                                              //   return CircularProgressIndicator(
+                                              //     color: AppColors.primary,
+                                              //   );
+                                              // }
+                                              // print("${currentSource == null}");
+                                              return GetBuilder<BaseController>(
+                                                // ✅ UI will update when track changes
+                                                builder: (controller) {
+                                                  return StreamBuilder<bool>(
+                                                    stream: PlayerService
+                                                        .instance
+                                                        .audioPlayer
+                                                        .playingStream,
+                                                    builder:
+                                                        (context, snapPlaying) {
+                                                      final isPlaying =
+                                                          snapPlaying.data ??
+                                                              false;
+                                                      return InkWell(
+                                                        onTap: () {
+                                                          isPlaying
+                                                              ? PlayerService
+                                                                  .instance
+                                                                  .audioPlayer
+                                                                  .pause()
+                                                              : PlayerService
+                                                                  .instance
+                                                                  .audioPlayer
+                                                                  .play();
+                                                          controller
+                                                              .update(); // ✅ Force UI update
+                                                        },
+                                                        child: Icon(
+                                                          isPlaying
+                                                              ? Icons.pause
+                                                              : Icons
+                                                                  .play_arrow,
+                                                          size: 50.r,
+                                                          color:
+                                                              AppColors.white,
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
+                                                },
+                                              );
+                                            });
                                       },
                                     ),
 
-
                                     InkWell(
                                       onTap: () {
-                                        PlayerService.instance.nextSong();
+                                        PlayerService.instance.audioPlayer.seekToNext();
                                         setState(() {});
                                       },
                                       child: Icon(
@@ -1079,10 +1133,10 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                           children: [
                                             InkWell(
                                               onTap: () {
-                                                PlayerService.instance
-                                                    .audioPlayer.seekToPrevious();
-                                                setState(() {
-                                                });
+                                                PlayerService
+                                                    .instance.audioPlayer
+                                                    .seekToPrevious();
+                                                setState(() {});
                                               },
                                               child: Icon(
                                                 Icons.skip_previous,
@@ -1102,7 +1156,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                               .audioPlayer
                                                               .duration ==
                                                           null) {
-                                                    return  CircularProgressIndicator(
+                                                    return CircularProgressIndicator(
                                                       color: AppColors.primary,
                                                     );
                                                   }
@@ -1144,7 +1198,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                             InkWell(
                                               onTap: () {
                                                 PlayerService.instance
-                                                    .nextSong();
+                                                    .audioPlayer.seekToNext();
                                                 setState(() {});
                                               },
                                               child: Icon(
@@ -1253,11 +1307,9 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                         children: [
                                           InkWell(
                                             onTap: () {
-                                              PlayerService.instance
-                                                  .audioPlayer.seekToPrevious();
-                                              setState(() {
-
-                                              });
+                                              PlayerService.instance.audioPlayer
+                                                  .seekToPrevious();
+                                              setState(() {});
                                             },
                                             child: Icon(
                                               Icons.skip_previous,
@@ -1276,7 +1328,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                             .audioPlayer
                                                             .duration ==
                                                         null) {
-                                                  return  CircularProgressIndicator(
+                                                  return CircularProgressIndicator(
                                                     color: AppColors.primary,
                                                   );
                                                 }
@@ -1295,8 +1347,8 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                     width: 50.h,
                                                     decoration:
                                                         const BoxDecoration(
-                                                            color:
-                                                                AppColors.darkgrey,
+                                                            color: AppColors
+                                                                .darkgrey,
                                                             shape: BoxShape
                                                                 .circle),
                                                     child: Center(
@@ -1308,7 +1360,8 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                             ? Icons.pause
                                                             : Icons.play_arrow,
                                                         size: 40.r,
-                                                        color: AppColors.primary,
+                                                        color:
+                                                            AppColors.primary,
                                                       ),
                                                     ),
                                                   ),
@@ -1317,7 +1370,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                           15.horizontalSpace,
                                           InkWell(
                                             onTap: () {
-                                              PlayerService.instance.nextSong();
+                                              PlayerService.instance.audioPlayer.seekToNext();
                                               setState(() {});
                                             },
                                             child: Icon(

@@ -198,7 +198,7 @@ class BaseController extends GetxController {
     return e['song_id'] == songId1 && e['isDownloaded'] == 1;
         });
     update;
-    Get.find<HomeController>().update();
+    Get.find<HomeController>().update;
     return test;
   }
   Future<void> deleteSong({bool? isAlbum,dynamic songId,int? index}) async {

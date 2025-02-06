@@ -64,7 +64,9 @@ class RemoveFromPlayListDialog extends StatelessWidget {
                         onPressed: () {
                           Get.dialog(YesNoDialog(onYesCalled: (){
                             Get.find<MyLibraryController>().playListRemoveApi(playlistsId:  track?.playlistsId);
+                            Get.back();
                           }, message:"Are you sure you want to delete this playlist!!"));
+
                         },
                         btnName: "",
                         child: Padding(

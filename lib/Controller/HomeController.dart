@@ -189,6 +189,7 @@ class HomeController extends BaseController {
 
   Future<void> songDetailsDataApi({required int songId}) async {
     try {
+
       final queryParameters = {
         "user_id": UserPreference.getValue(key: PrefKeys.userId),
         "song_id": songId,
@@ -198,11 +199,11 @@ class HomeController extends BaseController {
       if (response.body?.status == 200) {
         songDetailDataModel = response.body;
         recentPlayedApi(songId: songId);
+
       }
       update(['SongScreen']);
-      Get.find<BaseController>().update();
-      update();
     } catch (e) {
+
       log("", error: e.toString(), name: "Song Details Api Error");
     }
   }

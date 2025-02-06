@@ -97,8 +97,10 @@ class MyLibraryController extends BaseController{
         await SongDatabaseService().updateSong(songId,{
           "favourite": 0
         }).then((_){
+          favouriteSongDataApi();
           Get.find<BaseController>().fetchDatabaseSong();
           Get.find<HomeController>().homeDataApi();
+
         });
         Utility.showSnackBar(response.body?.message??'');
 
