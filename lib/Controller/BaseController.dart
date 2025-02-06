@@ -111,6 +111,7 @@ class BaseController extends GetxController {
 
     databaseFavouriteSongList.value = databaseDownloadedSongList.where((test)=>test['favourite'] == 1).toList();
 
+    Get.find<HomeController>().update();
     print("this is offline ${databaseDownloadedSongList}");
     update();
   }
@@ -194,11 +195,10 @@ class BaseController extends GetxController {
     test = Get.find<BaseController>()
         .databaseDownloadedSongList
         .any((e) {
-     print (e['song_id'] == songId1 && e['isDownloaded'] == 1);
     return e['song_id'] == songId1 && e['isDownloaded'] == 1;
         });
     update;
-    // Get.find<HomeController>().update();
+    Get.find<HomeController>().update();
     return test;
   }
   Future<void> deleteSong({bool? isAlbum,dynamic songId,int? index}) async {
@@ -410,6 +410,7 @@ class BaseController extends GetxController {
       }else{
         Utility.showSnackBar(response.body?.message);
         update();
+        Get.find<HomeController>().update();
       }
     }catch(e){
       log('',name: 'Download Ads',error: e.toString());

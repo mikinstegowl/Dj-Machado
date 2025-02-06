@@ -8,8 +8,10 @@ import 'package:newmusicappmachado/Controller/ArtistsController.dart';
 import 'package:newmusicappmachado/Controller/BaseController.dart';
 import 'package:newmusicappmachado/Controller/HomeController.dart';
 import 'package:newmusicappmachado/Controller/MyLibraryController.dart';
+import 'package:newmusicappmachado/Utils/ChopperClientService/HomeChopperService.dart';
 import 'package:newmusicappmachado/Utils/Constants/AppAssets.dart';
 import 'package:newmusicappmachado/Utils/Models/MixesTracksDataModel.dart';
+import 'package:newmusicappmachado/Utils/Network/AppChopperClient.dart';
 import 'package:newmusicappmachado/Utils/Router/RouteName.dart';
 import 'package:newmusicappmachado/Utils/Services/DownloadService.dart';
 import 'package:newmusicappmachado/Utils/Services/PlayerService.dart';
@@ -617,7 +619,14 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                                     HomeController>()
                                                                 .songDetailDataModel
                                                                 ?.data?[0]
-                                                                .songArtist));
+                                                                .songArtist)).then((_){
+                                                                  Get.find<HomeController>().downloadAPi(homeChopperService: AppChopperClient().getChopperService<HomeChopperService>(),songId:int.tryParse( PlayerService.instance.audioPlayer.sequenceState?.currentSource?. tag.id)).then((_){
+                                                                    setState(() {
+
+                                                                    });
+                                                                  });
+                                                    });
+
                                                     Get.back();
                                                     await Get.find<
                                                             HomeController>()
@@ -656,7 +665,8 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                                   .id))
                                                   ? AppColors.primary
                                                   : AppColors.white,
-                                              icons: Get.find<BaseController>()
+                                              icons:
+                                              Get.find<BaseController>()
                                                       .isDownload(
                                                           songId: int.tryParse(
                                                               PlayerService

@@ -37,7 +37,11 @@ class _HomeTrendingWidgetsState extends State<HomeTrendingWidgets> {
 
     super.initState();
   }
-
+  @override
+  void dispose() {
+    Get.find<BaseController>().bannerAd.dispose();
+    super.dispose();
+  }
   @override
 
   Widget build(BuildContext context) {
