@@ -26,7 +26,7 @@ class ExplorScreen extends GetView<ExplorController> {
       child: Scaffold(
         extendBodyBehindAppBar: true,
         bottomSheet: AudioPlayerController(),
-        bottomNavigationBar: BottomBarWidget(mainScreen: false),
+        bottomNavigationBar: BottomBarWidget(mainScreen: false,routeName: 'Explore',indx: 1,),
         appBar: const CommonAppBar(
           title: "Explore",
           showBack: false,

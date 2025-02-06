@@ -16,6 +16,7 @@ import 'package:newmusicappmachado/Utils/Widgets/AppTextWidget.dart';
 import 'package:newmusicappmachado/Utils/Widgets/CachedNetworkImageWidget.dart';
 import 'package:newmusicappmachado/Utils/Widgets/MostPlayedSongsWidget.dart';
 import 'package:newmusicappmachado/View/AppBottomBar/AppBottomBar.dart';
+import 'package:newmusicappmachado/View/AppBottomBar/Widget/AdWidget.dart';
 import 'package:newmusicappmachado/View/AppBottomBar/Widget/AudioPlayerController.dart';
 import 'package:newmusicappmachado/View/AppBottomBar/Widget/BottomBarWidget.dart';
 import 'package:newmusicappmachado/View/ExplorScreen/Widget/DataView.dart';
@@ -125,12 +126,7 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            if (Get.find<BaseController>().isAdLoaded)
-                              SizedBox(
-                                height: 60.h,
-                                width: double.maxFinite,
-                                child: AdWidget(ad: Get.find<BaseController>().bannerAd),
-                              ),
+                              CommonAdWidget(),
                             10.verticalSpace,
                             trendingSCategoryWidget(),
                           ],

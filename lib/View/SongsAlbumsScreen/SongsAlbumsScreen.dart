@@ -18,6 +18,7 @@ import 'package:newmusicappmachado/Utils/Widgets/CachedNetworkImageWidget.dart';
 import 'package:newmusicappmachado/Utils/Widgets/CommonAppBar.dart';
 import 'package:newmusicappmachado/Utils/Widgets/Dialogs/OptionDialog.dart';
 import 'package:newmusicappmachado/View/AppBottomBar/AppBottomBar.dart';
+import 'package:newmusicappmachado/View/AppBottomBar/Widget/AdWidget.dart';
 import 'package:newmusicappmachado/View/AppBottomBar/Widget/AudioPlayerController.dart';
 import 'package:newmusicappmachado/View/AppBottomBar/Widget/BottomBarWidget.dart';
 import 'package:newmusicappmachado/View/SongsAlbumsScreen/AlbumsWidgets/AlbumWidget.dart';
@@ -46,9 +47,9 @@ class _SongsAlbumsScreenState extends State<SongsAlbumsScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Get.find<BaseController>().googleAdsApi(
-        homeChopperService:
-            AppChopperClient().getChopperService<HomeChopperService>());
+    // Get.find<BaseController>().googleAdsApi(
+    //     homeChopperService:
+    //         AppChopperClient().getChopperService<HomeChopperService>());
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if (Get.arguments != null && Get.arguments != '') {
         setState(() {
@@ -377,13 +378,7 @@ class _SongsAlbumsScreenState extends State<SongsAlbumsScreen> {
                                           }),
                                     )),
                           20.verticalSpace,
-                          if (Get.find<BaseController>().isAdLoaded)
-                            SizedBox(
-                              height: 60.h,
-                              width: double.maxFinite,
-                              child: AdWidget(
-                                  ad: Get.find<BaseController>().bannerAd),
-                            ),
+                          CommonAdWidget(),
                           const Divider(
                             thickness: 2,
                           ),

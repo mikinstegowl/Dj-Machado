@@ -7,6 +7,7 @@ import 'package:newmusicappmachado/Utils/Styling/AppColors.dart';
 import 'package:newmusicappmachado/Utils/Widgets/AppTextWidget.dart';
 import 'package:newmusicappmachado/Utils/Widgets/CommonAppBar.dart';
 import 'package:newmusicappmachado/Utils/Widgets/MostPlayedSongsWidget.dart';
+import 'package:newmusicappmachado/View/AppBottomBar/Widget/AdWidget.dart';
 import 'package:newmusicappmachado/View/AppBottomBar/Widget/AudioPlayerController.dart';
 import 'package:newmusicappmachado/View/AppBottomBar/Widget/BottomBarWidget.dart';
 import 'package:flutter/material.dart';
@@ -40,12 +41,7 @@ class ViewAllRecentPlayedScreen extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  if (Get.find<BaseController>().isAdLoaded)
-                    SizedBox(
-                      height: 60.h,
-                      width: double.maxFinite,
-                      child: AdWidget(ad: Get.find<BaseController>().bannerAd),
-                    ),
+                  CommonAdWidget(),
                   20.verticalSpace,
                   GridView.builder(
                     padding: EdgeInsets.zero,

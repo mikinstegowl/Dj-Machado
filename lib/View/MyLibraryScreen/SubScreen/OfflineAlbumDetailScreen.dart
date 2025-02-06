@@ -12,6 +12,7 @@ import 'package:newmusicappmachado/Utils/Styling/AppColors.dart';
 import 'package:newmusicappmachado/Utils/Widgets/AppTextWidget.dart';
 import 'package:newmusicappmachado/Utils/Widgets/CachedNetworkImageWidget.dart';
 import 'package:newmusicappmachado/Utils/Widgets/CommonAppBar.dart';
+import 'package:newmusicappmachado/View/AppBottomBar/Widget/AdWidget.dart';
 import 'package:newmusicappmachado/View/AppBottomBar/Widget/AudioPlayerController.dart';
 import 'package:newmusicappmachado/View/AppBottomBar/Widget/BottomBarWidget.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class OfflineAlbumDetailScreen extends GetView<BaseController> {
   Widget build(BuildContext context) {
     print(Get.arguments);
     return GetBuilder<BaseController>(
-      init: controller..googleAdsApi(homeChopperService: AppChopperClient().getChopperService<HomeChopperService>()),
+      // init: controller..googleAdsApi(homeChopperService: AppChopperClient().getChopperService<HomeChopperService>()),
       builder: (controller) {
         return Scaffold(
           extendBodyBehindAppBar: true,
@@ -101,12 +102,7 @@ class OfflineAlbumDetailScreen extends GetView<BaseController> {
                     ],
                   ),
                 ),
-                if (Get.find<BaseController>().isAdLoaded)
-                  SizedBox(
-                    height: 60.h,
-                    width: double.maxFinite,
-                    child: AdWidget(ad: Get.find<BaseController>().bannerAd),
-                  ),
+                CommonAdWidget(),
             10.verticalSpace,
             Expanded(
               child:

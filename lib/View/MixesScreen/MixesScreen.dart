@@ -21,9 +21,8 @@ class MixesScreen extends GetView<MixesController> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-
         SafeArea(
-          child: Scaffold(bottomNavigationBar: BottomBarWidget(),
+          child: Scaffold(bottomNavigationBar: BottomBarWidget(mainScreen: false,routeName: 'Mixes',indx: 2,),
             extendBodyBehindAppBar: true,
             bottomSheet: AudioPlayerController(),
             // bottomSheet: AudioPlayerController(),

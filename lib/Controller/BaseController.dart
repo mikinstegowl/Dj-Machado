@@ -137,20 +137,21 @@ class BaseController extends GetxController {
     const MyLibraryScreen(),
   ];
   RxInt selectedIndex = 0.obs;
+  RxString routeNameNavi = 'homeScreen'.obs;
 
   void onItemTapped(int index,) {
 
      switch(index){
        case 0:
-         Get.offAllNamed(RoutesName.homeScreen);
+         Get.toNamed(RoutesName.homeScreen);
        case 1:
-         Get.offAllNamed(RoutesName.exploreScreen);
+         Get.toNamed(RoutesName.exploreScreen);
          case 2:
-         Get.offAllNamed(RoutesName.mixesScreen);
+         Get.toNamed(RoutesName.mixesScreen);
          case 3:
-         Get.offAllNamed(RoutesName.artistsScreen);
+         Get.toNamed(RoutesName.artistsScreen);
          case 4:
-         Get.offAllNamed(RoutesName.myLibraryScreen);
+         Get.toNamed(RoutesName.myLibraryScreen);
          update();
     }
   }
@@ -377,13 +378,16 @@ class BaseController extends GetxController {
 
   Future<void> googleAdsApi({required HomeChopperService homeChopperService})async {
     try{
+      // if(googleAdsModel?.data?.isNotEmpty??false){
+      //   bannerAd.dispose();
+      // }
       final queryParameters={
         "filter": UserPreference.getValue(key: PrefKeys.userId),
       };
       final response = await homeChopperService.googleAds(queryParameters: queryParameters);
       if(response.body?.status ==200){
         googleAdsModel = response.body;
-        googleAd();
+        // googleAd();
         update();
       }else{
         Utility.showSnackBar(response.body?.message);

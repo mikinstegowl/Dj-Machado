@@ -222,7 +222,7 @@ ViewAllRadioDataModel? viewAllDataModel;
       if (response.body?.status == 200) {
         Get.back();
         viewAllDataModel = response.body;
-        Get.find<BaseController>().googleAdsApi(homeChopperService: _homeChopperService);
+        // Get.find<BaseController>().googleAdsApi(homeChopperService: _homeChopperService);
         showLoader(false);
         update();
         Get.find<BaseController>().update();

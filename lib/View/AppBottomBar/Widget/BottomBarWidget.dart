@@ -13,9 +13,13 @@ import 'package:get/get.dart';
 
 class BottomBarWidget extends GetView<BaseController> {
   final bool? mainScreen;
+  final String? routeName;
+  final int? indx;
 
-  const BottomBarWidget({
+  const BottomBarWidget( {
     this.mainScreen,
+    this.routeName,
+    this.indx,
     super.key,
   });
 
@@ -76,7 +80,6 @@ class BottomBarWidget extends GetView<BaseController> {
                   height: 30.h,
                   width: 30.h,
                 ),
-
                 label: 'My library'),
           ],
           currentIndex: Get.find<BaseController>().selectedIndex.value,
@@ -91,6 +94,7 @@ class BottomBarWidget extends GetView<BaseController> {
               :
           Get.find<BaseController>().selectedIndex.value = index;
           Get.find<BaseController>().update();
+          print("this is page ${ModalRoute.of(context)?.settings.name}");
         },// Handle item tap
         ):SizedBox.shrink());
   }

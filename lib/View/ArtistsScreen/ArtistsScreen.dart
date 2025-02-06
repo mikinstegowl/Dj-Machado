@@ -29,7 +29,7 @@ class ArtistsScreen extends GetView<ArtistsController> {
           child: Scaffold(
             extendBodyBehindAppBar: true,
             backgroundColor: AppColors.darkgrey,
-            bottomNavigationBar: const BottomBarWidget(),
+            bottomNavigationBar: const BottomBarWidget(routeName: 'Artists',mainScreen: false,indx: 3,),
             bottomSheet: AudioPlayerController(),
             appBar: const CommonAppBar(title: "Artists",searchBarShow: true,showBack: false,),
             body: Container(height: MediaQuery.sizeOf(context).height,

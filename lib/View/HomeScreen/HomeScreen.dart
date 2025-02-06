@@ -38,8 +38,11 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+
         bottomSheet: AudioPlayerController(),
         bottomNavigationBar: BottomBarWidget(
+          routeName: 'Home',
+          indx: 0,
           mainScreen: false,
         ),
         backgroundColor: AppColors.darkgrey,

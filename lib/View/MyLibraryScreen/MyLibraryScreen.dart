@@ -54,9 +54,12 @@ class _MyLibraryScreenState extends State<MyLibraryScreen> {
       child: Scaffold(
         extendBodyBehindAppBar: true,
         bottomSheet: AudioPlayerController(),
-        bottomNavigationBar: BottomBarWidget(mainScreen: false,),
+        bottomNavigationBar: BottomBarWidget(
+          routeName: 'My Library',
+          indx: 4,
+          mainScreen: false,),
         backgroundColor: AppColors.darkgrey,
-        appBar: CommonAppBar(title: "My Library",showBack: false,),
+        appBar: CommonAppBar(title: "My Library",showBack: false),
         body: Container(
           height: MediaQuery.sizeOf(context).height,
           padding: EdgeInsets.only(top: AppBar().preferredSize.height.h + 50.h),
