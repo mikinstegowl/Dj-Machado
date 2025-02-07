@@ -143,15 +143,15 @@ class BaseController extends GetxController {
 
      switch(index){
        case 0:
-         Get.offAllNamed(RoutesName.homeScreen);
-       case 1:
-         Get.offAllNamed(RoutesName.exploreScreen);
+         Get.offNamed(RoutesName.homeScreen);
+         case 1:
+         Get.offNamed(RoutesName.exploreScreen);
          case 2:
-         Get.offAllNamed(RoutesName.mixesScreen);
+         Get.offNamed(RoutesName.mixesScreen);
          case 3:
-         Get.offAllNamed(RoutesName.artistsScreen);
+         Get.offNamed(RoutesName.artistsScreen);
          case 4:
-         Get.offAllNamed(RoutesName.myLibraryScreen);
+         Get.offNamed(RoutesName.myLibraryScreen);
          update();
     }
   }

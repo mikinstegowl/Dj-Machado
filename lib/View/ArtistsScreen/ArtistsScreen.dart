@@ -11,6 +11,7 @@ import 'package:newmusicappmachado/Utils/Widgets/AppTextFormField.dart';
 import 'package:newmusicappmachado/Utils/Widgets/AppTextWidget.dart';
 import 'package:newmusicappmachado/Utils/Widgets/CachedNetworkImageWidget.dart';
 import 'package:newmusicappmachado/Utils/Widgets/CommonAppBar.dart';
+import 'package:newmusicappmachado/View/AppBottomBar/Widget/AdWidget.dart';
 import 'package:newmusicappmachado/View/AppBottomBar/Widget/AudioPlayerController.dart';
 import 'package:newmusicappmachado/View/AppBottomBar/Widget/BottomBarWidget.dart';
 import 'package:newmusicappmachado/View/ArtistsScreen/Widget/MostPopularArtistWidget.dart';
@@ -60,6 +61,7 @@ class ArtistsScreen extends GetView<ArtistsController> {
                               data: controller.artistsDataModel?.popularArtist,
                             ),
                           ),
+                          CommonAdWidget(),
                           Padding(
                             padding: EdgeInsets.symmetric(
                                 horizontal: 10.w, vertical: 10.h),

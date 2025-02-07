@@ -278,7 +278,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                           .featureArtists?[index];
                                                   return InkWell(
                                                     onTap: () async {
-                                                      Get.back();
+
                                                       await Get.find<
                                                               ArtistsController>()
                                                           .trackSongApi(
@@ -308,6 +308,12 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                               });
                                                         });
                                                       });
+                                                      setState(() {
+                                                        Get.find<BaseController>()
+                                                            .containerHeight
+                                                            ?.value = 0;
+                                                      });
+
                                                     },
                                                     child: Column(
                                                       mainAxisSize:
@@ -683,51 +689,58 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                                             .id) ??
                                                                         0);
                                                           },
-                                                    child: OptionInAudioPlayer(
-                                                      title: Get.find<
-                                                                  BaseController>()
-                                                              .isDownload(
-                                                                  songId: int.tryParse(
-                                                                      PlayerService
-                                                                          .instance
-                                                                          .audioPlayer
-                                                                          .sequenceState
-                                                                          ?.currentSource
-                                                                          ?.tag
-                                                                          .id))
-                                                          ? "Downloaded"
-                                                          : "Download",
-                                                      color: Get.find<
-                                                                  BaseController>()
-                                                              .isDownload(
-                                                                  songId: int.tryParse(
-                                                                      PlayerService
-                                                                          .instance
-                                                                          .audioPlayer
-                                                                          .sequenceState
-                                                                          ?.currentSource
-                                                                          ?.tag
-                                                                          .id))
-                                                          ? AppColors.primary
-                                                          : AppColors.white,
-                                                      icons: Get.find<
-                                                                  BaseController>()
-                                                              .isDownload(
-                                                                  songId: int.tryParse(
-                                                                      PlayerService
-                                                                          .instance
-                                                                          .audioPlayer
-                                                                          .sequenceState
-                                                                          ?.currentSource
-                                                                          ?.tag
-                                                                          .id))
-                                                          ? Icons.cloud
-                                                          : Icons.cloud_outlined,
-                                                      count:
-                                                          Get.find<HomeController>()
-                                                              .songDetailDataModel
-                                                              ?.data?[0]
-                                                              .totalDownloads,
+                                                    child: StreamBuilder(
+                                                      stream: PlayerService
+                                                          .instance
+                                                          .audioPlayer.positionStream,
+                                                      builder: (context,sap) {
+                                                        return OptionInAudioPlayer(
+                                                          title: Get.find<
+                                                                      BaseController>()
+                                                                  .isDownload(
+                                                                      songId: int.tryParse(
+                                                                          PlayerService
+                                                                              .instance
+                                                                              .audioPlayer
+                                                                              .sequenceState
+                                                                              ?.currentSource
+                                                                              ?.tag
+                                                                              .id))
+                                                              ? "Downloaded"
+                                                              : "Download",
+                                                          color: Get.find<
+                                                                      BaseController>()
+                                                                  .isDownload(
+                                                                      songId: int.tryParse(
+                                                                          PlayerService
+                                                                              .instance
+                                                                              .audioPlayer
+                                                                              .sequenceState
+                                                                              ?.currentSource
+                                                                              ?.tag
+                                                                              .id))
+                                                              ? AppColors.primary
+                                                              : AppColors.white,
+                                                          icons: Get.find<
+                                                                      BaseController>()
+                                                                  .isDownload(
+                                                                      songId: int.tryParse(
+                                                                          PlayerService
+                                                                              .instance
+                                                                              .audioPlayer
+                                                                              .sequenceState
+                                                                              ?.currentSource
+                                                                              ?.tag
+                                                                              .id))
+                                                              ? Icons.cloud
+                                                              : Icons.cloud_outlined,
+                                                          count:
+                                                              Get.find<HomeController>()
+                                                                  .songDetailDataModel
+                                                                  ?.data?[0]
+                                                                  .totalDownloads,
+                                                        );
+                                                      }
                                                     ),
                                                   ),
                                                   InkWell(
@@ -872,7 +885,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                   apiHit = true;
                                                   if (PlayerService.instance
                                                           .audioPlayer.loopMode ==
-                                                      LoopMode.off) {
+                                                      LoopMode.one) {
                                                     PlayerService.instance
                                                         .currentSongIndex++;
                                                     PlayerService.instance
@@ -1089,9 +1102,9 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                                   .instance
                                                                   .audioPlayer
                                                                   .loopMode ==
-                                                              LoopMode.off
+                                                              LoopMode.all
                                                           ? LoopMode.one
-                                                          : LoopMode.off);
+                                                          : LoopMode.all);
                                                   setState(() {});
                                                 },
                                                 child: Icon(
@@ -1101,7 +1114,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                               .instance
                                                               .audioPlayer
                                                               .loopMode ==
-                                                          LoopMode.off
+                                                          LoopMode.all
                                                       ? AppColors.white
                                                       : AppColors.primary,
                                                 ),
@@ -1297,7 +1310,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                       apiHit = true;
                                       if (PlayerService
                                               .instance.audioPlayer.loopMode ==
-                                          LoopMode.off) {
+                                          LoopMode.one) {
                                         PlayerService.instance.currentSongIndex++;
                                         PlayerService.instance.autoSongPlay();
                                       }
@@ -1473,9 +1486,6 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                     }),
               ))),
         ),
-        Obx(()=> Visibility(
-          visible: Get.find<ArtistsController>().isLoading.value,
-            child: AppLoder()))
       ],
     );
   }

@@ -36,7 +36,7 @@ class PlayerService extends GetxService {
     try {
       _resetPlaylist();
       final List<dynamic> decodedData = jsonDecode(jsonEncode(data));
-      ;
+
       if (decodedData.isEmpty) {
         log('Error: No data found to create a playlist.');
         return;
@@ -59,6 +59,7 @@ class PlayerService extends GetxService {
   void _resetPlaylist() {
     playlist.clear();
     audioPlayer.stop();
+    audioPlayer.dispose();
   }
 
   /// Maps a data item to an AudioSource object
@@ -122,15 +123,14 @@ class PlayerService extends GetxService {
         log('Error: Playlist is empty.');
         return;
       }
+      audioPlayer=AudioPlayer();
       Get.find<BaseController>().showMusicMenu.value = true;
       await audioPlayer.setAudioSource(
-        ConcatenatingAudioSource(children: playlist),
+        ConcatenatingAudioSource(children: playlist,useLazyPreparation:false ),
         initialIndex: index,
       );
-
-      // audioPlayer.setLoopMode(LoopMode.one);
+      audioPlayer.setLoopMode(LoopMode.all);
       listenToSongChanges();
-
       Get.find<BaseController>().connectivityResult[0] !=
               ConnectivityResult.none
           ? await Get.find<HomeController>()
