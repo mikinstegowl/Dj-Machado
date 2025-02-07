@@ -3,6 +3,7 @@ import 'package:newmusicappmachado/Controller/BaseController.dart';
 import 'package:newmusicappmachado/Utils/Models/ArtistsDataModel.dart';
 import 'package:newmusicappmachado/Utils/Router/RouteName.dart';
 import 'package:newmusicappmachado/Utils/Styling/AppColors.dart';
+import 'package:newmusicappmachado/Utils/Widgets/AppLoder.dart';
 import 'package:newmusicappmachado/Utils/Widgets/AppTextWidget.dart';
 import 'package:newmusicappmachado/Utils/Widgets/CachedNetworkImageWidget.dart';
 import 'package:flutter/material.dart';
@@ -48,9 +49,8 @@ class MostPopularArtistWidget extends GetView<ArtistsController> {
                       await controller
                           .albumSongApi(data?[index].artistsId ?? 0)
                           .then((_) {
-                        Get.find<BaseController>().initialListOfBool(controller.tracksDataModel?.data?.length??0);
                         Get.toNamed(RoutesName.songsAlbumsScreen,
-                            arguments: {"isGenre": false});
+                            arguments: {"isGenre": false,'homeScreen':false});
                       });
                     });
                   },

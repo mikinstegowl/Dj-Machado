@@ -122,12 +122,12 @@ class PlayerService extends GetxService {
         log('Error: Playlist is empty.');
         return;
       }
+      Get.find<BaseController>().showMusicMenu.value = true;
       await audioPlayer.setAudioSource(
         ConcatenatingAudioSource(children: playlist),
         initialIndex: index,
       );
 
-      Get.find<BaseController>().showMusicMenu.value = true;
       // audioPlayer.setLoopMode(LoopMode.one);
       listenToSongChanges();
 

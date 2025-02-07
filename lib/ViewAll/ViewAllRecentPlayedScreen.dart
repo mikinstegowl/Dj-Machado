@@ -68,7 +68,8 @@ class ViewAllRecentPlayedScreen extends StatelessWidget {
                               .songImage,
                           subtitle: Get.find<HomeController>().homeDataModel?.recentPlayed?[index].songArtist,
                         );
-                      })
+                      }),
+                  50.verticalSpace,
                 ],
               ),
             ),

@@ -31,7 +31,6 @@ class PlayListDetailView extends StatelessWidget {
       children: [
         SafeArea(
           child: Scaffold(
-            // resizeToAvoidBottomInset: false,
             extendBodyBehindAppBar: true,
             extendBody: true,
             backgroundColor: AppColors.darkgrey,
@@ -112,7 +111,7 @@ class PlayListDetailView extends StatelessWidget {
                     children: [
                       // 100.verticalSpace,
                       // Get.find<BaseController>().connectivityResult[0] != ConnectivityResult.none?
-                      SizedBox(
+                      Get.find<MyLibraryController>().playListSongDataModel?.data?.isEmpty??false?  SizedBox(
                         child: Align(
                           alignment: Alignment.center,
                           child:  Container(
@@ -139,47 +138,18 @@ class PlayListDetailView extends StatelessWidget {
                             })
                           ),
                         ),
-                      )
-                          // : SizedBox.shrink(),
-                        // SizedBox(
-                      //   child: Align(
-                      //     alignment: Alignment.center,
-                      //     child:  Container(
-                      //         height: 225.h,
-                      //         width: 225.h,
-                      //         margin: EdgeInsets.symmetric(vertical: 10.h),
-                      //         decoration: BoxDecoration(
-                      //           color: Colors.grey[900],
-                      //           border: Border.all(color: Colors.white, width: 2),
-                      //         ),
-                      //         child: GridView.builder(
-                      //             itemCount: 1,
-                      //             padding: EdgeInsets.zero,
-                      //             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-                      //             itemBuilder: (context,index){
-                      //               return Container(
-                      //                 decoration: BoxDecoration(border: Border.all(color: AppColors.darkgrey)),
-                      //                 child: CachedNetworkImageWidget(
-                      //                   height: double.maxFinite,
-                      //                   image: Get.find<BaseController>().connectivityResult[0] != ConnectivityResult.none ? Get.find<MyLibraryController>().playListSongDataModel?.data != null && index < Get.find<MyLibraryController>().playListSongDataModel!.data!.length ? Get.find<MyLibraryController>().playListSongDataModel!.data![index].songImage: "": Get.find<BaseController>().playListSongData[index]['imageUrl'], // Use the song image
-                      //                   fit: BoxFit.cover,
-                      //                 ),
-                      //               );
-                      //             })
-                      //     ),
-                      //   ),
-                      // ),
-                   ,   20.verticalSpace,
+                      ):Center(
+                        child: Container(
+                          child: AppTextWidget(
+                            txtTitle: "No Data Found",
+                          ),
+                        ),
+                      ) ,
+                     20.verticalSpace,
                       const Divider(
                         thickness: 2,
                         height: 1,
                       ),
-                      // Container(
-                      //   margin: EdgeInsets.all(5.r),
-                      //   height: 60,
-                      //   width: double.maxFinite,
-                      //   color: AppColors.error,
-                      // ),
                       Get.find<BaseController>().connectivityResult[0] != ConnectivityResult.none?  Get.find<MyLibraryController>().playListSongDataModel?.data?.isEmpty ??true?  Center(
                         child: Container(
                           child: AppTextWidget(

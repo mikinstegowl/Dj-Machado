@@ -43,42 +43,47 @@ class MixesScreen extends GetView<MixesController> {
                       children: [
                         controller.mixesDataModel?.data?.isNotEmpty ?? false
                             ? Expanded(
-                                child: ListView.builder(
-                                  controller: controller.scrollController,
-                                  padding: EdgeInsets.zero,
-                                    itemCount: controller.mixesDataModel?.data?.length,
-                                    shrinkWrap: true,
-                                    itemBuilder: (context, index) {
-                                      return InkWell(
-                                        onTap: () async {
-                                          await controller
-                                              .mixesSubCategoryAndTracksApi(
-                                                  mixesId: controller.mixesDataModel
-                                                      ?.data?[index].mixesId)
-                                              .then((_) {
-                                            Get.toNamed(RoutesName.mixesSongScreen,
-                                                arguments: {
-                                                  'title': controller.mixesDataModel
-                                                      ?.data?[index].mixesName
-                                                });
-                                          });
-                                        },
-                                        child: Container(
-                                          margin: EdgeInsets.only(
-                                              top: 10.h, left: 5.w, right: 5.w,bottom: 20.h),
-                                          height: 200.h,
-                                          width: double.maxFinite,
-                                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                                          decoration: BoxDecoration(
-                                              color: AppColors.error,
-                                              borderRadius:
-                                                  BorderRadius.circular(20.r)),
-                                          child: CachedNetworkImageWidget(
-                                              image: controller.mixesDataModel
-                                                  ?.data?[index].originalImage),
-                                        ),
-                                      );
-                                    }),
+                                child: Column(
+                                  children: [
+                                    ListView.builder(
+                                      controller: controller.scrollController,
+                                      padding: EdgeInsets.zero,
+                                        itemCount: controller.mixesDataModel?.data?.length,
+                                        shrinkWrap: true,
+                                        itemBuilder: (context, index) {
+                                          return InkWell(
+                                            onTap: () async {
+                                              await controller
+                                                  .mixesSubCategoryAndTracksApi(
+                                                      mixesId: controller.mixesDataModel
+                                                          ?.data?[index].mixesId)
+                                                  .then((_) {
+                                                Get.toNamed(RoutesName.mixesSongScreen,
+                                                    arguments: {
+                                                      'title': controller.mixesDataModel
+                                                          ?.data?[index].mixesName
+                                                    });
+                                              });
+                                            },
+                                            child: Container(
+                                              margin: EdgeInsets.only(
+                                                  top: 10.h, left: 5.w, right: 5.w,bottom: 20.h),
+                                              height: 200.h,
+                                              width: double.maxFinite,
+                                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                                              decoration: BoxDecoration(
+                                                  color: AppColors.error,
+                                                  borderRadius:
+                                                      BorderRadius.circular(20.r)),
+                                              child: CachedNetworkImageWidget(
+                                                  image: controller.mixesDataModel
+                                                      ?.data?[index].originalImage),
+                                            ),
+                                          );
+                                        }),
+                                    50.verticalSpace,
+                                  ],
+                                ),
                               )
                             : const Expanded(
                                 child: Center(

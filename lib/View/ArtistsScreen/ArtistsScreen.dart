@@ -23,27 +23,35 @@ class ArtistsScreen extends GetView<ArtistsController> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        SafeArea(
-          child: Scaffold(
-            extendBodyBehindAppBar: true,
-            backgroundColor: AppColors.darkgrey,
-            bottomNavigationBar: const BottomBarWidget(routeName: 'Artists',mainScreen: false,indx: 3,),
-            bottomSheet: AudioPlayerController(),
-            appBar: const CommonAppBar(title: "Artists",searchBarShow: true,showBack: false,),
-            body: Container(height: MediaQuery.sizeOf(context).height,
-              padding: EdgeInsets.only(top:AppBar().preferredSize.height.h+15.h),
-              decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: AssetImage(AppAssets.backGroundImage))
-              ),
-              child: GetBuilder<ArtistsController>(
+    return SafeArea(
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        backgroundColor: AppColors.black,
+        bottomNavigationBar: const BottomBarWidget(
+          routeName: 'Artists',
+          mainScreen: false,
+          indx: 3,
+        ),
+        bottomSheet: AudioPlayerController(),
+        appBar: const CommonAppBar(
+          title: "Artists",
+          searchBarShow: true,
+          showBack: false,
+        ),
+        body: Container(
+          height: MediaQuery.sizeOf(context).height,
+          padding: EdgeInsets.only(top: AppBar().preferredSize.height.h + 15.h),
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+                  fit: BoxFit.fill,
+                  image: AssetImage(AppAssets.backGroundImage))),
+          child: Stack(
+            children: [
+              GetBuilder<ArtistsController>(
                   init: controller,
                   builder: (controller) {
                     return Padding(
-                      padding:  EdgeInsets.symmetric(vertical: 30.0.h),
+                      padding: EdgeInsets.symmetric(vertical: 30.0.h),
                       child: Column(
                         children: [
                           Visibility(
@@ -100,15 +108,19 @@ class ArtistsScreen extends GetView<ArtistsController> {
                               ),
                               child: ListView.builder(
                                 controller: controller.scrollController,
-                                padding: const EdgeInsets.symmetric(vertical: 10),
-                                itemCount: controller.groupedArtists.keys.length,
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                itemCount:
+                                    controller.groupedArtists.keys.length,
                                 itemBuilder: (context, index) {
-                                  String firstChar =
-                                      controller.groupedArtists.keys.elementAt(index);
+                                  String firstChar = controller
+                                      .groupedArtists.keys
+                                      .elementAt(index);
                                   List<PopularArtist> artistList =
                                       controller.groupedArtists[firstChar]!;
                                   return Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       // Alphabet Header
                                       Container(
@@ -116,7 +128,8 @@ class ArtistsScreen extends GetView<ArtistsController> {
                                         color: Platform.isAndroid
                                             ? AppColors.primary
                                             : AppColors.transparent,
-                                        margin: EdgeInsets.symmetric(vertical: 5.h),
+                                        margin:
+                                            EdgeInsets.symmetric(vertical: 5.h),
                                         padding: EdgeInsets.symmetric(
                                             horizontal: 20.w, vertical: 5.h),
                                         child: AppTextWidget(
@@ -134,20 +147,22 @@ class ArtistsScreen extends GetView<ArtistsController> {
                                       ...artistList.map((artist) {
                                         return ListTile(
                                           onTap: () async {
-                                            await controller
+                                            await Get.find<ArtistsController>()
                                                 .trackSongApi(
-                                                artist.artistsId ?? 0)
+                                                    artist.artistsId ?? 0)
                                                 .then((_) async {
-                                              await controller
+                                              await Get.find<ArtistsController>()
                                                   .albumSongApi(
-                                                  artist.artistsId ??
-                                                          0)
+                                                      artist.artistsId ?? 0)
                                                   .then((_) {
-                                                Get.find<BaseController>().initialListOfBool(controller.tracksDataModel?.data?.length??0);
+                                                // Get.find<BaseController>().initialListOfBool(controller.tracksDataModel?.data?.length??0);
                                                 Get.toNamed(
-                                                    RoutesName.songsAlbumsScreen,
-                                                    arguments: {'isGenre':false}
-                                                    );
+                                                    RoutesName
+                                                        .songsAlbumsScreen,
+                                                    arguments: {
+                                                      'isGenre': false,
+                                                      'homeScreen': false
+                                                    });
                                               });
                                             });
                                           },
@@ -185,16 +200,18 @@ class ArtistsScreen extends GetView<ArtistsController> {
                               ),
                             ),
                           ),
+                          50.verticalSpace,
                         ],
                       ),
                     );
                   }),
-            ),
+              Obx(() => Visibility(
+                  visible: Get.find<ArtistsController>().isLoading.value,
+                  child: const AppLoder()))
+            ],
           ),
         ),
-        Obx(() => Visibility(
-            visible: controller.isLoading.value, child: const AppLoder()))
-      ],
+      ),
     );
   }
 }

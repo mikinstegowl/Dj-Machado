@@ -56,7 +56,7 @@ class HomeAlbumWidget extends StatelessWidget {
           height: 230.h,
           child: GridView.builder(
               padding:
-              EdgeInsets.only(left: 10.w),
+              EdgeInsets.only(left: 10.w,right: 10.w),
               itemCount: data
                   ?.length,
               scrollDirection: Axis.horizontal,
@@ -70,7 +70,8 @@ class HomeAlbumWidget extends StatelessWidget {
               itemBuilder: (context, index) {
                 return MostPlayedSongsWidget(
                     onOptionTap: (){
-                      Get.dialog(AlertDialog(
+                      Get.dialog(
+                          AlertDialog(
                         backgroundColor: AppColors.black,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
@@ -119,12 +120,6 @@ class HomeAlbumWidget extends StatelessWidget {
                                       Get.back();
                                       Get.dialog(
                                           YesNoDialog(onYesCalled: () async {
-
-                                            // if(track?.playlistStatus??false) {
-                                            //   print(track?.playListId);
-                                            //   track?.playlistStatus =   await Get.find<MyLibraryController>().playListSongRemoveApi(playlistsId: track?.playListId,songId: track?.songId??0);
-                                            //   Get.back();
-                                            // }else{
                                             Get.dialog(AddPlaylistDialog(onCreateNewPlayList: () { Get.dialog( CreatePlayListDialog(onCreateTap: ()async{
 
                                                 data?[index].playlistStatus=  await Get.dialog(ExistingPlaylistDialog(songId: data?[index].songId,));
@@ -149,7 +144,7 @@ class HomeAlbumWidget extends StatelessWidget {
                                               height: 35.h,
                                               width: 35.h,
                                               decoration: BoxDecoration(
-                                                  color: AppColors.yellow,
+                                                  color: AppColors.primary,
                                                   borderRadius:
                                                   BorderRadius.circular(30.r)),
                                               child: Center(
@@ -177,9 +172,6 @@ class HomeAlbumWidget extends StatelessWidget {
                                     onPressed: ()async {
                                      await Get.find<ArtistsController>().albumsAndTracks(albumId:data?[index]
                                           .albumsId).then((_) {
-                                        // DownloadService.instance.playListDownloadAllSongs(
-                                        //     tracksDataMode: Get.find<ArtistsController>().albumTrackSongData?.data
-                                        // );
                                       });
                                       Get.back();
                                     },
@@ -192,7 +184,7 @@ class HomeAlbumWidget extends StatelessWidget {
                                               height: 35.h,
                                               width: 35.h,
                                               decoration: BoxDecoration(
-                                                  color: AppColors.yellow,
+                                                  color: AppColors.primary,
                                                   borderRadius:
                                                   BorderRadius.circular(30.r)),
                                               child: Center(

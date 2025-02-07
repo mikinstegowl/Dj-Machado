@@ -361,6 +361,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:newmusicappmachado/ViewAll/ViewAllHomeScreen.dart';
+import 'package:newmusicappmachado/ViewAll/ViewAllScreen.dart';
 
 class HomeTrendingWidgets extends StatefulWidget {
   final List<FirstTrendingsData>? firstTrendingData;
@@ -391,9 +393,7 @@ class _HomeTrendingWidgetsState extends State<HomeTrendingWidgets> {
             GetBuilder<BaseController>(
                 init: Get.find<BaseController>(),
                 builder: (controller) {
-                  return index == 4 ?
-                      CommonAdWidget()
-                  : SizedBox.shrink();
+                  return index == 4 ?CommonAdWidget(): SizedBox.shrink();
                 }
             );
         },
@@ -406,49 +406,33 @@ class _HomeTrendingWidgetsState extends State<HomeTrendingWidgets> {
               .firstWhere((e) => e.value == widget.firstTrendingData?[index].trendingscategoryFor)) {
             case TrendingSCategoryFor.artists:
               print("artists");
-              return Stack(
-                children: [
-
-                  HomeArtistsWidget(
-                    onViewAll: () {
-                      Get.find<HomeController>().viewAllDataApi(trendingscategoryId: widget.firstTrendingData?[index].trendingscategoryId, type: widget.firstTrendingData?[index].trendingscategoryFor).then((_){
-                        Get.toNamed(RoutesName.viewAllScreen,arguments: {
-                          "trendingscategoryFor": widget.firstTrendingData?[index].trendingscategoryFor,
-                          "titleName": widget.firstTrendingData?[index].trendingscategoryName
-                        });
-                      });
-                    },
-                    data: widget.firstTrendingData?[index].data,
-                    trendingCategoryName:
-                    widget.firstTrendingData?[index].trendingscategoryName,
-                  ),
-                  Obx(()=> Visibility(
-                      visible: Get.find<HomeController>().isLoading.value,
-                      child: AppLoder())),
-                ],
+              return HomeArtistsWidget(
+                onViewAll: () {
+                  Get.find<HomeController>().viewAllDataApi(trendingscategoryId: widget.firstTrendingData?[index].trendingscategoryId, type: widget.firstTrendingData?[index].trendingscategoryFor).then((_){
+                   Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllHomeScreen(
+                     trendingscategoryFor: widget.firstTrendingData?[index].trendingscategoryFor,
+                     title: widget.firstTrendingData?[index].trendingscategoryName,
+                   )));
+                  });
+                },
+                data: widget.firstTrendingData?[index].data,
+                trendingCategoryName:
+                widget.firstTrendingData?[index].trendingscategoryName,
               );
             case TrendingSCategoryFor.genres:
               print("genres1");
-              return Stack(
-                children: [
-
-                  HomeGenreWidget(
-                    onViewAllTap: () {
-                      Get.find<HomeController>().viewAllDataApi(type: widget.firstTrendingData?[index].trendingscategoryFor, trendingscategoryId: widget.firstTrendingData?[index].trendingscategoryId).then((_){
-                        Get.toNamed(RoutesName.viewAllScreen,arguments:{
-                          "trendingscategoryFor": widget.firstTrendingData?[index].trendingscategoryFor,
-                          "titleName": widget.firstTrendingData?[index].trendingscategoryName
-                        });
-                      });
-                    },
-                    trendingCategoryName:
-                    widget.firstTrendingData?[index].trendingscategoryName,
-                    data: widget.firstTrendingData?[index].data,
-                  ),
-                  Obx(()=>Visibility(
-                      visible: Get.find<HomeController>().isLoading.value,
-                      child: AppLoder())),
-                ],
+              return HomeGenreWidget(
+                onViewAllTap: () {
+                  Get.find<HomeController>().viewAllDataApi(type: widget.firstTrendingData?[index].trendingscategoryFor, trendingscategoryId: widget.firstTrendingData?[index].trendingscategoryId).then((_){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllHomeScreen(
+                      trendingscategoryFor: widget.firstTrendingData?[index].trendingscategoryFor,
+                      title: widget.firstTrendingData?[index].trendingscategoryName,
+                    )));
+                  });
+                },
+                trendingCategoryName:
+                widget.firstTrendingData?[index].trendingscategoryName,
+                data: widget.firstTrendingData?[index].data,
               );
 
             case TrendingSCategoryFor.radio:
@@ -457,10 +441,10 @@ class _HomeTrendingWidgetsState extends State<HomeTrendingWidgets> {
 
                 onViewAllTap: () {
                   Get.find<HomeController>().viewAllDataApi(type: widget.firstTrendingData?[index].trendingscategoryFor, trendingscategoryId: widget.firstTrendingData?[index].trendingscategoryId).then((_){
-                    Get.toNamed(RoutesName.viewAllScreen,arguments: {
-                      "trendingscategoryFor": widget.firstTrendingData?[index].trendingscategoryFor,
-                      "titleName": widget.firstTrendingData?[index].trendingscategoryName
-                    });
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllHomeScreen(
+                      trendingscategoryFor: widget.firstTrendingData?[index].trendingscategoryFor,
+                      title: widget.firstTrendingData?[index].trendingscategoryName,
+                    )));
                   });
                 },
                 trendingCategoryName:
@@ -472,10 +456,10 @@ class _HomeTrendingWidgetsState extends State<HomeTrendingWidgets> {
               return HomeTrackWidget(
                 onViewAllTap: () {
                   Get.find<HomeController>().viewAllDataApi(type: widget.firstTrendingData?[index].trendingscategoryFor, trendingscategoryId: widget.firstTrendingData?[index].trendingscategoryId).then((_){
-                    Get.toNamed(RoutesName.viewAllScreen,arguments:{
-                      "trendingscategoryFor": widget.firstTrendingData?[index].trendingscategoryFor,
-                      "titleName": widget.firstTrendingData?[index].trendingscategoryName
-                    });
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllHomeScreen(
+                      trendingscategoryFor: widget.firstTrendingData?[index].trendingscategoryFor,
+                      title: widget.firstTrendingData?[index].trendingscategoryName,
+                    )));
                   });
                 },
 
@@ -488,10 +472,10 @@ class _HomeTrendingWidgetsState extends State<HomeTrendingWidgets> {
               return HomeMixesWidget(
                 onViewAllTap: () {
                   Get.find<HomeController>().viewAllDataApi(type: widget.firstTrendingData?[index].trendingscategoryFor, trendingscategoryId: widget.firstTrendingData?[index].trendingscategoryId).then((_){
-                    Get.toNamed(RoutesName.viewAllScreen,arguments:{
-                      "trendingscategoryFor": widget.firstTrendingData?[index].trendingscategoryFor,
-                      "titleName": widget.firstTrendingData?[index].trendingscategoryName
-                    });
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllHomeScreen(
+                      trendingscategoryFor: widget.firstTrendingData?[index].trendingscategoryFor,
+                      title: widget.firstTrendingData?[index].trendingscategoryName,
+                    )));
                   });
                 },
                 trendingCategoryName:
@@ -503,10 +487,10 @@ class _HomeTrendingWidgetsState extends State<HomeTrendingWidgets> {
               return HomeAlbumWidget(
                 onViewAllTap: () {
                   Get.find<HomeController>().viewAllDataApi(type: widget.firstTrendingData?[index].trendingscategoryFor, trendingscategoryId: widget.firstTrendingData?[index].trendingscategoryId).then((_){
-                    Get.toNamed(RoutesName.viewAllScreen,arguments:{
-                      "trendingscategoryFor": widget.firstTrendingData?[index].trendingscategoryFor,
-                      "titleName": widget.firstTrendingData?[index].trendingscategoryName
-                    });
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllHomeScreen(
+                      trendingscategoryFor: widget.firstTrendingData?[index].trendingscategoryFor,
+                      title: widget.firstTrendingData?[index].trendingscategoryName,
+                    )));
                   });
                 },
 
@@ -518,10 +502,10 @@ class _HomeTrendingWidgetsState extends State<HomeTrendingWidgets> {
               return HomePlaylistWidget(
                 onViewAllTap: () {
                   Get.find<HomeController>().viewAllDataApi(type: widget.firstTrendingData?[index].trendingscategoryFor, trendingscategoryId: widget.firstTrendingData?[index].trendingscategoryId).then((_){
-                    Get.toNamed(RoutesName.viewAllScreen,arguments:{
-                      "trendingscategoryFor": widget.firstTrendingData?[index].trendingscategoryFor,
-                      "titleName": widget.firstTrendingData?[index].trendingscategoryName
-                    });
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllHomeScreen(
+                      trendingscategoryFor: widget.firstTrendingData?[index].trendingscategoryFor,
+                      title: widget.firstTrendingData?[index].trendingscategoryName,
+                    )));
                   });
                 },
                 trendingCategoryName:

@@ -1,20 +1,21 @@
-import 'package:newmusicappmachado/Controller/MixesController.dart';
+import 'package:newmusicappmachado/Controller/ArtistsController.dart';
+import 'package:newmusicappmachado/Controller/BaseController.dart';
 import 'package:newmusicappmachado/Utils/Router/RouteName.dart';
 import 'package:newmusicappmachado/Utils/Styling/AppColors.dart';
+import 'package:newmusicappmachado/Utils/Widgets/AppLoder.dart';
 import 'package:newmusicappmachado/Utils/Widgets/AppTextWidget.dart';
 import 'package:newmusicappmachado/Utils/Widgets/MostPlayedSongsWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:newmusicappmachado/Utils/Models/ExplorDataModel.dart';
 
-import '../../../Utils/Models/ExplorDataModel.dart';
-
-class HomeMixesWidget extends StatelessWidget {
+class ExploreArtistWidget extends StatelessWidget {
   final String? trendingCategoryName;
+  final Function() onViewAll;
   final List<Data>? data;
-  final Function() onViewAllTap;
 
-  const HomeMixesWidget({super.key, this.trendingCategoryName, this.data, required this.onViewAllTap, });
+  const ExploreArtistWidget({super.key, this.trendingCategoryName, required this.onViewAll, this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +34,8 @@ class HomeMixesWidget extends StatelessWidget {
                   txtTitle:trendingCategoryName ??
                       ''),
               InkWell(
-                onTap: onViewAllTap,
-                child: const AppTextWidget(
+                onTap: onViewAll,
+                child:  AppTextWidget(
                   txtTitle: "View All",
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
@@ -49,34 +50,33 @@ class HomeMixesWidget extends StatelessWidget {
           child: GridView.builder(
               padding:
               EdgeInsets.only(left: 10.w,right: 10.w),
-              itemCount:data
+              itemCount: data
                   ?.length,
               scrollDirection: Axis.horizontal,
               gridDelegate:
               SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent:
                   double.maxFinite,
-                  mainAxisExtent: 170.w,
+                  mainAxisExtent: 200.w,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10),
               itemBuilder: (context, index) {
                 return MostPlayedSongsWidget(
                   isTrending: true,
-                  onTap:(){
-                    Get.find<MixesController>().mixesSubCategoryAndTracksApi(
-                        mixesId: data?[index].mixesId)
-                        .then((_) {
-                      Get.toNamed(RoutesName.mixesSongScreen,
-                          arguments: {
-                            'title': data?[index].mixesName
-                          });
+                  onTap: (){
+                    print(data?[index].artistsId);
+                    Get.find<ArtistsController>().trackSongApi(data?[index].artistsId??0).then((_){
+                      Get.find<ArtistsController>().albumSongApi(data?[index].artistsId??0).then((_){
+                        Get.toNamed(RoutesName.songsAlbumsScreen);
+                      });
                     });
                   },
                   title: data?[index]
-                      .mixesName,
-                  image: data?[index]
-                      .mixesImage,
-                  subtitle: '',
+                      .artistsName,
+                  image:
+                  data?[index]
+                      .artistsImage,
+                  subtitle: "",
                 );
               }),
         ),

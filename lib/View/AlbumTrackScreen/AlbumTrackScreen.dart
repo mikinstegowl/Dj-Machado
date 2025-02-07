@@ -28,181 +28,178 @@ class AlbumTrackScreen extends GetView<ArtistsController> {
   Widget build(BuildContext context) {
     final albumId = Get.arguments;
     print("this is s ${albumId}");
-    return Stack(
-      children: [
-        Obx(()=> Visibility(
-          visible: Get.find<BaseController>().isLoading.value,
-            child: AppLoder())),
-        SafeArea(
-          child: Scaffold(
-            backgroundColor: AppColors.darkgrey,
-            bottomNavigationBar: const BottomBarWidget(
-              mainScreen: false,
-            ),
-            extendBodyBehindAppBar: true,
-            bottomSheet: const AudioPlayerController(),
-            appBar: AppBar(
-              backgroundColor: AppColors.transparent,
-              centerTitle: true,
-              title: AppTextWidget(
-                txtTitle: controller.albumTrackSongData?.albumsName ?? '',
-              ),
-              leadingWidth: 120.w,
-              leading: Row(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      Get.back();
-                    },
-                    child: Row(
-                      children: [
-                        Image.asset(
-                          height: 25.h,
-                          width: 25.h,
-                          AppAssets.backIcon,
-                          // size: 28.r,
-
-                        ),
-                        5.horizontalSpace,
-                        const AppTextWidget(
-                          fontWeight: FontWeight.w600,
-                          txtTitle: "Back",
-                          txtColor: AppColors.white,
-                          fontSize: 18,
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
-              actions: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 20),
-                  child: InkWell(
-                    onTap: () {
-                      Get.toNamed(RoutesName.advanceSearchScreen);
-                    },
-                    child: Icon(
-                      Icons.search,
-                      size: 30.r,
-                      color: AppColors.primary,
-                    ),
-                  ),
-                )
-              ],
-            ),
-            body: Container(
-              height: MediaQuery.sizeOf(context).height,
-              padding: EdgeInsets.only(top: AppBar().preferredSize.height.h + 35.h),
-              decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: AssetImage(AppAssets.backGroundImage))),
-              child: SingleChildScrollView(
-                controller:
-                    Get.find<ArtistsController>().scrollControllerForAlbumSong,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: AppColors.darkgrey,
+        bottomNavigationBar: const BottomBarWidget(
+          mainScreen: false,
+        ),
+        extendBodyBehindAppBar: true,
+        bottomSheet: const AudioPlayerController(),
+        appBar: AppBar(
+          backgroundColor: AppColors.transparent,
+          centerTitle: true,
+          title: AppTextWidget(
+            txtTitle: controller.albumTrackSongData?.albumsName ?? '',
+          ),
+          leadingWidth: 120.w,
+          leading: Row(
+            children: [
+              InkWell(
+                onTap: () {
+                  Get.back();
+                },
+                child: Row(
                   children: [
-                    Container(
-                      height: 225.h,
-                      width: 225.h,
-                      margin: EdgeInsets.symmetric(vertical: 10.h),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[900],
-                        border: Border.all(color: Colors.white, width: 2),
-                      ),
-                      child: CachedNetworkImageWidget(
-                        height: double.maxFinite,
-                        image: controller.albumTrackSongData?.albumImage ?? '',
-                        fit: BoxFit.cover,
-                      ),
+                    Image.asset(
+                      height: 25.h,
+                      width: 25.h,
+                      AppAssets.backIcon,
+                      // size: 28.r,
+
                     ),
-                    20.verticalSpace,
-                    Container(
-                      color: AppColors.black,
-                      padding: EdgeInsets.only(
-                          right: 15.w, top: 10.h, bottom: 10.h, left: 20.w),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              DownloadService.instance.downloadAllSongs(
-                                  tracksDataMode: controller.albumTrackSongData);
-                            },
-                            child: Column(
-                              children: [
-                                Obx(
-                                  () => Icon(
-                                    controller.albumTrackSongData?.data?.length ==
-                                                Get.find<BaseController>()
-                                                    .songData1
-                                                    .length &&
+                    5.horizontalSpace,
+                    const AppTextWidget(
+                      fontWeight: FontWeight.w600,
+                      txtTitle: "Back",
+                      txtColor: AppColors.white,
+                      fontSize: 18,
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 20),
+              child: InkWell(
+                onTap: () {
+                  Get.toNamed(RoutesName.advanceSearchScreen);
+                },
+                child: Icon(
+                  Icons.search,
+                  size: 30.r,
+                  color: AppColors.primary,
+                ),
+              ),
+            )
+          ],
+        ),
+        body: Container(
+          height: MediaQuery.sizeOf(context).height,
+          padding: EdgeInsets.only(top: AppBar().preferredSize.height.h + 35.h),
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+                  fit: BoxFit.fill,
+                  image: AssetImage(AppAssets.backGroundImage))),
+          child: SingleChildScrollView(
+            controller:
+                Get.find<ArtistsController>().scrollControllerForAlbumSong,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  height: 225.h,
+                  width: 225.h,
+                  margin: EdgeInsets.symmetric(vertical: 10.h),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[900],
+                    border: Border.all(color: Colors.white, width: 2),
+                  ),
+                  child: CachedNetworkImageWidget(
+                    height: double.maxFinite,
+                    image: controller.albumTrackSongData?.albumImage ?? '',
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                20.verticalSpace,
+                Container(
+                  color: AppColors.black,
+                  padding: EdgeInsets.only(
+                      right: 15.w, top: 10.h, bottom: 10.h, left: 20.w),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          DownloadService.instance.downloadAllSongs(
+                              tracksDataMode: controller.albumTrackSongData);
+                        },
+                        child: Column(
+                          children: [
+                            Obx(
+                              () => Icon(
+                                controller.albumTrackSongData?.data?.length ==
                                             Get.find<BaseController>()
-                                                .databaseDownloadedSongList
-                                                .every((test) =>
-                                                    test['isDownloaded'] == 1)
-                                        ? Icons.check
-                                        : Icons.download,
-                                    color: AppColors.white,
-                                  ),
-                                ),
-                                Obx(() => AppTextWidget(
-                                      txtTitle: controller.albumTrackSongData?.data
-                                                      ?.length ==
-                                                  Get.find<BaseController>()
-                                                      .songData1
-                                                      .length &&
+                                                .songData1
+                                                .length &&
+                                        Get.find<BaseController>()
+                                            .databaseDownloadedSongList
+                                            .every((test) =>
+                                                test['isDownloaded'] == 1)
+                                    ? Icons.check
+                                    : Icons.download,
+                                color: AppColors.white,
+                              ),
+                            ),
+                            Obx(() => AppTextWidget(
+                                  txtTitle: controller.albumTrackSongData?.data
+                                                  ?.length ==
                                               Get.find<BaseController>()
-                                                  .databaseDownloadedSongList
-                                                  .every((test) =>
-                                                      test['isDownloaded'] == 1)
-                                          ? 'Album Downloaded'
-                                          : "Download Album",
-                                      fontSize: 14,
-                                    )),
-                              ],
-                            ),
-                          ),
-                          20.horizontalSpace,
-                          InkWell(
-                            onTap: () {
-                              Get.dialog(YesNoDialog(
-                                  onYesCalled: () {
-                                    Get.dialog(
-                                        AddPlaylistDialog(onCreateNewPlayList: () {
-                                      CreatePlayListDialog(
-                                        onCreateTap: () {},
-                                      );
-                                    }, onAddToExisting: () {
-                                      print("this is albumId ${albumId}");
-                                      Get.dialog(
-                                          ExistingPlaylistDialog(albumId: albumId));
-                                    }));
-                                  },
-                                  message:
-                                      'Are you sure you want to add this item to Playlist?'));
-                            },
-                            child: const Column(
-                              children: [
-                                Icon(
-                                  Icons.album,
-                                  color: AppColors.white,
-                                ),
-                                AppTextWidget(
-                                  txtTitle: "Add Album to Playlist",
+                                                  .songData1
+                                                  .length &&
+                                          Get.find<BaseController>()
+                                              .databaseDownloadedSongList
+                                              .every((test) =>
+                                                  test['isDownloaded'] == 1)
+                                      ? 'Album Downloaded'
+                                      : "Download Album",
                                   fontSize: 14,
-                                )
-                              ],
-                            ),
-                          ),
-                        ],
+                                )),
+                          ],
+                        ),
                       ),
-                    ),
-                    const Divider(
-                      height: 1,
-                    ),
+                      20.horizontalSpace,
+                      InkWell(
+                        onTap: () {
+                          Get.dialog(YesNoDialog(
+                              onYesCalled: () {
+                                Get.dialog(
+                                    AddPlaylistDialog(onCreateNewPlayList: () {
+                                  CreatePlayListDialog(
+                                    onCreateTap: () {},
+                                  );
+                                }, onAddToExisting: () {
+                                  print("this is albumId ${albumId}");
+                                  Get.dialog(
+                                      ExistingPlaylistDialog(albumId: albumId));
+                                }));
+                              },
+                              message:
+                                  'Are you sure you want to add this item to Playlist?'));
+                        },
+                        child: const Column(
+                          children: [
+                            Icon(
+                              Icons.album,
+                              color: AppColors.white,
+                            ),
+                            AppTextWidget(
+                              txtTitle: "Add Album to Playlist",
+                              fontSize: 14,
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const Divider(
+                  height: 1,
+                ),
+                Column(
+                  children: [
                     ListView.builder(
                         shrinkWrap: true,
                         padding: EdgeInsets.zero,
@@ -369,14 +366,15 @@ class AlbumTrackScreen extends GetView<ArtistsController> {
                               ),
                             ],
                           );
-                        })
+                        }),
+                    20.verticalSpace,
                   ],
-                ),
-              ),
+                )
+              ],
             ),
           ),
         ),
-      ],
+      ),
     );
   }
 }

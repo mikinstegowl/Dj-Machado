@@ -12,48 +12,53 @@ class AlbumDownloadWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Obx(()=>Get.find<BaseController>().databaseDownloadedAlbumSongList.isNotEmpty? GridView.builder(
-        itemCount: Get.find<BaseController>().databaseDownloadedAlbumSongList.length,
-        padding: EdgeInsets.only(
-            left: 20.w, right: 20.w, top: 10.h),
-        gridDelegate:
-        SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, // Two items per row
-          crossAxisSpacing:
-          20.w, // Space between columns
-          mainAxisSpacing: 10.h, // Space between rows
-          childAspectRatio:
-          0.75, // Adjust item height/width ratio
-        ),
-        itemBuilder: (context, index) {
-          return InkWell(
-            onTap: (){
-              // print(Get.find<BaseController>().databaseDownloadedAlbumSongList[index]);
-              Get.find<BaseController>().convertStringToList(index: index);
-
-              // Get.find<BaseController>().fetchSongById(int.parse(Get.find<BaseController>().databaseDownloadedAlbumSongList[index]['song_id']));
-              Get.toNamed(RoutesName.offlineAlbumDetailScreen,arguments: {
-                'songList': Get.find<BaseController>()
-                    .databaseDownloadedAlbumSongList[
-                index],
-                "album_id" : Get.find<BaseController>().databaseDownloadedAlbumSongList[index]['album_id']
-              });
-            },
-            child: AlbumListWidget(
-              onMoreTap: (){
-                Get.dialog(
-                    YesNoDialog(onYesCalled: (){
-                      Get.find<BaseController>().deleteAlbum(albumId: Get.find<BaseController>().databaseDownloadedAlbumSongList[index]['album_id']);
-                      Get.back();
-                    }, message: 'Are you sure you want to delete this album')
-                );
-              },
-              // albumId: Get.find<BaseController>().databaseDownloadedAlbumSongList[index]['album_id'],
-              title: Get.find<BaseController>().databaseDownloadedAlbumSongList[index]['album_name'],
-              imageUrl: Get.find<BaseController>().databaseDownloadedAlbumSongList[index]['imageUrl'],
-              dataLength: '',
+    return  Obx(()=>Get.find<BaseController>().databaseDownloadedAlbumSongList.isNotEmpty? Column(
+      children: [
+        GridView.builder(
+            itemCount: Get.find<BaseController>().databaseDownloadedAlbumSongList.length,
+            padding: EdgeInsets.only(
+                left: 20.w, right: 20.w, top: 10.h),
+            gridDelegate:
+            SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, // Two items per row
+              crossAxisSpacing:
+              20.w, // Space between columns
+              mainAxisSpacing: 10.h, // Space between rows
+              childAspectRatio:
+              0.75, // Adjust item height/width ratio
             ),
-          );
-        }):Center(child: AppTextWidget(txtTitle: "No Albums Downloaded !")));
+            itemBuilder: (context, index) {
+              return InkWell(
+                onTap: (){
+                  // print(Get.find<BaseController>().databaseDownloadedAlbumSongList[index]);
+                  Get.find<BaseController>().convertStringToList(index: index);
+
+                  // Get.find<BaseController>().fetchSongById(int.parse(Get.find<BaseController>().databaseDownloadedAlbumSongList[index]['song_id']));
+                  Get.toNamed(RoutesName.offlineAlbumDetailScreen,arguments: {
+                    'songList': Get.find<BaseController>()
+                        .databaseDownloadedAlbumSongList[
+                    index],
+                    "album_id" : Get.find<BaseController>().databaseDownloadedAlbumSongList[index]['album_id']
+                  });
+                },
+                child: AlbumListWidget(
+                  onMoreTap: (){
+                    Get.dialog(
+                        YesNoDialog(onYesCalled: (){
+                          Get.find<BaseController>().deleteAlbum(albumId: Get.find<BaseController>().databaseDownloadedAlbumSongList[index]['album_id']);
+                          Get.back();
+                        }, message: 'Are you sure you want to delete this album')
+                    );
+                  },
+                  // albumId: Get.find<BaseController>().databaseDownloadedAlbumSongList[index]['album_id'],
+                  title: Get.find<BaseController>().databaseDownloadedAlbumSongList[index]['album_name'],
+                  imageUrl: Get.find<BaseController>().databaseDownloadedAlbumSongList[index]['imageUrl'],
+                  dataLength: '',
+                ),
+              );
+            }),
+        20.verticalSpace,
+      ],
+    ):Center(child: AppTextWidget(txtTitle: "No Albums Downloaded !")));
   }
 }

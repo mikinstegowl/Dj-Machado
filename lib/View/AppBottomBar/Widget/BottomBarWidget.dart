@@ -25,7 +25,8 @@ class BottomBarWidget extends GetView<BaseController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() =>controller.containerHeight!<1 ? BottomNavigationBar(
+    return Obx(() =>controller.containerHeight!<1 ?
+    BottomNavigationBar(
           backgroundColor: AppColors.black,
           unselectedItemColor: AppColors.white,
           fixedColor: AppColors.primary,

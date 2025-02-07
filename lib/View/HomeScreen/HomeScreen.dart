@@ -31,109 +31,79 @@ import 'package:get/get.dart';
 import 'Widgets/HomeRadioWidget.dart';
 import 'Widgets/HomeTrackWidget.dart';
 
-class HomeScreen extends StatelessWidget {
+
+class HomeScreen extends StatelessWidget  {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-
         bottomSheet: AudioPlayerController(),
-        bottomNavigationBar: BottomBarWidget(
-          routeName: 'Home',
-          indx: 0,
-          mainScreen: false,
-        ),
+        bottomNavigationBar: BottomBarWidget(mainScreen: false,),
         backgroundColor: AppColors.darkgrey,
-        appBar: CommonAppBar(
+        appBar:
+        CommonAppBar(
           showLogo: true,
           showTitle: false,
           title: "this",
-          isHome: true,
+          isHome:true,
         ),
         extendBodyBehindAppBar: true,
         body: Container(
           height: MediaQuery.sizeOf(context).height,
-          padding: EdgeInsets.only(top: AppBar().preferredSize.height.h + 25.h),
+          padding: EdgeInsets.only(top:AppBar().preferredSize.height.h+25.h),
           decoration: const BoxDecoration(
               image: DecorationImage(
                   fit: BoxFit.fill,
-                  image: AssetImage(AppAssets.backGroundImage))),
+                  image: AssetImage(AppAssets.backGroundImage))
+          ),
           child: Stack(
             children: [
               GetBuilder<HomeController>(
-                  init: Get.find<BaseController>().connectivityResult !=
-                          ConnectivityResult.none
-                      ? (Get.find<HomeController>()..homeDataApi())
-                      : null,
+                  init: Get.find<BaseController>().connectivityResult != ConnectivityResult.none?(Get.find<HomeController>()..homeDataApi()): null,
                   builder: (controller) {
-                    return Visibility(
-                      visible: Get.find<HomeController>().isLoading.value,
-                      replacement: SingleChildScrollView(
+                    print("this is bool${controller.homeDataModel?.recentPlayed?.isEmpty}");
+                    return  SingleChildScrollView(
                         controller: Get.find<HomeController>().scrollController,
                         child: Column(
                           children: [
-                            controller.homeDataModel?.recentPlayed
-                                        ?.isNotEmpty ??
-                                    false
-                                ? 20.verticalSpace
-                                : 0.verticalSpace,
-                            if (controller
-                                    .homeDataModel?.recentPlayed?.isNotEmpty ??
-                                false)
+                            controller.homeDataModel?.recentPlayed?.isNotEmpty??false? 20.verticalSpace: 0.verticalSpace,
+                            if(controller.homeDataModel?.recentPlayed?.isNotEmpty??false)
                               HomeSongListingWidgets(
                                 categoryTitle: "Recent Played",
                                 data: controller.homeDataModel?.recentPlayed,
                               ),
-                            controller.homeDataModel?.firstTrendingsData
-                                        ?.isNotEmpty ??
-                                    false
-                                ? 20.verticalSpace
-                                : 0.verticalSpace,
-                            if (controller.homeDataModel?.firstTrendingsData
-                                    ?.isNotEmpty ??
+                            controller.homeDataModel?.firstTrendingsData?.isNotEmpty??false? 20.verticalSpace: 0.verticalSpace,
+                            if (controller
+                                .homeDataModel?.firstTrendingsData?.isNotEmpty ??
                                 false)
-                              HomeTrendingWidgets(
-                                firstTrendingData: controller
-                                    .homeDataModel?.firstTrendingsData,
-                              ),
-                            controller.homeDataModel?.firstTrendingsData
-                                        ?.isNotEmpty ??
-                                    false
-                                ? 20.verticalSpace
-                                : 0.verticalSpace,
-                            if (!UserPreference.getValue(
-                                key: PrefKeys.skipUser))
+                              HomeTrendingWidgets(firstTrendingData: controller
+                                  .homeDataModel?.firstTrendingsData,),
+                            controller.homeDataModel?.firstTrendingsData?.isNotEmpty??false? 20.verticalSpace: 0.verticalSpace,
+                            if(!(UserPreference.getValue(key: PrefKeys.skipUser)??false))
                               HomeSongListingWidgets(
                                 categoryTitle: "Recommended",
-                                data:
-                                    controller.homeDataModel?.recommendedTracks,
+                                data: controller.homeDataModel?.recommendedTracks,
                               ),
                             20.verticalSpace,
                             HomeSongListingWidgets(
                               categoryTitle: "Most Played",
                               data: controller.homeDataModel?.mostPlayed,
                             ),
+                            controller.homeDataModel?.data?.isNotEmpty ?? false?20.verticalSpace:0.verticalSpace,
                             controller.homeDataModel?.data?.isNotEmpty ?? false
-                                ? 20.verticalSpace
-                                : 0.verticalSpace,
-                            controller.homeDataModel?.data?.isNotEmpty ?? false
-                                ? HomeTrendingWidgets(
-                                    firstTrendingData:
-                                        controller.homeDataModel?.data,
-                                  )
+                                ? HomeTrendingWidgets(firstTrendingData: controller
+                                .homeDataModel?.data,)
                                 : const SizedBox.shrink(),
                             50.verticalSpace,
                           ],
                         ),
-                      ),
-                      child: const AppLoder(),
-                    );
+                      );
                   }),
-              Obx(() => Visibility(
-                  visible: Get.find<HomeController>().isLoading.value,
-                  child: AppLoder())),
+              Obx(()=> Visibility(
+                visible: Get.find<HomeController>().isLoading.value,
+                  child: AppLoder()))
             ],
           ),
         ),

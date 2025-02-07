@@ -174,7 +174,7 @@ class _MyAppState extends State<MyApp>  with WidgetsBindingObserver{
                   );
                 });
           }
-        } return Center(child: CircularProgressIndicator());
+        } return SizedBox.shrink();
       },
     );
   }

@@ -45,6 +45,7 @@ class HomeController extends BaseController {
   @override
   void onInit() async {
     super.onInit();
+     scrollController = ScrollController();
     scrollController.addListener((){
       scrollListener();
     });
@@ -90,6 +91,36 @@ class HomeController extends BaseController {
       genresSelectedCheck.add(id!);
     }
     update();
+  }
+  TracksDataModel? songsTracksDataModel;
+
+  Future<void> selectedGenreSongsApi(int genresId) async {
+    try {
+      showLoader(true);
+
+      final queryParameters = {
+        "user_id": UserPreference.getValue(key: PrefKeys.userId),
+        "limit": 30,
+        "filter": "Genres",
+        "recordtype": "Tracks",
+        "genres_id": genresId,
+        "page": 1,
+      };
+      final response = await _homeChopperService.mixesSubCategoryAndTracksApi(
+          queryParameters: queryParameters);
+      if (response.body?.status == 200) {
+        songsTracksDataModel = response.body;
+        showLoader(false);
+        update();
+      } else {
+        songsTracksDataModel = null;
+        showLoader(false);
+        update();
+      }
+      update();
+    } catch (e) {
+      log('', error: e.toString(), name: "Selected Genre Api Data Error");
+    }
   }
 
   Future<void> saveGenres() async {
@@ -207,11 +238,73 @@ class HomeController extends BaseController {
       log("", error: e.toString(), name: "Song Details Api Error");
     }
   }
+  TracksDataModel? albumTracksDataModel;
 
+  Future<void> selectedGenreAlbumApi(int genresId) async {
+    try {
+      showLoader(true);
+      final queryParameters = {
+        "user_id": UserPreference.getValue(key: PrefKeys.userId),
+        "limit": 30,
+        "filter": "Genres",
+        "recordtype": "Albums",
+        "genres_id": genresId,
+        "page": 1,
+      };
+      final response = await _homeChopperService.mixesSubCategoryAndTracksApi(
+          queryParameters: queryParameters);
+      if (response.body?.status == 200) {
+        albumTracksDataModel = response.body;
+        showLoader(true);
+        update();
+      } else {
+        albumTracksDataModel = null;
+        showLoader(true);
+        update();
+      }
+      update();
+    } catch (e) {
+      showLoader(true);
+      update();
+      log('', error: e.toString(), name: "Selected Genre Api Data Error");
+    }
+  }
+
+  // TracksDataModel? albumTracksDataModel;
+  //
+  // Future<void> selectedGenreAlbumApi(int genresId) async {
+  //   try {
+  //     showLoader(true);
+  //     final queryParameters = {
+  //       "user_id": UserPreference.getValue(key: PrefKeys.userId),
+  //       "limit": 30,
+  //       "filter": "Genres",
+  //       "recordtype": "Albums",
+  //       "genres_id": genresId,
+  //       "page": 1,
+  //     };
+  //     final response = await _homeChopperService.mixesSubCategoryAndTracksApi(
+  //         queryParameters: queryParameters);
+  //     if (response.body?.status == 200) {
+  //       albumTracksDataModel = response.body;
+  //       showLoader(true);
+  //       update();
+  //     } else {
+  //       albumTracksDataModel = null;
+  //       showLoader(true);
+  //       update();
+  //     }
+  //     update();
+  //   } catch (e) {
+  //     showLoader(true);
+  //     update();
+  //     log('', error: e.toString(), name: "Selected Genre Api Data Error");
+  //   }
+  // }
 ViewAllRadioDataModel? viewAllDataModel;
   Future<void> viewAllDataApi({required int? trendingscategoryId,required String?type}) async {
     try {
-      showLoader(true);
+      Get.find<HomeController>().showLoader(true);
       final queryParameters = {
         "limit": 50,
         "trendingscategory_id":trendingscategoryId,
@@ -223,9 +316,9 @@ ViewAllRadioDataModel? viewAllDataModel;
         Get.back();
         viewAllDataModel = response.body;
         // Get.find<BaseController>().googleAdsApi(homeChopperService: _homeChopperService);
-        showLoader(false);
+        Get.find<HomeController>().showLoader(false);
         update();
-        Get.find<BaseController>().update();
+        // Get.find<BaseController>().update();
       }
     } catch (e) {
       showLoader(false);
@@ -235,23 +328,6 @@ ViewAllRadioDataModel? viewAllDataModel;
 
 
 
-  Future<void> exploreViewAllDataApi({required int? flowavtivotrendingscategoryId,required String?type}) async {
-    try {
-      final queryParameters = {
-        "limit": 50,
-        "flowactivotrendingscategory_id":flowavtivotrendingscategoryId,
-        'type': type,
-      };
-      final response = await _homeChopperService.exploreViewAllApi(
-          queryParameters: queryParameters);
-      if (response.body?.status == 200) {
-        Get.back();
-        viewAllDataModel = response.body;
-        update();
-      }
-    } catch (e) {
-      log("", error: e.toString(), name: "View All Api Error");
-    }}
 
   Future<void> logoutApi() async {
     try {

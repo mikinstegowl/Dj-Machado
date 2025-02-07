@@ -3,10 +3,12 @@ import 'dart:io';
 import 'package:newmusicappmachado/Controller/BaseController.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:newmusicappmachado/Controller/HomeController.dart';
 
 import 'package:newmusicappmachado/Utils/ChopperClientService/HomeChopperService.dart';
 import 'package:newmusicappmachado/Utils/Models/ExplorDataModel.dart';
 import 'package:newmusicappmachado/Utils/Models/MixesTracksDataModel.dart';
+import 'package:newmusicappmachado/Utils/Models/ViewAllRadioDataModel.dart';
 import 'package:newmusicappmachado/Utils/SharedPreferences/PrefKeys.dart';
 import 'package:newmusicappmachado/Utils/SharedPreferences/shared_preferences.dart';
 import 'package:get/get.dart';
@@ -32,6 +34,25 @@ class ExplorController extends BaseController {
     });
   }
 
+  ViewAllRadioDataModel? viewAllDataModel;
+  Future<void> exploreViewAllDataApi({required int? flowavtivotrendingscategoryId,required String?type}) async {
+    try {
+     showLoader(true);
+      final queryParameters = {
+        "limit": 50,
+        "flowactivotrendingscategory_id":flowavtivotrendingscategoryId,
+        'type': type,
+      };
+      final response = await _homeChopperService.exploreViewAllApi(
+          queryParameters: queryParameters);
+      if (response.body?.status == 200) {
+        viewAllDataModel = response.body;
+        showLoader(false);
+        update();
+      }
+    } catch (e) {
+      log("", error: e.toString(), name: "View All Api Error");
+    }}
 
   int? maxPages;
   Future<void> scrollListener() async {
@@ -127,16 +148,16 @@ class ExplorController extends BaseController {
           queryParameters: queryParameters);
       if (response.body?.status == 200) {
         albumTracksDataModel = response.body;
-        showLoader(false);
+         showLoader(true);
         update();
       } else {
         albumTracksDataModel = null;
-        showLoader(false);
+        showLoader(true);
         update();
       }
       update();
     } catch (e) {
-      showLoader(false);
+      showLoader(true);
       update();
       log('', error: e.toString(), name: "Selected Genre Api Data Error");
     }

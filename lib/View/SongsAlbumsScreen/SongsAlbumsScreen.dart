@@ -31,7 +31,9 @@ import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class SongsAlbumsScreen extends StatefulWidget {
-  const SongsAlbumsScreen({super.key});
+  const SongsAlbumsScreen({
+    super.key,
+  });
 
   @override
   State<SongsAlbumsScreen> createState() => _SongsAlbumsScreenState();
@@ -40,6 +42,7 @@ class SongsAlbumsScreen extends StatefulWidget {
 class _SongsAlbumsScreenState extends State<SongsAlbumsScreen> {
   String view = 'Songs';
   bool isGenre = false;
+  bool homeScreen = true;
   TracksDataModel? songsDataModel;
   TracksDataModel? albumDataModel;
 
@@ -54,9 +57,14 @@ class _SongsAlbumsScreenState extends State<SongsAlbumsScreen> {
       if (Get.arguments != null && Get.arguments != '') {
         setState(() {
           isGenre = Get.arguments['isGenre'];
+          homeScreen = Get.arguments['homeScreen'];
         });
       }
-      if (isGenre) {
+      if (isGenre && homeScreen) {
+        songsDataModel = Get.find<HomeController>().songsTracksDataModel;
+        albumDataModel = Get.find<HomeController>().albumTracksDataModel;
+        setState(() {});
+      } else if (isGenre && homeScreen == false) {
         songsDataModel = Get.find<ExplorController>().songsTracksDataModel;
         albumDataModel = Get.find<ExplorController>().albumTracksDataModel;
         setState(() {});
@@ -66,36 +74,35 @@ class _SongsAlbumsScreenState extends State<SongsAlbumsScreen> {
         setState(() {});
       }
       Get.find<BaseController>().containerHeight?.value = 0;
-      print(songsDataModel?.mixesImage);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        SafeArea(
-          child: Scaffold(
-            bottomSheet: AudioPlayerController(),
-            extendBodyBehindAppBar: true,
-            backgroundColor: AppColors.darkgrey,
-            bottomNavigationBar: const BottomBarWidget(
-              mainScreen: false,
-            ),
-            appBar: isGenre
-                ? CommonAppBar(
-                    titleClr: AppColors.white,
-                    title: songsDataModel?.mixesName ?? 'null',
-                    searchBarShow: true,
-                  )
-                : CommonAppBar(
-                    title: songsDataModel?.mixesName ?? 'null',
-                    image: songsDataModel?.mixesImage,
-                    showImage: true,
-                    titleClr: AppColors.white,
-                    searchBarShow: true,
-                  ),
-            body: Container(
+    return SafeArea(
+      child: Scaffold(
+        bottomSheet: AudioPlayerController(),
+        extendBodyBehindAppBar: true,
+        backgroundColor: AppColors.darkgrey,
+        bottomNavigationBar: const BottomBarWidget(
+          mainScreen: false,
+        ),
+        appBar: isGenre
+            ? CommonAppBar(
+                titleClr: AppColors.white,
+                title: songsDataModel?.mixesName ?? 'null',
+                searchBarShow: true,
+              )
+            : CommonAppBar(
+                title: songsDataModel?.mixesName ?? 'null',
+                image: songsDataModel?.mixesImage,
+                showImage: true,
+                titleClr: AppColors.white,
+                searchBarShow: true,
+              ),
+        body: Stack(
+          children: [
+            Container(
               height: MediaQuery.sizeOf(context).height,
               padding:
                   EdgeInsets.only(top: AppBar().preferredSize.height.h + 50.h),
@@ -103,8 +110,8 @@ class _SongsAlbumsScreenState extends State<SongsAlbumsScreen> {
                   image: DecorationImage(
                       fit: BoxFit.fill,
                       image: AssetImage(AppAssets.backGroundImage))),
-              child: GetBuilder<BaseController>(
-                  init: Get.find<BaseController>(),
+              child: GetBuilder<ArtistsController>(
+                  init: Get.find<ArtistsController>(),
                   builder: (controller) {
                     return SingleChildScrollView(
                       controller: Get.find<ArtistsController>()
@@ -137,246 +144,261 @@ class _SongsAlbumsScreenState extends State<SongsAlbumsScreen> {
                                   : (albumDataModel?.mostPlayed?.isNotEmpty ??
                                       false)),
                               child: view == "Songs"
-                                  ? SizedBox(
-                                      height: 230.h,
-                                      child: GridView.builder(
-                                          physics:
-                                              NeverScrollableScrollPhysics(),
-                                          padding: EdgeInsets.only(left: 10.w),
-                                          itemCount: songsDataModel
-                                                  ?.mostPlayed?.length ??
-                                              0,
-                                          scrollDirection: Axis.horizontal,
-                                          gridDelegate:
-                                              SliverGridDelegateWithMaxCrossAxisExtent(
-                                                  maxCrossAxisExtent:
-                                                      double.maxFinite,
-                                                  mainAxisExtent: 160.w,
-                                                  crossAxisSpacing: 10,
-                                                  mainAxisSpacing: 10),
-                                          itemBuilder: (context, index) {
-                                            return MostPlayedSongsWidget(
-                                              onOptionTap: () {
-                                                Get.dialog(OptionDialog(
-                                                  listOfTrackData: songsDataModel
-                                                          ?.mostPlayed
-                                                          ?.map((e) =>
-                                                              MixesTracksData(
-                                                                song: songsDataModel
-                                                                    ?.mostPlayed?[
-                                                                        index]
-                                                                    .song,
-                                                                songId: songsDataModel
-                                                                    ?.mostPlayed?[
-                                                                        index]
-                                                                    .songId,
-                                                                songImage: songsDataModel
-                                                                    ?.mostPlayed?[
-                                                                        index]
-                                                                    .songImage,
-                                                                originalImage:
-                                                                    songsDataModel
-                                                                        ?.mostPlayed?[
-                                                                            index]
-                                                                        .originalImage,
-                                                                songName: songsDataModel
-                                                                    ?.mostPlayed?[
-                                                                        index]
-                                                                    .songName,
-                                                                favouritesStatus:
-                                                                    songsDataModel
-                                                                        ?.mostPlayed?[
-                                                                            index]
-                                                                        .favouritesStatus,
-                                                                songArtist: songsDataModel
-                                                                    ?.mostPlayed?[
-                                                                        index]
-                                                                    .songArtist,
-                                                              ))
-                                                          .toList() ??
-                                                      [],
-                                                  index: index,
-                                                  track: MixesTracksData(
-                                                    song: songsDataModel
-                                                        ?.mostPlayed?[index]
-                                                        .song,
-                                                    songId: songsDataModel
-                                                        ?.mostPlayed?[index]
-                                                        .songId,
-                                                    songImage: songsDataModel
-                                                        ?.mostPlayed?[index]
-                                                        .songImage,
-                                                    originalImage:
-                                                        songsDataModel
+                                  ? songsDataModel?.data?.isNotEmpty ?? false
+                                      ? SizedBox(
+                                          height: 230.h,
+                                          child: GridView.builder(
+                                              physics:
+                                                  NeverScrollableScrollPhysics(),
+                                              padding:
+                                                  EdgeInsets.only(left: 10.w),
+                                              itemCount: songsDataModel
+                                                      ?.mostPlayed?.length ??
+                                                  0,
+                                              scrollDirection: Axis.horizontal,
+                                              gridDelegate:
+                                                  SliverGridDelegateWithMaxCrossAxisExtent(
+                                                      maxCrossAxisExtent:
+                                                          double.maxFinite,
+                                                      mainAxisExtent: 160.w,
+                                                      crossAxisSpacing: 10,
+                                                      mainAxisSpacing: 10),
+                                              itemBuilder: (context, index) {
+                                                return MostPlayedSongsWidget(
+                                                  onOptionTap: () {
+                                                    Get.dialog(OptionDialog(
+                                                      listOfTrackData:
+                                                          songsDataModel
+                                                                  ?.mostPlayed
+                                                                  ?.map((e) =>
+                                                                      MixesTracksData(
+                                                                        song: songsDataModel
+                                                                            ?.mostPlayed?[index]
+                                                                            .song,
+                                                                        songId: songsDataModel
+                                                                            ?.mostPlayed?[index]
+                                                                            .songId,
+                                                                        songImage: songsDataModel
+                                                                            ?.mostPlayed?[index]
+                                                                            .songImage,
+                                                                        originalImage: songsDataModel
+                                                                            ?.mostPlayed?[index]
+                                                                            .originalImage,
+                                                                        songName: songsDataModel
+                                                                            ?.mostPlayed?[index]
+                                                                            .songName,
+                                                                        favouritesStatus: songsDataModel
+                                                                            ?.mostPlayed?[index]
+                                                                            .favouritesStatus,
+                                                                        songArtist: songsDataModel
+                                                                            ?.mostPlayed?[index]
+                                                                            .songArtist,
+                                                                      ))
+                                                                  .toList() ??
+                                                              [],
+                                                      index: index,
+                                                      track: MixesTracksData(
+                                                        song: songsDataModel
                                                             ?.mostPlayed?[index]
-                                                            .originalImage,
-                                                    songName: songsDataModel
-                                                        ?.mostPlayed?[index]
-                                                        .songName,
-                                                    favouritesStatus:
-                                                        songsDataModel
+                                                            .song,
+                                                        songId: songsDataModel
                                                             ?.mostPlayed?[index]
-                                                            .favouritesStatus,
-                                                    songArtist: songsDataModel
-                                                        ?.mostPlayed?[index]
-                                                        .songArtist,
-                                                  ),
-                                                ));
-                                              },
-                                              onTap: () {
-                                                PlayerService.instance
-                                                    .createPlaylist(
-                                                        songsDataModel
-                                                            ?.mostPlayed,
-                                                        index: index,
-                                                        id: songsDataModel
-                                                            ?.mostPlayed?[index]
-                                                            .songId);
-                                              },
-                                              image: songsDataModel
-                                                  ?.mostPlayed?[index]
-                                                  .originalImage,
-                                              title: songsDataModel
-                                                      ?.mostPlayed?[index]
-                                                      .songName ??
-                                                  '',
-                                              subtitle: songsDataModel
-                                                      ?.mostPlayed?[index]
-                                                      .songArtist ??
-                                                  '',
-                                            );
-                                          }),
-                                    )
-                                  : SizedBox(
-                                      height: 250.h,
-                                      child: GridView.builder(
-                                          physics:
-                                              NeverScrollableScrollPhysics(),
-                                          padding: EdgeInsets.only(left: 10.w),
-                                          itemCount: albumDataModel
-                                                  ?.mostPlayed?.length ??
-                                              0,
-                                          scrollDirection: Axis.horizontal,
-                                          shrinkWrap: true,
-                                          gridDelegate:
-                                              SliverGridDelegateWithMaxCrossAxisExtent(
-                                                  maxCrossAxisExtent:
-                                                      double.maxFinite,
-                                                  mainAxisExtent: 200.w,
-                                                  crossAxisSpacing: 10.h,
-                                                  mainAxisSpacing: 10.h),
-                                          itemBuilder: (context, index) {
-                                            return MostPlayedWidget(
-                                              onOptionTap: () {
-                                                print("object");
-                                                Get.dialog(OptionDialog(
-                                                  listOfTrackData: songsDataModel
-                                                          ?.mostPlayed
-                                                          ?.map((e) =>
-                                                              MixesTracksData(
-                                                                song: songsDataModel
-                                                                    ?.mostPlayed?[
-                                                                        index]
-                                                                    .song,
-                                                                songId: songsDataModel
-                                                                    ?.mostPlayed?[
-                                                                        index]
-                                                                    .songId,
-                                                                songImage: songsDataModel
-                                                                    ?.mostPlayed?[
-                                                                        index]
-                                                                    .songImage,
-                                                                originalImage:
-                                                                    songsDataModel
-                                                                        ?.mostPlayed?[
-                                                                            index]
-                                                                        .originalImage,
-                                                                songName: songsDataModel
-                                                                    ?.mostPlayed?[
-                                                                        index]
-                                                                    .songName,
-                                                                favouritesStatus:
-                                                                    songsDataModel
-                                                                        ?.mostPlayed?[
-                                                                            index]
-                                                                        .favouritesStatus,
-                                                                songArtist: songsDataModel
-                                                                    ?.mostPlayed?[
-                                                                        index]
-                                                                    .songArtist,
-                                                              ))
-                                                          .toList() ??
-                                                      [],
-                                                  index: index,
-                                                  track: MixesTracksData(
-                                                    song: songsDataModel
-                                                        ?.mostPlayed?[index]
-                                                        .song,
-                                                    songId: songsDataModel
-                                                        ?.mostPlayed?[index]
-                                                        .songId,
-                                                    songImage: songsDataModel
-                                                        ?.mostPlayed?[index]
-                                                        .songImage,
-                                                    originalImage:
-                                                        songsDataModel
-                                                            ?.mostPlayed?[index]
-                                                            .originalImage,
-                                                    songName: songsDataModel
-                                                        ?.mostPlayed?[index]
-                                                        .songName,
-                                                    favouritesStatus:
-                                                        songsDataModel
-                                                            ?.mostPlayed?[index]
-                                                            .favouritesStatus,
-                                                    songArtist: songsDataModel
-                                                        ?.mostPlayed?[index]
-                                                        .songArtist,
-                                                  ),
-                                                ));
-                                              },
-                                              onTap: () async {
-                                                print(Get.find<
-                                                        ArtistsController>()
-                                                    .albumDataModel
-                                                    ?.mostPlayed?[index]
-                                                    .mixesId);
-                                                await Get.find<
-                                                        ArtistsController>()
-                                                    .albumTrackSongApi(
-                                                        artistsId: albumDataModel
+                                                            .songId,
+                                                        songImage:
+                                                            songsDataModel
                                                                 ?.mostPlayed?[
                                                                     index]
-                                                                .mixesId ??
-                                                            0,
-                                                        albumId: albumDataModel
+                                                                .songImage,
+                                                        originalImage:
+                                                            songsDataModel
                                                                 ?.mostPlayed?[
                                                                     index]
-                                                                .albumsId ??
-                                                            0,
-                                                        genresId: albumDataModel
+                                                                .originalImage,
+                                                        songName: songsDataModel
                                                             ?.mostPlayed?[index]
-                                                            .genresId)
-                                                    .then((_) {
-                                                  Get.toNamed(RoutesName
-                                                      .albumTrackScreen);
-                                                });
-                                              },
-                                              image: albumDataModel
+                                                            .songName,
+                                                        favouritesStatus:
+                                                            songsDataModel
+                                                                ?.mostPlayed?[
+                                                                    index]
+                                                                .favouritesStatus,
+                                                        songArtist:
+                                                            songsDataModel
+                                                                ?.mostPlayed?[
+                                                                    index]
+                                                                .songArtist,
+                                                      ),
+                                                    ));
+                                                  },
+                                                  onTap: () {
+                                                    PlayerService.instance
+                                                        .createPlaylist(
+                                                            songsDataModel
+                                                                ?.mostPlayed,
+                                                            index: index,
+                                                            id: songsDataModel
+                                                                ?.mostPlayed?[
+                                                                    index]
+                                                                .songId);
+                                                  },
+                                                  image: songsDataModel
                                                       ?.mostPlayed?[index]
-                                                      .albumImage ??
-                                                  '',
-                                              title: albumDataModel
-                                                      ?.mostPlayed?[index]
-                                                      .albumsName ??
-                                                  '',
-                                              subTitle: albumDataModel
-                                                      ?.mostPlayed?[index]
-                                                      .albumsArtist ??
-                                                  '',
-                                            );
-                                          }),
-                                    )),
+                                                      .originalImage,
+                                                  title: songsDataModel
+                                                          ?.mostPlayed?[index]
+                                                          .songName ??
+                                                      '',
+                                                  subtitle: songsDataModel
+                                                          ?.mostPlayed?[index]
+                                                          .songArtist ??
+                                                      '',
+                                                );
+                                              }),
+                                        )
+                                      : Center(
+                                          child: AppTextWidget(
+                                            txtTitle: "No Data Found",
+                                            txtColor: Colors.white,
+                                          ),
+                                        )
+                                  : albumDataModel?.data?.isNotEmpty ?? false
+                                      ? SizedBox(
+                                          height: 250.h,
+                                          child: GridView.builder(
+                                              physics:
+                                                  NeverScrollableScrollPhysics(),
+                                              padding:
+                                                  EdgeInsets.only(left: 10.w),
+                                              itemCount: albumDataModel
+                                                      ?.mostPlayed?.length ??
+                                                  0,
+                                              scrollDirection: Axis.horizontal,
+                                              shrinkWrap: true,
+                                              gridDelegate:
+                                                  SliverGridDelegateWithMaxCrossAxisExtent(
+                                                      maxCrossAxisExtent:
+                                                          double.maxFinite,
+                                                      mainAxisExtent: 200.w,
+                                                      crossAxisSpacing: 10.h,
+                                                      mainAxisSpacing: 10.h),
+                                              itemBuilder: (context, index) {
+                                                return MostPlayedWidget(
+                                                  onOptionTap: () {
+                                                    print("object");
+                                                    Get.dialog(OptionDialog(
+                                                      listOfTrackData:
+                                                          songsDataModel
+                                                                  ?.mostPlayed
+                                                                  ?.map((e) =>
+                                                                      MixesTracksData(
+                                                                        song: songsDataModel
+                                                                            ?.mostPlayed?[index]
+                                                                            .song,
+                                                                        songId: songsDataModel
+                                                                            ?.mostPlayed?[index]
+                                                                            .songId,
+                                                                        songImage: songsDataModel
+                                                                            ?.mostPlayed?[index]
+                                                                            .songImage,
+                                                                        originalImage: songsDataModel
+                                                                            ?.mostPlayed?[index]
+                                                                            .originalImage,
+                                                                        songName: songsDataModel
+                                                                            ?.mostPlayed?[index]
+                                                                            .songName,
+                                                                        favouritesStatus: songsDataModel
+                                                                            ?.mostPlayed?[index]
+                                                                            .favouritesStatus,
+                                                                        songArtist: songsDataModel
+                                                                            ?.mostPlayed?[index]
+                                                                            .songArtist,
+                                                                      ))
+                                                                  .toList() ??
+                                                              [],
+                                                      index: index,
+                                                      track: MixesTracksData(
+                                                        song: songsDataModel
+                                                            ?.mostPlayed?[index]
+                                                            .song,
+                                                        songId: songsDataModel
+                                                            ?.mostPlayed?[index]
+                                                            .songId,
+                                                        songImage:
+                                                            songsDataModel
+                                                                ?.mostPlayed?[
+                                                                    index]
+                                                                .songImage,
+                                                        originalImage:
+                                                            songsDataModel
+                                                                ?.mostPlayed?[
+                                                                    index]
+                                                                .originalImage,
+                                                        songName: songsDataModel
+                                                            ?.mostPlayed?[index]
+                                                            .songName,
+                                                        favouritesStatus:
+                                                            songsDataModel
+                                                                ?.mostPlayed?[
+                                                                    index]
+                                                                .favouritesStatus,
+                                                        songArtist:
+                                                            songsDataModel
+                                                                ?.mostPlayed?[
+                                                                    index]
+                                                                .songArtist,
+                                                      ),
+                                                    ));
+                                                  },
+                                                  onTap: () async {
+                                                    print(Get.find<
+                                                            ArtistsController>()
+                                                        .albumDataModel
+                                                        ?.mostPlayed?[index]
+                                                        .mixesId);
+                                                    await Get.find<
+                                                            ArtistsController>()
+                                                        .albumTrackSongApi(
+                                                            artistsId: albumDataModel
+                                                                    ?.mostPlayed?[
+                                                                        index]
+                                                                    .mixesId ??
+                                                                0,
+                                                            albumId: albumDataModel
+                                                                    ?.mostPlayed?[
+                                                                        index]
+                                                                    .albumsId ??
+                                                                0,
+                                                            genresId:
+                                                                albumDataModel
+                                                                    ?.mostPlayed?[
+                                                                        index]
+                                                                    .genresId)
+                                                        .then((_) {
+                                                      Get.toNamed(RoutesName
+                                                          .albumTrackScreen);
+                                                    });
+                                                  },
+                                                  image: albumDataModel
+                                                          ?.mostPlayed?[index]
+                                                          .albumImage ??
+                                                      '',
+                                                  title: albumDataModel
+                                                          ?.mostPlayed?[index]
+                                                          .albumsName ??
+                                                      '',
+                                                  subTitle: albumDataModel
+                                                          ?.mostPlayed?[index]
+                                                          .albumsArtist ??
+                                                      '',
+                                                );
+                                              }),
+                                        )
+                                      : Center(
+                                          child: AppTextWidget(
+                                            txtTitle: "No Data Found",
+                                            txtColor: Colors.white,
+                                          ),
+                                        )),
                           20.verticalSpace,
                           CommonAdWidget(),
                           const Divider(
@@ -478,20 +500,20 @@ class _SongsAlbumsScreenState extends State<SongsAlbumsScreen> {
                               tracksDataModel: songsDataModel,
                             ),
                           ),
-                          50.verticalSpace,
+                          60.verticalSpace,
                         ],
                       ),
                     );
                   }),
             ),
-          ),
+            // Obx(
+            //   () => Visibility(
+            //       visible: Get.find<ArtistsController>().isLoading.value,
+            //       child: AppLoder()),
+            // ),
+          ],
         ),
-        Obx(
-          () => Visibility(
-              visible: Get.find<BaseController>().isLoading.value,
-              child: AppLoder()),
-        ),
-      ],
+      ),
     );
   }
 }

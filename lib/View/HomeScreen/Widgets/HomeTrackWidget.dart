@@ -1,6 +1,9 @@
+import 'package:get/get.dart';
+import 'package:newmusicappmachado/Utils/Models/MixesTracksDataModel.dart';
 import 'package:newmusicappmachado/Utils/Services/PlayerService.dart';
 import 'package:newmusicappmachado/Utils/Styling/AppColors.dart';
 import 'package:newmusicappmachado/Utils/Widgets/AppTextWidget.dart';
+import 'package:newmusicappmachado/Utils/Widgets/Dialogs/OptionDialog.dart';
 import 'package:newmusicappmachado/Utils/Widgets/MostPlayedSongsWidget.dart';
 import 'package:flutter/material.dart';
 
@@ -46,7 +49,7 @@ class HomeTrackWidget extends StatelessWidget {
           height: 230.h,
           child: GridView.builder(
               padding:
-              EdgeInsets.only(left: 10.w),
+              EdgeInsets.only(left: 10.w,right: 10.w),
               itemCount: data
                   ?.length,
               scrollDirection: Axis.horizontal,
@@ -59,6 +62,27 @@ class HomeTrackWidget extends StatelessWidget {
                   mainAxisSpacing: 10),
               itemBuilder: (context, index) {
                 return MostPlayedSongsWidget(
+                  onOptionTap: (){
+                    Get.dialog(OptionDialog(
+                      isQueue: true,
+                      listOfTrackData:data?.map((e)=>MixesTracksData(
+                        song: data?[index].song,
+                        songId: data?[index].songId,
+                        songImage: data?[index].songImage,
+                        originalImage: data?[index].originalImage,
+                        songName: data?[index].songName,
+                        favouritesStatus: data?[index].favouritesStatus,
+                        songArtist: data?[index].songArtist,
+                      )).toList()??[] ,index: index,track:MixesTracksData(
+                      song: data?[index].song,
+                      songId: data?[index].songId,
+                      songImage: data?[index].songImage,
+                      originalImage: data?[index].originalImage,
+                      songName: data?[index].songName,
+                      favouritesStatus: data?[index].favouritesStatus,
+                      songArtist: data?[index].songArtist,
+                    ),));
+                  },
                   onTap: (){
 
                     PlayerService.instance.createPlaylist(data, index: index,id:data?[index].songId );

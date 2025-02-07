@@ -1,7 +1,10 @@
+import 'package:newmusicappmachado/Controller/ExplorController.dart';
 import 'package:newmusicappmachado/Controller/HomeController.dart';
 import 'package:newmusicappmachado/Utils/Enums.dart';
 import 'package:newmusicappmachado/Utils/Models/HomeDataModel.dart';
 import 'package:newmusicappmachado/Utils/Router/RouteName.dart';
+import 'package:newmusicappmachado/View/ExplorScreen/Widget/ExploreArtistWidget.dart';
+import 'package:newmusicappmachado/View/ExplorScreen/Widget/ExploreGenresWidget.dart';
 import 'package:newmusicappmachado/View/HomeScreen/Widgets/HomeAlbumWidget.dart';
 import 'package:newmusicappmachado/View/HomeScreen/Widgets/HomeArtistsWidget.dart';
 import 'package:newmusicappmachado/View/HomeScreen/Widgets/HomeGenresWidget.dart';
@@ -11,6 +14,7 @@ import 'package:newmusicappmachado/View/HomeScreen/Widgets/HomeRadioWidget.dart'
 import 'package:newmusicappmachado/View/HomeScreen/Widgets/HomeTrackWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:newmusicappmachado/ViewAll/ViewAllScreen.dart';
 
 class ExploreTrendingWidgets extends StatelessWidget {
   final List<FirstTrendingsData>? firstTrendingData;
@@ -31,13 +35,13 @@ class ExploreTrendingWidgets extends StatelessWidget {
               .firstWhere((e) => e.value == firstTrendingData?[index].trendingscategoryFor)) {
             case TrendingSCategoryFor.artists:
               print("artists");
-              return HomeArtistsWidget(
+              return ExploreArtistWidget(
                 onViewAll: () {
-                  Get.find<HomeController>().exploreViewAllDataApi(flowavtivotrendingscategoryId: firstTrendingData?[index].trendingscategoryId, type: firstTrendingData?[index].trendingscategoryFor).then((_){
-                    Get.toNamed(RoutesName.viewAllScreen,arguments: {
-                      "trendingscategoryFor": firstTrendingData?[index].trendingscategoryFor,
-                      "titleName": firstTrendingData?[index].trendingscategoryName
-                    });
+                  Get.find<ExplorController>().exploreViewAllDataApi(flowavtivotrendingscategoryId: firstTrendingData?[index].trendingscategoryId, type: firstTrendingData?[index].trendingscategoryFor).then((_){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllScreen(
+                      trendingscategoryFor: firstTrendingData?[index].trendingscategoryFor,
+                      title: firstTrendingData?[index].trendingscategoryName,
+                    )));
                   });
                 },
                 data: firstTrendingData?[index].data,
@@ -46,14 +50,14 @@ class ExploreTrendingWidgets extends StatelessWidget {
               );
             case TrendingSCategoryFor.genres:
               print("genres1");
-              return HomeGenreWidget(
+              return ExploreGenreWidget(
                 onViewAllTap: () {
                   print(firstTrendingData?[index].trendingscategoryId);
-                  Get.find<HomeController>().exploreViewAllDataApi(type: firstTrendingData?[index].trendingscategoryFor, flowavtivotrendingscategoryId: firstTrendingData?[index].trendingscategoryId).then((_){
-                    Get.toNamed(RoutesName.viewAllScreen,arguments:  {
-                      "trendingscategoryFor": firstTrendingData?[index].trendingscategoryFor,
-                      "titleName": firstTrendingData?[index].trendingscategoryName
-                    });
+                  Get.find<ExplorController>().exploreViewAllDataApi(type: firstTrendingData?[index].trendingscategoryFor, flowavtivotrendingscategoryId: firstTrendingData?[index].trendingscategoryId).then((_){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllScreen(
+                      trendingscategoryFor: firstTrendingData?[index].trendingscategoryFor,
+                      title: firstTrendingData?[index].trendingscategoryName,
+                    )));
                   });
                 },
                 trendingCategoryName:
@@ -65,11 +69,11 @@ class ExploreTrendingWidgets extends StatelessWidget {
               print("radio");
               return HomeRadioWidget(
                 onViewAllTap: () {
-                  Get.find<HomeController>().exploreViewAllDataApi(type: firstTrendingData?[index].trendingscategoryFor, flowavtivotrendingscategoryId: firstTrendingData?[index].trendingscategoryId).then((_){
-                    Get.toNamed(RoutesName.viewAllScreen,arguments: {
-                      "trendingscategoryFor": firstTrendingData?[index].trendingscategoryFor,
-                      "titleName": firstTrendingData?[index].trendingscategoryName
-                    });
+                  Get.find<ExplorController>().exploreViewAllDataApi(type: firstTrendingData?[index].trendingscategoryFor, flowavtivotrendingscategoryId: firstTrendingData?[index].trendingscategoryId).then((_){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllScreen(
+                      trendingscategoryFor: firstTrendingData?[index].trendingscategoryFor,
+                      title: firstTrendingData?[index].trendingscategoryName,
+                    )));
                   });
                 },
                 trendingCategoryName:
@@ -80,11 +84,11 @@ class ExploreTrendingWidgets extends StatelessWidget {
               print("tracks");
               return HomeTrackWidget(
                 onViewAllTap: () {
-                  Get.find<HomeController>().exploreViewAllDataApi(type: firstTrendingData?[index].trendingscategoryFor, flowavtivotrendingscategoryId: firstTrendingData?[index].trendingscategoryId).then((_){
-                    Get.toNamed(RoutesName.viewAllScreen,arguments:{
-                      "trendingscategoryFor": firstTrendingData?[index].trendingscategoryFor,
-                      "titleName": firstTrendingData?[index].trendingscategoryName
-                    });
+                  Get.find<ExplorController>().exploreViewAllDataApi(type: firstTrendingData?[index].trendingscategoryFor, flowavtivotrendingscategoryId: firstTrendingData?[index].trendingscategoryId).then((_){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllScreen(
+                      trendingscategoryFor: firstTrendingData?[index].trendingscategoryFor,
+                      title: firstTrendingData?[index].trendingscategoryName,
+                    )));
                   });
                 },
                 trendingCategoryName:
@@ -95,11 +99,11 @@ class ExploreTrendingWidgets extends StatelessWidget {
               print("mixes");
               return HomeMixesWidget(
                 onViewAllTap: () {
-                  Get.find<HomeController>().exploreViewAllDataApi(type: firstTrendingData?[index].trendingscategoryFor, flowavtivotrendingscategoryId: firstTrendingData?[index].trendingscategoryId).then((_){
-                    Get.toNamed(RoutesName.viewAllScreen,arguments:{
-                      "trendingscategoryFor": firstTrendingData?[index].trendingscategoryFor,
-                      "titleName": firstTrendingData?[index].trendingscategoryName
-                    });
+                  Get.find<ExplorController>().exploreViewAllDataApi(type: firstTrendingData?[index].trendingscategoryFor, flowavtivotrendingscategoryId: firstTrendingData?[index].trendingscategoryId).then((_){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllScreen(
+                      trendingscategoryFor: firstTrendingData?[index].trendingscategoryFor,
+                      title: firstTrendingData?[index].trendingscategoryName,
+                    )));
                   });
                 },
                 trendingCategoryName:
@@ -109,11 +113,11 @@ class ExploreTrendingWidgets extends StatelessWidget {
             case TrendingSCategoryFor.albums:
               return HomeAlbumWidget(
                 onViewAllTap: () {
-                  Get.find<HomeController>().exploreViewAllDataApi(type: firstTrendingData?[index].trendingscategoryFor, flowavtivotrendingscategoryId: firstTrendingData?[index].trendingscategoryId).then((_){
-                    Get.toNamed(RoutesName.viewAllScreen,arguments:{
-                      "trendingscategoryFor": firstTrendingData?[index].trendingscategoryFor,
-                      "titleName": firstTrendingData?[index].trendingscategoryName
-                    });
+                  Get.find<ExplorController>().exploreViewAllDataApi(type: firstTrendingData?[index].trendingscategoryFor, flowavtivotrendingscategoryId: firstTrendingData?[index].trendingscategoryId).then((_){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllScreen(
+                      trendingscategoryFor: firstTrendingData?[index].trendingscategoryFor,
+                      title: firstTrendingData?[index].trendingscategoryName,
+                    )));
                   });
                 },
                 trendingCategoryName:
@@ -123,11 +127,11 @@ class ExploreTrendingWidgets extends StatelessWidget {
             case TrendingSCategoryFor.playList:
               return HomePlaylistWidget(
                 onViewAllTap: () {
-                  Get.find<HomeController>().exploreViewAllDataApi(type: firstTrendingData?[index].trendingscategoryFor, flowavtivotrendingscategoryId: firstTrendingData?[index].trendingscategoryId).then((_){
-                    Get.toNamed(RoutesName.viewAllScreen,arguments:{
-                      "trendingscategoryFor": firstTrendingData?[index].trendingscategoryFor,
-                      "titleName": firstTrendingData?[index].trendingscategoryName
-                    });
+                  Get.find<ExplorController>().exploreViewAllDataApi(type: firstTrendingData?[index].trendingscategoryFor, flowavtivotrendingscategoryId: firstTrendingData?[index].trendingscategoryId).then((_){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllScreen(
+                      trendingscategoryFor: firstTrendingData?[index].trendingscategoryFor,
+                      title: firstTrendingData?[index].trendingscategoryName,
+                    )));
                   });
                 },
                 trendingCategoryName:

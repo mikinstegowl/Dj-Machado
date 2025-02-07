@@ -52,9 +52,6 @@ class _MixesSongScreenState extends State<MixesSongScreen> {
     print( Get.find<MixesController>().mixesTracksDataModel?.mostPlayed);
     return Stack(
       children: [
-        Obx(()=> Visibility(
-          visible: Get.find<BaseController>().isLoading.value,
-            child: AppLoder())),
         SafeArea(
           child: Stack(
             children: [
@@ -80,7 +77,6 @@ class _MixesSongScreenState extends State<MixesSongScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-
                           Visibility(
                             visible:
                                 Get.find<MixesController>().mixesTracksDataModel?.mostPlayed?.isNotEmpty ??
@@ -170,9 +166,9 @@ class _MixesSongScreenState extends State<MixesSongScreen> {
                           Expanded(
                               child: SongsWidget(
                             addDownload: false,
-
                             tracksDataModel:  Get.find<MixesController>().mixesTracksDataModel!,
-                          ))
+                          )),
+                          50.verticalSpace,
                         ],
                       ),
                     );

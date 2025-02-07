@@ -39,42 +39,48 @@ class ExplorScreen extends GetView<ExplorController> {
               image: DecorationImage(
                   fit: BoxFit.cover,
                   image: AssetImage(AppAssets.backGroundImage))),
-          child: GetBuilder<ExplorController>(
-              init: controller..explorScreenApi(),
-              builder: (controller) {
-                return Visibility(
-                  visible: controller.isLoading.value,
-                  replacement: SingleChildScrollView(
-                    controller: controller.scrollController,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        controller.explorDataModel?.data?.isNotEmpty ?? false
-                            ? ExploreTrendingWidgets(
-                                firstTrendingData: controller
-                                    .explorDataModel?.firstFlowactivotrendings,
-                              )
-                            : const SizedBox.shrink(),
-                        controller.explorDataModel?.data?.isNotEmpty ?? false
-                            ? ExploreTrendingWidgets(
-                                firstTrendingData:
-                                    controller.explorDataModel?.data,
-                              )
-                            : const Expanded(
-                                child: Center(
-                                    child: CircularProgressIndicator.adaptive(
-                                  valueColor: AlwaysStoppedAnimation<Color?>(
-                                      AppColors.primary),
-                                )),
-                              ),
-                        50.verticalSpace,
-
-                      ],
-                    ),
-                  ),
-                  child: const AppLoder(),
-                );
-              }),
+          child: Stack(
+            children: [
+              GetBuilder<ExplorController>(
+                  init: controller..explorScreenApi(),
+                  builder: (controller) {
+                    return Visibility(
+                      visible: controller.isLoading.value,
+                      replacement: SingleChildScrollView(
+                        controller: controller.scrollController,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            controller.explorDataModel?.data?.isNotEmpty ?? false
+                                ? ExploreTrendingWidgets(
+                                    firstTrendingData: controller
+                                        .explorDataModel?.firstFlowactivotrendings,
+                                  )
+                                : const SizedBox.shrink(),
+                            controller.explorDataModel?.data?.isNotEmpty ?? false
+                                ? ExploreTrendingWidgets(
+                                    firstTrendingData:
+                                        controller.explorDataModel?.data,
+                                  )
+                                : const Expanded(
+                                    child: Center(
+                                        child: CircularProgressIndicator.adaptive(
+                                      valueColor: AlwaysStoppedAnimation<Color?>(
+                                          AppColors.primary),
+                                    )),
+                                  ),
+                            50.verticalSpace,
+                          ],
+                        ),
+                      ),
+                      child: const AppLoder(),
+                    );
+                  }),
+              Obx(()=> Visibility(
+                  visible: Get.find<ExplorController>().isLoading.value,
+                  child: AppLoder()))
+            ],
+          ),
         ),
       ),
     );

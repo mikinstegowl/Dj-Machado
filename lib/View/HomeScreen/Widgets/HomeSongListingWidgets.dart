@@ -51,7 +51,7 @@ class HomeSongListingWidgets extends StatelessWidget {
           height: 230.h,
           child: GridView.builder(
             shrinkWrap: true,
-              padding: EdgeInsets.only(left: 10.w),
+              padding: EdgeInsets.only(left: 10.w,right: 10.w),
               itemCount: data?.length,
               scrollDirection: Axis.horizontal,
               gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(

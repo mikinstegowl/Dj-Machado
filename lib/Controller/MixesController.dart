@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:newmusicappmachado/Controller/BaseController.dart';
+import 'package:newmusicappmachado/Controller/ExplorController.dart';
+import 'package:newmusicappmachado/Controller/HomeController.dart';
 import 'package:newmusicappmachado/Utils/ChopperClientService/HomeChopperService.dart';
 import 'package:newmusicappmachado/Utils/Models/MixesDataModel.dart';
 import 'package:newmusicappmachado/Utils/Models/MixesTracksDataModel.dart';
@@ -48,14 +50,20 @@ class MixesController extends BaseController {
 
   Future<void> mixesApi() async {
     try {
+      showLoader(true);
       final queryParameters = {"filter": "Mixes", "limit": 50, "page": 1};
       final response =
           await _homeChopperService.mixesApi(queryParameters: queryParameters);
       if (response.body?.status == 200) {
         mixesDataModel = response.body;
         maxPages = mixesDataModel?.lastPage;
+        showLoader(false);
+
         update(['mixes']);
+        update();
       } else {
+        showLoader(false);
+        update();
         Get.snackbar("Error", response.body?.message ?? '');
       }
     } catch (e) {
@@ -68,6 +76,10 @@ class MixesController extends BaseController {
 
   Future<void> mixesSubCategoryAndTracksApi({int? mixesId}) async {
     try {
+      Get.find<HomeController>().
+      showLoader(true);
+      Get.find<ExplorController>().
+      showLoader(true);
       showLoader(true);
       final queryParameters = {
         "user_id": UserPreference.getValue(key: PrefKeys.userId),
@@ -85,9 +97,17 @@ class MixesController extends BaseController {
       } else {
         mixesTracksDataModel = null;
       }
+      Get.find<HomeController>().
+      showLoader(false);
+      Get.find<ExplorController>().
+      showLoader(false);
       showLoader(false);
       update();
     } catch (e) {
+      Get.find<HomeController>().
+      showLoader(false);
+      Get.find<ExplorController>().
+      showLoader(false);
       showLoader(false);
       log("",
           error: e.toString(), name: "Mixes SubCategory And Tracks Api Error");
@@ -95,6 +115,9 @@ class MixesController extends BaseController {
   }
   Future<void> plaListTrackSongApi({int? flowActivoPlaylistId}) async {
     try {
+      Get.find<HomeController>().showLoader(true);
+      Get.find<ExplorController>().showLoader(true);
+      showLoader(true);
       final queryParameters = {
         "user_id": UserPreference.getValue(key: PrefKeys.userId),
         "limit": 30,
@@ -107,16 +130,24 @@ class MixesController extends BaseController {
           queryParameters: queryParameters);
       if (response.body?.status == 200) {
         mixesTracksDataModel = response.body;
+        Get.find<HomeController>().showLoader(false);
+        Get.find<ExplorController>().showLoader(false);
         showLoader(false);
         update();
       } else {
         print("object");
         mixesTracksDataModel = null;
+        Get.find<HomeController>().showLoader(false);
+        Get.find<ExplorController>().showLoader(false);
         showLoader(false);
+
         update();
       }
     } catch (e) {
+      Get.find<HomeController>().showLoader(false);
+      Get.find<ExplorController>().showLoader(false);
       showLoader(false);
+
       log('', error: e.toString(), name: "Artiest Track Data Model");
     }
   }

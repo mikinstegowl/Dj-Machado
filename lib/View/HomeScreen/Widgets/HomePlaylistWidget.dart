@@ -50,7 +50,7 @@ class HomePlaylistWidget extends StatelessWidget {
           height: 230.h,
           child: GridView.builder(
               padding:
-              EdgeInsets.only(left: 10.w),
+              EdgeInsets.only(left: 10.w,right: 10.w),
               itemCount: data
                   ?.length,
               scrollDirection: Axis.horizontal,
