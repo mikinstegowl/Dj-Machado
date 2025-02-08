@@ -260,16 +260,16 @@ class HomeController extends BaseController {
           queryParameters: queryParameters);
       if (response.body?.status == 200) {
         albumTracksDataModel = response.body;
-        showLoader(true);
+        showLoader(false);
         update();
       } else {
         albumTracksDataModel = null;
-        showLoader(true);
+        showLoader(false);
         update();
       }
       update();
     } catch (e) {
-      showLoader(true);
+      showLoader(false);
       update();
       log('', error: e.toString(), name: "Selected Genre Api Data Error");
     }

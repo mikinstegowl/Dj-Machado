@@ -30,6 +30,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:newmusicappmachado/View/SongsAlbumsScreen/SongsAlbumsScreen.dart';
 
 class ViewAllHomeScreen extends StatefulWidget {
   final String? title;
@@ -173,23 +174,28 @@ class _ViewAllHomeScreenState extends State<ViewAllHomeScreen> {
               return MostPlayedSongsWidget(
                 isTrending: true,
                 onTap: () {
-                  Get.find<ArtistsController>()
-                      .trackSongApi(Get.find<HomeController>()
-                              .viewAllDataModel
-                              ?.data?[index]
-                              .artistsId ??
-                          0)
-                      .then((_) {
-                    Get.find<ArtistsController>()
-                        .albumSongApi(Get.find<HomeController>()
-                                .viewAllDataModel
-                                ?.data?[index]
-                                .artistsId ??
-                            0)
-                        .then((_) {
-                      Get.toNamed(RoutesName.songsAlbumsScreen);
-                    });
-                  });
+                  Navigator.of(context).push(MaterialPageRoute(builder: (_)=>SongsAlbumsScreen(id: Get.find<HomeController>()
+                      .viewAllDataModel
+                      ?.data?[index]
+                      .artistsId ??
+                      0, type: 'Artists')));
+                  // Get.find<ArtistsController>()
+                  //     .trackSongApi(Get.find<HomeController>()
+                  //             .viewAllDataModel
+                  //             ?.data?[index]
+                  //             .artistsId ??
+                  //         0)
+                  //     .then((_) {
+                  //   Get.find<ArtistsController>()
+                  //       .albumSongApi(Get.find<HomeController>()
+                  //               .viewAllDataModel
+                  //               ?.data?[index]
+                  //               .artistsId ??
+                  //           0)
+                  //       .then((_) {
+                  //     Get.toNamed(RoutesName.songsAlbumsScreen);
+                  //   });
+                  // });
                 },
                 title: Get.find<HomeController>()
                     .viewAllDataModel
@@ -220,24 +226,30 @@ class _ViewAllHomeScreenState extends State<ViewAllHomeScreen> {
               return MostPlayedSongsWidget(
                 isTrending: true,
                 onTap: () {
-                  Get.find<HomeController>()
-                      .selectedGenreAlbumApi(Get.find<HomeController>()
-                              .viewAllDataModel
-                              ?.data?[index]
-                              .genresId ??
-                          0)
-                      .then((_) {
-                    Get.find<HomeController>()
-                        .selectedGenreSongsApi(Get.find<HomeController>()
-                                .viewAllDataModel
-                                ?.data?[index]
-                                .genresId ??
-                            0)
-                        .then((_) {
-                      Get.toNamed(RoutesName.songsAlbumsScreen,
-                          arguments: {'isGenre': true, 'homeScreen': true});
-                    });
-                  });
+                  Navigator.of(context).push(MaterialPageRoute(builder: (_)=>SongsAlbumsScreen(id: Get.find<HomeController>()
+                      .viewAllDataModel
+                      ?.data?[index]
+                      .genresId ??
+                      0, type: 'Genres')));
+                  // Get.find<HomeController>()
+                  //     .selectedGenreAlbumApi(Get.find<HomeController>()
+                  //             .viewAllDataModel
+                  //             ?.data?[index]
+                  //             .genresId ??
+                  //         0)
+                  //     .then((_) {
+                  //   Get.find<HomeController>()
+                  //       .selectedGenreSongsApi(Get.find<HomeController>()
+                  //               .viewAllDataModel
+                  //               ?.data?[index]
+                  //               .genresId ??
+                  //           0)
+                  //       .then((_) {
+                  //
+                  //     // Get.toNamed(RoutesName.songsAlbumsScreen,
+                  //     //     arguments: {'isGenre': true, 'homeScreen': true});
+                  //   });
+                  // });
                 },
                 title: Get.find<HomeController>()
                     .viewAllDataModel

@@ -29,6 +29,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:newmusicappmachado/View/SongsAlbumsScreen/SongsAlbumsScreen.dart';
 
 class AudioPlayerController extends StatefulWidget {
   const AudioPlayerController({super.key});
@@ -280,27 +281,29 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                           .featureArtists?[index];
                                                   return InkWell(
                                                     onTap: () async {
-                                                      await Get.find<
-                                                              ArtistsController>()
-                                                          .trackSongApi(
-                                                              artist?.artistsId ??
-                                                                  0)
-                                                          .then((_) async {
-                                                        await Get.find<
-                                                                ArtistsController>()
-                                                            .albumSongApi(
-                                                                artist?.artistsId ??
-                                                                    0)
-                                                            .then((_) {
-                                                          Get.toNamed(
-                                                              RoutesName
-                                                                  .songsAlbumsScreen,
-                                                              arguments: {
-                                                                'isGenre': false,
-                                                                'homeScreen':false
-                                                              });
-                                                        });
-                                                      });
+                                                      // await Get.find<
+                                                      //         ArtistsController>()
+                                                      //     .trackSongApi(
+                                                      //         artist?.artistsId ??
+                                                      //             0)
+                                                      //     .then((_) async {
+                                                      //   await Get.find<
+                                                      //           ArtistsController>()
+                                                      //       .albumSongApi(
+                                                      //           artist?.artistsId ??
+                                                      //               0)
+                                                      //       .then((_) {
+                                                      //     Get.toNamed(
+                                                      //         RoutesName
+                                                      //             .songsAlbumsScreen,
+                                                      //         arguments: {
+                                                      //           'isGenre': false,
+                                                      //           'homeScreen':false
+                                                      //         });
+                                                      //   });
+                                                      // });
+                                                      Navigator.of(context).push(MaterialPageRoute(builder: (_)=>SongsAlbumsScreen(id:  artist?.artistsId ??
+                                                          0, type: 'Artists')));
                                                       setState(() {
                                                         Get.find<BaseController>()
                                                             .containerHeight

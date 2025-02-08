@@ -387,9 +387,9 @@ class BaseController extends GetxController {
 
   Future<void> googleAdsApi({required HomeChopperService homeChopperService})async {
     try{
-      // if(googleAdsModel?.data?.isNotEmpty??false){
-      //   bannerAd.dispose();
-      // }
+      if(googleAdsModel?.data?.isNotEmpty??false){
+       return;
+      }
       final queryParameters={
         "filter": UserPreference.getValue(key: PrefKeys.userId),
       };

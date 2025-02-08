@@ -31,8 +31,10 @@ import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class SongsAlbumsScreen extends StatefulWidget {
+  final int id;
+  final String type;
   const SongsAlbumsScreen({
-    super.key,
+    super.key, required this.id, required this.type,
   });
 
   @override
@@ -50,31 +52,36 @@ class _SongsAlbumsScreenState extends State<SongsAlbumsScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // Get.find<BaseController>().googleAdsApi(
-    //     homeChopperService:
-    //         AppChopperClient().getChopperService<HomeChopperService>());
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      if (Get.arguments != null && Get.arguments != '') {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      isGenre=!(widget.type.toLowerCase()=='Artists'.toLowerCase());
+      if(widget.type.toLowerCase()=='Artists'.toLowerCase()){
+      await  Get.find<ArtistsController>().trackSongApi(
+            widget.id);
+      await  Get.find<
+            ArtistsController>()
+            .albumSongApi(
+            widget.id);
         setState(() {
-          isGenre = Get.arguments['isGenre'];
-          homeScreen = Get.arguments['homeScreen'];
+          songsDataModel = Get.find<ArtistsController>().tracksDataModel;
+          albumDataModel = Get.find<ArtistsController>().albumDataModel; });
+
+      }else{
+       await Get.find<HomeController>().selectedGenreAlbumApi(widget.id);
+       await Get.find<HomeController>()
+            .selectedGenreSongsApi(widget.id);
+        setState(() {
+          songsDataModel = Get.find<HomeController>().songsTracksDataModel;
+          albumDataModel = Get.find<HomeController>().albumTracksDataModel;
         });
+        print(" albumDataModel ${songsDataModel}");
+        print("albumDataModel  albumDataModel ${albumDataModel}");
       }
-      if (isGenre && homeScreen) {
-        songsDataModel = Get.find<HomeController>().songsTracksDataModel;
-        albumDataModel = Get.find<HomeController>().albumTracksDataModel;
-        setState(() {});
-      } else if (isGenre && homeScreen == false) {
-        songsDataModel = Get.find<ExplorController>().songsTracksDataModel;
-        albumDataModel = Get.find<ExplorController>().albumTracksDataModel;
-        setState(() {});
-      } else {
-        songsDataModel = Get.find<ArtistsController>().tracksDataModel;
-        albumDataModel = Get.find<ArtistsController>().albumDataModel;
-        setState(() {});
-      }
+
+
+
       Get.find<BaseController>().containerHeight?.value = 0;
     });
+    print("songsDataModel?.data?.first.id ${songsDataModel?.data?.first.id}");
   }
 
   @override
@@ -111,6 +118,7 @@ class _SongsAlbumsScreenState extends State<SongsAlbumsScreen> {
                       fit: BoxFit.fill,
                       image: AssetImage(AppAssets.backGroundImage))),
               child: GetBuilder<ArtistsController>(
+
                   init: Get.find<ArtistsController>(),
                   builder: (controller) {
                     return SingleChildScrollView(
