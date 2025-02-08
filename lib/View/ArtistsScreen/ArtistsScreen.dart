@@ -111,18 +111,18 @@ class ArtistsScreen extends GetView<ArtistsController> {
                               child: ListView.builder(
                                 controller: controller.scrollController,
                                 padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
+                                const EdgeInsets.symmetric(vertical: 10),
                                 itemCount:
-                                    controller.groupedArtists.keys.length,
+                                controller.groupedArtists.keys.length,
                                 itemBuilder: (context, index) {
                                   String firstChar = controller
                                       .groupedArtists.keys
                                       .elementAt(index);
                                   List<PopularArtist> artistList =
-                                      controller.groupedArtists[firstChar]!;
+                                  controller.groupedArtists[firstChar]!;
                                   return Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       // Alphabet Header
                                       Container(
@@ -131,7 +131,7 @@ class ArtistsScreen extends GetView<ArtistsController> {
                                             ? AppColors.primary
                                             : AppColors.transparent,
                                         margin:
-                                            EdgeInsets.symmetric(vertical: 5.h),
+                                        EdgeInsets.symmetric(vertical: 5.h),
                                         padding: EdgeInsets.symmetric(
                                             horizontal: 20.w, vertical: 5.h),
                                         child: AppTextWidget(
@@ -151,11 +151,11 @@ class ArtistsScreen extends GetView<ArtistsController> {
                                           onTap: () async {
                                             await Get.find<ArtistsController>()
                                                 .trackSongApi(
-                                                    artist.artistsId ?? 0)
+                                                artist.artistsId ?? 0)
                                                 .then((_) async {
                                               await Get.find<ArtistsController>()
                                                   .albumSongApi(
-                                                      artist.artistsId ?? 0)
+                                                  artist.artistsId ?? 0)
                                                   .then((_) {
                                                 // Get.find<BaseController>().initialListOfBool(controller.tracksDataModel?.data?.length??0);
                                                 Get.toNamed(

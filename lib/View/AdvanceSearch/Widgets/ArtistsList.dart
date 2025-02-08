@@ -20,7 +20,7 @@ class ArtistsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() => Visibility(
-          visible: !Get.find<BaseController>().isLoading.value,
+          visible: !Get.find<ArtistsController>().isLoading.value,
           replacement: AppLoder(),
           child: ListView.builder(
               physics: const ClampingScrollPhysics(),

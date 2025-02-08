@@ -125,6 +125,7 @@ class HomeController extends BaseController {
 
   Future<void> saveGenres() async {
     try {
+      showLoader(true);
       final param = {
         "user_id": UserPreference.getValue(key: PrefKeys.userId),
         "genres_id": genresSelectedCheck.map((e) => e.toString()).toList(),
@@ -136,7 +137,11 @@ class HomeController extends BaseController {
         log(UserPreference.getValue(key: PrefKeys.genresId,).toString());
         Utility.showSnackBar(response.body?.message ?? '');
         Get.offNamed(RoutesName.homeScreen);
+        showLoader(false);
+        update();
       } else {
+        showLoader(false);
+        update();
         Utility.showSnackBar(response.body?.message ?? '',isError:true);
       }
     } catch (e) {

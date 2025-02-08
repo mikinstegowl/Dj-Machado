@@ -65,7 +65,20 @@ class _MixesSongScreenState extends State<MixesSongScreen> {
                 backgroundColor: AppColors.darkgrey,
                 body: GetBuilder<BaseController>(
                   init: Get.find<BaseController>(),
-                  builder: (bController) {
+                  initState: (state) {
+                    // Get.find<MixesController>()
+                    //     .mixesSubCategoryAndTracksApi(
+                    //     mixesId: controller.mixesDataModel
+                    //         ?.data?[index].mixesId)
+                    //     .then((_) {
+                    //   Get.toNamed(RoutesName.mixesSongScreen,
+                    //       arguments: {
+                    //         'title': controller.mixesDataModel
+                    //             ?.data?[index].mixesName
+                    //       });
+                    // });
+                  },
+                  builder: (Controller) {
                     return Container(
                       height: MediaQuery.sizeOf(context).height,
                       padding: EdgeInsets.only(top:AppBar().preferredSize.height.h+25.h),

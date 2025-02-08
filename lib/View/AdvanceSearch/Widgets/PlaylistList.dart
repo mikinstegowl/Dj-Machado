@@ -32,7 +32,7 @@ class PlayListList extends StatelessWidget {
                         data?[index].playListId)
                         .then((_) {
                       Get.toNamed(RoutesName.playListDetailView,
-                          arguments: data?[index].playlistsName);
+                          arguments: {'playlist_name':data?[index].playlistsName});
                     });
                   },
                   leading: CachedNetworkImageWidget(

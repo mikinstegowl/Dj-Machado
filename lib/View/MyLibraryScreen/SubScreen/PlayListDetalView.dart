@@ -111,7 +111,8 @@ class PlayListDetailView extends StatelessWidget {
                     children: [
                       // 100.verticalSpace,
                       // Get.find<BaseController>().connectivityResult[0] != ConnectivityResult.none?
-                      Get.find<MyLibraryController>().playListSongDataModel?.data?.isEmpty??false?  SizedBox(
+                      // Get.find<MyLibraryController>().playListSongDataModel?.data?.isEmpty??false?
+                      SizedBox(
                         child: Align(
                           alignment: Alignment.center,
                           child:  Container(
@@ -138,13 +139,14 @@ class PlayListDetailView extends StatelessWidget {
                             })
                           ),
                         ),
-                      ):Center(
-                        child: Container(
-                          child: AppTextWidget(
-                            txtTitle: "No Data Found",
-                          ),
-                        ),
-                      ) ,
+                      ),
+                      //     :Center(
+                      //   child: Container(
+                      //     child: AppTextWidget(
+                      //       txtTitle: "No Data Found",
+                      //     ),
+                      //   ),
+                      // ) ,
                      20.verticalSpace,
                       const Divider(
                         thickness: 2,

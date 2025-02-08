@@ -280,7 +280,7 @@ class _MyLibraryScreenState extends State<MyLibraryScreen> {
               width: double.maxFinite,
               height: 3,
               color:
-                  _selectedIndex == index ? AppColors.primary : AppColors.black,
+                  _selectedIndex == index ? AppColors.primary : AppColors.white,
               margin: const EdgeInsets.only(bottom: 4),
             ),
             5.verticalSpace,
@@ -299,7 +299,7 @@ class _MyLibraryScreenState extends State<MyLibraryScreen> {
                   label,
                   style: TextStyle(
                     color: _selectedIndex == index
-                        ? Colors.black
+                        ? Colors.white
                         : AppColors.black,
                     fontWeight: FontWeight.bold,
                   ),

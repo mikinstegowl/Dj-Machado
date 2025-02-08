@@ -19,7 +19,7 @@ class FirebaseNotificationManager {
   /// Returns a future that resolves with the current [FirebaseNotificationManager] instance.
   Future<FirebaseNotificationManager> init() async {
     _notification.initialize(const InitializationSettings(
-      android: AndroidInitializationSettings('ic_noti'),
+      android: AndroidInitializationSettings('ic_icon'),
       iOS: DarwinInitializationSettings(),
     ));
 

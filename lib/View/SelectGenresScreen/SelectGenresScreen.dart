@@ -163,7 +163,7 @@ class SelectGenresScreen extends GetView<HomeController> {
           ),
         ),
         Obx(() =>
-            Visibility(visible: controller.isLoading.value, child: AppLoder()))
+            Visibility(visible: Get.find<HomeController>().isLoading.value, child: AppLoder()))
       ],
     ));
   }

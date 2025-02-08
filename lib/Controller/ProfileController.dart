@@ -67,6 +67,7 @@ class ProfileController extends BaseController{
 
   Future<void> updateUserProfile() async {
     try {
+      showLoader(true);
       final param = {
         "user_id": UserPreference.getValue(key: PrefKeys.userId),
         "name":  userNameController.text,
@@ -96,8 +97,11 @@ class ProfileController extends BaseController{
        Get.back();
         getProfileData();
         Utility.showSnackBar(response.body?.message);
+        showLoader(false);
         update();
       } else {
+        showLoader(false);
+        update();
         Get.snackbar('Error', response.body?.message ?? '');
       }
       update;
@@ -153,6 +157,7 @@ class ProfileController extends BaseController{
 
   Future<void> getProfileData() async {
     try {
+      showLoader(true);
       final queryParameters = {
         "filter": UserPreference.getValue(key: PrefKeys.userId)
       };

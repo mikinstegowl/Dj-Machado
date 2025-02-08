@@ -31,6 +31,7 @@ MobileAds.instance.initialize();
     androidNotificationChannelId: 'com.example.just_audio.channel.audio',
     androidNotificationChannelName: 'Music Playback',
     androidNotificationOngoing: false,
+     // androidNotificationIcon: 'drawable/ic_icon'
     // Customizing notification actions (removing "remove song" button
   );
   Get.lazyPut(()=> BaseController(),fenix: true);
@@ -107,6 +108,10 @@ class _MyAppState extends State<MyApp>  with WidgetsBindingObserver{
                     initialBinding: BaseBindings(),
                     debugShowCheckedModeBanner: false,
                     onGenerateRoute: generateRoute,
+                    defaultTransition: Transition.noTransition,
+                    navigatorObservers: [
+                      MyApp.getAnalyticObserver()
+                    ],
                     initialRoute:
                     UserPreference.getValue(key: PrefKeys.firstTime)==null?RoutesName.introScreen :
                         UserPreference.getValue(key: PrefKeys.logInToken) !=

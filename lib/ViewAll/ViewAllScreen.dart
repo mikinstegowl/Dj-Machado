@@ -170,6 +170,7 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                 mainAxisSpacing: 10),
             itemBuilder: (context, index) {
               return MostPlayedSongsWidget(
+                isTrending: true,
                 onTap: () {
                   Get.find<ArtistsController>().trackSongApi(Get.find<ExplorController>()
                       .viewAllDataModel

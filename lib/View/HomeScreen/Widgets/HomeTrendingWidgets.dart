@@ -409,10 +409,12 @@ class _HomeTrendingWidgetsState extends State<HomeTrendingWidgets> {
               return HomeArtistsWidget(
                 onViewAll: () {
                   Get.find<HomeController>().viewAllDataApi(trendingscategoryId: widget.firstTrendingData?[index].trendingscategoryId, type: widget.firstTrendingData?[index].trendingscategoryFor).then((_){
-                   Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllHomeScreen(
-                     trendingscategoryFor: widget.firstTrendingData?[index].trendingscategoryFor,
-                     title: widget.firstTrendingData?[index].trendingscategoryName,
-                   )));
+                   if(mounted){
+                     Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllHomeScreen(
+                       trendingscategoryFor: widget.firstTrendingData?[index].trendingscategoryFor,
+                       title: widget.firstTrendingData?[index].trendingscategoryName,
+                     )));
+                   }
                   });
                 },
                 data: widget.firstTrendingData?[index].data,

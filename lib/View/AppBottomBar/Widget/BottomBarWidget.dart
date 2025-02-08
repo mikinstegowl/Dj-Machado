@@ -89,7 +89,7 @@ class BottomBarWidget extends GetView<BaseController> {
             print(Get.find<BaseController>().connectivityResult[0] == ConnectivityResult.none);
           Get.find<BaseController>().connectivityResult[0] == ConnectivityResult.none ?
           Utility.showSnackBar("You're in offline mode",isError: true)
-              :  Get.find<BaseController>().onItemTapped(index);
+              :  Get.find<BaseController>().onItemTapped(index,context);
           Get.find<BaseController>().connectivityResult[0] == ConnectivityResult.none
               ?null
               :

@@ -28,11 +28,11 @@ class OptionDialog extends StatelessWidget {
   bool? isAlbum;
   bool? isQueue;
   final String type;
-   bool? isPlaylist;
+  bool? isPlaylist;
   OptionDialog(
       {super.key,
       this.track,
-        this.isPlaylist = true,
+      this.isPlaylist = true,
       required this.listOfTrackData,
       this.index,
       this.type = 'song',
@@ -76,43 +76,57 @@ class OptionDialog extends StatelessWidget {
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            '${track?.songName}',
-                            style: TextStyle(
-                              color: AppColors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                          Container(
+                            width: 100.w,
+                            child: Text(
+                              '${track?.songName}',
+                              style: TextStyle(
+                                color: AppColors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                          Text(
-                            '${track?.songArtist}',
-                            style: TextStyle(
-                              color: AppColors.primary,
-                              fontSize: 14,
+                          Container(
+                            width: 100.w,
+                            child: Text(
+                              '${track?.songArtist}',
+                              style: TextStyle(
+                                color: AppColors.primary,
+                                fontSize: 14,
+                              ),
                             ),
                           ),
                         ],
                       )
-                    : Text(
-                        '${track?.albumsName}',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: AppColors.white,
+                    : Container(
+                  width: 100.w,
+                      child: AppTextWidget(
+                          maxLine: 1,
+                          txtTitle: '${track?.albumsName}',
+                          //
+                          overflow: TextOverflow.ellipsis,
+                          // style: TextStyle(
+                          //
+                          // ),
+                          txtColor: AppColors.white,
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
-                      ),
+                    ),
               ],
             ),
             40.verticalSpace,
             Column(
               children: [
-                isQueue == false? SizedBox.shrink(): isAlbum == false
-                    ? Obx(
-                        () => Visibility(
-                          visible:
-                              Get.find<BaseController>().showMusicMenu.value &&
+                isQueue == false
+                    ? SizedBox.shrink()
+                    : isAlbum == false
+                        ? Obx(
+                            () => Visibility(
+                              visible: Get.find<BaseController>()
+                                      .showMusicMenu
+                                      .value &&
                                   PlayerService
                                           .instance
                                           .audioPlayer
@@ -121,146 +135,230 @@ class OptionDialog extends StatelessWidget {
                                           ?.tag
                                           .id ==
                                       track?.songId.toString(),
-                          replacement: Center(
-                              child: AppButtonWidget(
-                                  width: double.maxFinite,
-                                  borderColor: AppColors.white.withOpacity(0.5),
-                                  borderRadius: 10.r,
-                                  padding: EdgeInsets.symmetric(vertical: 12.h),
-                                  onPressed: () {
-                                    PlayerService.instance.createPlaylist(
-                                        listOfTrackData, index:index ?? 0,
-                                        type: type);
-                                    Get.back();
-                                  },
-                                  btnName: "",
-                                  child: Padding(
-                                    padding: EdgeInsets.only(left: 10.0.w),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                            height: 35.h,
-                                            width: 35.h,
-                                            decoration: BoxDecoration(
-                                                color: AppColors.primary,
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        30.r)),
-                                            child: Center(
-                                                child: Icon(
-                                              Icons.play_arrow,
-                                              color: AppColors.black,
-                                              size: 20,
-                                            ))),
-                                        10.horizontalSpace,
-                                        AppTextWidget(
-                                          txtTitle: "Play Now",
-                                          fontSize: 12,
+                              replacement: Center(
+                                  child: AppButtonWidget(
+                                      width: double.maxFinite,
+                                      borderColor:
+                                          AppColors.white.withOpacity(0.5),
+                                      borderRadius: 10.r,
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 12.h),
+                                      onPressed: () {
+                                        PlayerService.instance.createPlaylist(
+                                            listOfTrackData,
+                                            index: index ?? 0,
+                                            type: type);
+                                        Get.back();
+                                      },
+                                      btnName: "",
+                                      child: Padding(
+                                        padding: EdgeInsets.only(left: 10.0.w),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                                height: 35.h,
+                                                width: 35.h,
+                                                decoration: BoxDecoration(
+                                                    color: AppColors.primary,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            30.r)),
+                                                child: Center(
+                                                    child: Icon(
+                                                  Icons.play_arrow,
+                                                  color: AppColors.black,
+                                                  size: 20,
+                                                ))),
+                                            10.horizontalSpace,
+                                            AppTextWidget(
+                                              txtTitle: "Play Now",
+                                              fontSize: 12,
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                  ))),
-                          child: SizedBox.shrink(),
-                        ),
-                      )
-                    : SizedBox.shrink(),
+                                      ))),
+                              child: SizedBox.shrink(),
+                            ),
+                          )
+                        : SizedBox.shrink(),
                 20.verticalSpace,
                 isAlbum == false
-                    ? Obx(
-                        () => Visibility(
-                          replacement: Center(
-                              child: AppButtonWidget(
-                                  width: double.maxFinite,
-                                  borderColor: AppColors.white.withOpacity(0.5),
-                                  borderRadius: 10.r,
-                                  padding: EdgeInsets.symmetric(vertical: 12.h),
-                                  onPressed: () {
-                                    print(PlayerService.instance.playlist.any(
-                                        (v) =>
-                                            (v as UriAudioSource)
-                                                .uri
-                                                .toString() ==
-                                            track?.song.toString()));
-                                    if (PlayerService.instance.playlist != [] &&
-                                        !PlayerService.instance.playlist.any(
-                                            (v) => ((v as UriAudioSource)
-                                                    .uri
-                                                    .toString() ==
-                                                track?.song.toString()))) {
-                                      PlayerService.instance.playlist.add(
-                                          AudioSource.uri(
-                                              Uri.parse(track?.song ?? ''),
-                                              tag: MediaItem(
-                                                id: track?.songId.toString() ??
-                                                    "",
-                                                title: track?.songName ?? "",
-                                                artUri: Uri.tryParse(
-                                                    track?.songImage ?? ""),
-                                                artist: track?.songArtist,
-                                              )));
-                                      Get.back();
-                                      Utility.showSnackBar(
-                                        "This Song add to Queue",
-                                      );
-                                    } else {
-                                      Get.back();
-                                      Utility.showSnackBar(
-                                          "This Song is already add to Queue",
-                                          isError: true);
-                                    }
-                                  },
-                                  btnName: "",
-                                  child: Padding(
-                                    padding: EdgeInsets.only(left: 10.0.w),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                            height: 35.h,
-                                            width: 35.h,
-                                            decoration: BoxDecoration(
-                                                color: AppColors.primary,
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        30.r)),
-                                            child: Center(
-                                                child: Icon(
-                                              Icons.queue,
-                                              color: AppColors.black,
-                                              size: 20,
-                                            ))),
-                                        10.horizontalSpace,
-                                        AppTextWidget(
-                                          txtTitle: PlayerService
-                                                          .instance.playlist !=
-                                                      [] &&
-                                                  !PlayerService
-                                                      .instance.playlist
-                                                      .any((v) =>
-                                                          ((v as UriAudioSource)
-                                                                  .uri
-                                                                  .toString() ==
-                                                              track?.song
-                                                                  .toString()))
-                                              ? "Add To Queue"
-                                              : 'Remove from Queue',
-                                          fontSize: 12,
-                                        ),
-                                      ],
-                                    ),
-                                  ))),
-                          visible:
-                              Get.find<BaseController>().showMusicMenu.value &&
-                                  PlayerService
-                                          .instance
-                                          .audioPlayer
-                                          .sequenceState
-                                          ?.currentSource
-                                          ?.tag
-                                          .id ==
-                                      track?.songId.toString(),
-                          child: SizedBox.shrink(),
+                    ?
+                // Obx(
+                //         () => Visibility(
+                //           replacement: Center(
+                //               child: AppButtonWidget(
+                //                   width: double.maxFinite,
+                //                   borderColor: AppColors.white.withOpacity(0.5),
+                //                   borderRadius: 10.r,
+                //                   padding: EdgeInsets.symmetric(vertical: 12.h),
+                //                   onPressed: () {
+                //                     print(PlayerService.instance.playlist.any(
+                //                         (v) =>
+                //                             (v as UriAudioSource)
+                //                                 .uri
+                //                                 .toString() ==
+                //                             track?.song.toString()));
+                //                     if (PlayerService.instance.playlist != [] &&
+                //                         !PlayerService.instance.playlist.any(
+                //                             (v) => ((v as UriAudioSource)
+                //                                     .uri
+                //                                     .toString() ==
+                //                                 track?.song.toString()))) {
+                //                       PlayerService.instance.playlist.add(
+                //                           AudioSource.uri(
+                //                               Uri.parse(track?.song ?? ''),
+                //                               tag: MediaItem(
+                //                                 id: track?.songId.toString() ??
+                //                                     "",
+                //                                 title: track?.songName ?? "",
+                //                                 artUri: Uri.tryParse(
+                //                                     track?.songImage ?? ""),
+                //                                 artist: track?.songArtist,
+                //                               )));
+                //                       Get.back();
+                //                       Utility.showSnackBar(
+                //                         "This Song add to Queue",
+                //                       );
+                //                     } else {
+                //                       Get.back();
+                //                       Utility.showSnackBar(
+                //                           "This Song is already add to Queue",
+                //                           isError: true);
+                //                     }
+                //                   },
+                //                   btnName: "",
+                //                   child: Padding(
+                //                     padding: EdgeInsets.only(left: 10.0.w),
+                //                     child: Row(
+                //                       children: [
+                //                         Container(
+                //                             height: 35.h,
+                //                             width: 35.h,
+                //                             decoration: BoxDecoration(
+                //                                 color: AppColors.primary,
+                //                                 borderRadius:
+                //                                     BorderRadius.circular(
+                //                                         30.r)),
+                //                             child: Center(
+                //                                 child: Icon(
+                //                               Icons.queue,
+                //                               color: AppColors.black,
+                //                               size: 20,
+                //                             ))),
+                //                         10.horizontalSpace,
+                //                         AppTextWidget(
+                //                           txtTitle: PlayerService
+                //                                           .instance.playlist !=
+                //                                       [] &&
+                //                                   !PlayerService
+                //                                       .instance.playlist
+                //                                       .any((v) =>
+                //                                           ((v as UriAudioSource)
+                //                                                   .uri
+                //                                                   .toString() ==
+                //                                               track?.song
+                //                                                   .toString()))
+                //                               ? "Add To Queue"
+                //                               : 'Remove from Queue',
+                //                           fontSize: 12,
+                //                         ),
+                //                       ],
+                //                     ),
+                //                   ))),
+                //           visible:
+                //               Get.find<BaseController>().showMusicMenu.value &&
+                //                   PlayerService
+                //                           .instance
+                //                           .audioPlayer
+                //                           .sequenceState
+                //                           ?.currentSource
+                //                           ?.tag
+                //                           .id ==
+                //                       track?.songId.toString(),
+                //           child: SizedBox.shrink(),
+                //         ),
+                //       )
+                Obx(
+                      () => Visibility(
+                    replacement: Center(
+                      child: AppButtonWidget(
+                        width: double.maxFinite,
+                        borderColor: AppColors.white.withOpacity(0.5),
+                        borderRadius: 10.r,
+                        padding: EdgeInsets.symmetric(vertical: 12.h),
+                        onPressed: () {
+                          bool isInQueue = PlayerService.instance.playlist.any(
+                                (v) => (v as UriAudioSource).uri.toString() == track?.song.toString(),
+                          );
+
+                          if (isInQueue) {
+                            // ✅ Remove song from queue
+                            PlayerService.instance.playlist.removeWhere(
+                                  (v) => (v as UriAudioSource).uri.toString() == track?.song.toString(),
+                            );
+
+                            Get.back();
+                            Utility.showSnackBar("Song removed from Queue", isError: true);
+
+                          } else {
+                            // ✅ Add song to queue
+                            PlayerService.instance.playlist.add(
+                              AudioSource.uri(
+                                Uri.parse(track?.song ?? ''),
+                                tag: MediaItem(
+                                  id: track?.songId.toString() ?? "",
+                                  title: track?.songName ?? "",
+                                  artUri: Uri.tryParse(track?.songImage ?? ""),
+                                  artist: track?.songArtist,
+                                ),
+                              ),
+                            );
+                            Get.back();
+                            Utility.showSnackBar("This Song added to Queue");
+                          }
+                        },
+                        btnName: "",
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 10.0.w),
+                          child: Row(
+                            children: [
+                              Container(
+                                height: 35.h,
+                                width: 35.h,
+                                decoration: BoxDecoration(
+                                  color: AppColors.primary,
+                                  borderRadius: BorderRadius.circular(30.r),
+                                ),
+                                child: Center(
+                                  child: Icon(
+                                    Icons.queue,
+                                    color: AppColors.black,
+                                    size: 20,
+                                  ),
+                                ),
+                              ),
+                              10.horizontalSpace,
+                              AppTextWidget(
+                                txtTitle: PlayerService.instance.playlist.any(
+                                      (v) => (v as UriAudioSource).uri.toString() == track?.song.toString(),
+                                )
+                                    ? "Remove from Queue"
+                                    : "Add To Queue",
+                                fontSize: 12,
+                              ),
+                            ],
+                          ),
                         ),
-                      )
+                      ),
+                    ),
+                    visible: Get.find<BaseController>().showMusicMenu.value &&
+                        PlayerService.instance.audioPlayer.sequenceState?.currentSource?.tag.id ==
+                            track?.songId.toString(),
+                    child: SizedBox.shrink(),
+                  ),
+                )
+
                     : SizedBox.shrink(),
                 20.verticalSpace,
                 isAlbum == false
@@ -375,26 +473,31 @@ class OptionDialog extends StatelessWidget {
                                 print(track?.playListId);
                                 print(track?.songId);
                                 print(track?.playlistStatus);
-                                !(track?.playlistStatus??false)?
-                                Get.dialog(AddPlaylistDialog(
-                                  onCreateNewPlayList: () {
-                                    Get.dialog(CreatePlayListDialog(
-                                      onCreateTap: () async {
-                                        track?.playlistStatus =
-                                            await Get.dialog(
-                                                ExistingPlaylistDialog(
-                                          songId: track?.songId,
-                                        ));
-                                      },
-                                    ));
-                                  },
-                                  onAddToExisting: () async {
-                                    track?.playlistStatus =
-                                        await Get.dialog(ExistingPlaylistDialog(
-                                      songId: track?.songId,
-                                    ));
-                                  },
-                                )): Get.find<MyLibraryController>().playListSongRemoveApi(playlistsId: track?.playListId??0,songId: track?.songId);
+                                !(track?.playlistStatus ?? false)
+                                    ? Get.dialog(AddPlaylistDialog(
+                                        onCreateNewPlayList: () {
+                                          Get.dialog(CreatePlayListDialog(
+                                            onCreateTap: () async {
+                                              track?.playlistStatus =
+                                                  await Get.dialog(
+                                                      ExistingPlaylistDialog(
+                                                songId: track?.songId,
+                                              ));
+                                            },
+                                          ));
+                                        },
+                                        onAddToExisting: () async {
+                                          track?.playlistStatus =
+                                              await Get.dialog(
+                                                  ExistingPlaylistDialog(
+                                            songId: track?.songId,
+                                          ));
+                                        },
+                                      ))
+                                    : Get.find<MyLibraryController>()
+                                        .playListSongRemoveApi(
+                                            playlistsId: track?.playListId ?? 0,
+                                            songId: track?.songId);
                                 // track?.playlistStatus =   await Get.find<MyLibraryController>().playListSongAddApi(playlistsId: track?.playListId,songId: track?.songId??0);
                                 // Get.back();
                                 // }
@@ -424,231 +527,227 @@ class OptionDialog extends StatelessWidget {
                                   ))),
                               10.horizontalSpace,
                               AppTextWidget(
-                                txtTitle: track?.playlistStatus??false? 'Remove from Playlist': "Add To Playlist",
+                                txtTitle: track?.playlistStatus ?? false
+                                    ? 'Remove from Playlist'
+                                    : "Add To Playlist",
                                 fontSize: 12,
                               ),
                             ],
                           ),
                         ))),
                 20.verticalSpace,
-                isQueue == false
-                    ? const SizedBox.shrink()
-                    : isAlbum == false
-                        ? Obx(
-                            () => Visibility(
-                                visible: Get.find<BaseController>()
-                                    .databaseDownloadedSongList
-                                    .any((test) =>
-                                        test['song_id'] == track?.songId &&
-                                        test['isDownloaded'] == 1),
-                                replacement: Center(
-                                    child: AppButtonWidget(
-                                        width: double.maxFinite,
-                                        borderColor:
-                                            AppColors.white.withOpacity(0.5),
-                                        borderRadius: 10.r,
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 12.h),
-                                        onPressed: () {
-                                          Get.back();
-                                          DownloadService.instance.downloadSong(
-                                              downloadSongUrl: track?.song,
-                                              SongData: track);
-                                          Get.back();
-                                        },
-                                        btnName: "",
-                                        child: Padding(
-                                          padding:
-                                              EdgeInsets.only(left: 10.0.w),
-                                          child: Row(
-                                            children: [
-                                              Container(
-                                                  height: 35.h,
-                                                  width: 35.h,
-                                                  decoration: BoxDecoration(
-                                                      color: AppColors.primary,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              30.r)),
-                                                  child: Center(
-                                                      child: Icon(
-                                                    Icons.download,
-                                                    color: AppColors.black,
-                                                    size: 20,
-                                                  ))),
-                                              10.horizontalSpace,
-                                              AppTextWidget(
-                                                txtTitle: "Download Song",
-                                                fontSize: 12,
-                                              ),
-                                            ],
+                // isQueue == false
+                //     ? const SizedBox.shrink()
+                //     :
+                isAlbum == false
+                    ? Obx(
+                        () => Visibility(
+                            visible: Get.find<BaseController>()
+                                .databaseDownloadedSongList
+                                .any((test) =>
+                                    test['song_id'] == track?.songId &&
+                                    test['isDownloaded'] == 1),
+                            replacement: Center(
+                                child: AppButtonWidget(
+                                    width: double.maxFinite,
+                                    borderColor:
+                                        AppColors.white.withOpacity(0.5),
+                                    borderRadius: 10.r,
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 12.h),
+                                    onPressed: () {
+                                      Get.back();
+                                      DownloadService.instance.downloadSong(
+                                          downloadSongUrl: track?.song,
+                                          SongData: track);
+                                      Get.back();
+                                    },
+                                    btnName: "",
+                                    child: Padding(
+                                      padding: EdgeInsets.only(left: 10.0.w),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                              height: 35.h,
+                                              width: 35.h,
+                                              decoration: BoxDecoration(
+                                                  color: AppColors.primary,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          30.r)),
+                                              child: Center(
+                                                  child: Icon(
+                                                Icons.download,
+                                                color: AppColors.black,
+                                                size: 20,
+                                              ))),
+                                          10.horizontalSpace,
+                                          AppTextWidget(
+                                            txtTitle: "Download Song",
+                                            fontSize: 12,
                                           ),
-                                        ))),
-                                child: Center(
-                                    child: AppButtonWidget(
-                                        width: double.maxFinite,
-                                        borderColor:
-                                            AppColors.white.withOpacity(0.5),
-                                        borderRadius: 10.r,
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 12.h),
-                                        onPressed: () {
-                                          Get.find<BaseController>().deleteSong(
-                                              songId: Get.find<BaseController>()
-                                                  .databaseDownloadedSongList
-                                                  .firstWhere((v) =>
-                                                      v['song_id'] ==
-                                                      track?.songId),
-                                              isAlbum: false,
-                                              index: index);
-                                          Get.back();
-                                        },
-                                        btnName: "",
-                                        child: Padding(
-                                          padding:
-                                              EdgeInsets.only(left: 10.0.w),
-                                          child: Row(
-                                            children: [
-                                              Container(
-                                                  height: 35.h,
-                                                  width: 35.h,
-                                                  decoration: BoxDecoration(
-                                                      color: AppColors.primary,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              30.r)),
-                                                  child: Center(
-                                                      child: Icon(
-                                                    Icons.download,
-                                                    color: AppColors.black,
-                                                    size: 20,
-                                                  ))),
-                                              10.horizontalSpace,
-                                              Flexible(
-                                                child: AppTextWidget(
-                                                  txtTitle:
-                                                      "Remove Download Song",
-                                                  fontSize: 12,
-                                                ),
-                                              ),
-                                            ],
+                                        ],
+                                      ),
+                                    ))),
+                            child: Center(
+                                child: AppButtonWidget(
+                                    width: double.maxFinite,
+                                    borderColor:
+                                        AppColors.white.withOpacity(0.5),
+                                    borderRadius: 10.r,
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 12.h),
+                                    onPressed: () {
+                                      Get.find<BaseController>().deleteSong(
+                                          songId: Get.find<BaseController>()
+                                              .databaseDownloadedSongList
+                                              .firstWhere((v) =>
+                                                  v['song_id'] ==
+                                                  track?.songId),
+                                          isAlbum: false,
+                                          index: index);
+                                      Get.back();
+                                    },
+                                    btnName: "",
+                                    child: Padding(
+                                      padding: EdgeInsets.only(left: 10.0.w),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                              height: 35.h,
+                                              width: 35.h,
+                                              decoration: BoxDecoration(
+                                                  color: AppColors.primary,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          30.r)),
+                                              child: Center(
+                                                  child: Icon(
+                                                Icons.download,
+                                                color: AppColors.black,
+                                                size: 20,
+                                              ))),
+                                          10.horizontalSpace,
+                                          Flexible(
+                                            child: AppTextWidget(
+                                              txtTitle: "Remove Download Song",
+                                              fontSize: 12,
+                                            ),
                                           ),
-                                        )))),
-                          )
-                        : Obx(
-                            () => Visibility(
-                                visible: Get.find<BaseController>()
-                                    .databaseDownloadedSongList
-                                    .any((test) =>
-                                        test['song_id'] == track?.songId &&
-                                        test['isDownloaded'] == 1),
-                                replacement: Center(
-                                    child: AppButtonWidget(
-                                        width: double.maxFinite,
-                                        borderColor:
-                                            AppColors.white.withOpacity(0.5),
-                                        borderRadius: 10.r,
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 12.h),
-                                        onPressed: () async
-                                        {
-                                          await Get.find<ArtistsController>()
-                                              .albumTrackSongApi(
-                                                  artistsId: track?.id ?? 0,
-                                                  albumId: track?.albumsId ?? 0,
-                                                  genresId: track?.genresId)
-                                              .then((_) {
-                                            Get.back();
-                                            DownloadService.instance
-                                                .downloadAllSongs(
-                                                    tracksDataMode: Get.find<
-                                                            ArtistsController>()
-                                                        .albumTrackSongData);
-                                          });
-                                          print(
-                                              "this is id${track?.id}, this is album id ${track?.albumsId},this is genereid ${track?.genresId}");
-                                          // DownloadService.instance.downloadAllSongs(tracksDataMode:);
-                                          Get.back();
-                                        },
-                                        btnName: "",
-                                        child: Padding(
-                                          padding:
-                                              EdgeInsets.only(left: 10.0.w),
-                                          child: Row(
-                                            children: [
-                                              Container(
-                                                  height: 35.h,
-                                                  width: 35.h,
-                                                  decoration: BoxDecoration(
-                                                      color: AppColors.primary,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              30.r)),
-                                                  child: Center(
-                                                      child: Icon(
-                                                    Icons.download,
-                                                    color: AppColors.black,
-                                                    size: 20,
-                                                  ))),
-                                              10.horizontalSpace,
-                                              AppTextWidget(
-                                                txtTitle: "Download Album",
-                                                fontSize: 12,
-                                              ),
-                                            ],
+                                        ],
+                                      ),
+                                    )))),
+                      )
+                    : Obx(
+                        () => Visibility(
+                            visible: Get.find<BaseController>()
+                                .databaseDownloadedSongList
+                                .any((test) =>
+                                    test['song_id'] == track?.songId &&
+                                    test['isDownloaded'] == 1),
+                            replacement: Center(
+                                child: AppButtonWidget(
+                                    width: double.maxFinite,
+                                    borderColor:
+                                        AppColors.white.withOpacity(0.5),
+                                    borderRadius: 10.r,
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 12.h),
+                                    onPressed: () async {
+                                      await Get.find<ArtistsController>()
+                                          .albumTrackSongApi(
+                                              artistsId: track?.id ?? 0,
+                                              albumId: track?.albumsId ?? 0,
+                                              genresId: track?.genresId)
+                                          .then((_) {
+                                        Get.back();
+                                        DownloadService.instance
+                                            .downloadAllSongs(
+                                                tracksDataMode: Get.find<
+                                                        ArtistsController>()
+                                                    .albumTrackSongData);
+                                      });
+                                      print(
+                                          "this is id${track?.id}, this is album id ${track?.albumsId},this is genereid ${track?.genresId}");
+                                      // DownloadService.instance.downloadAllSongs(tracksDataMode:);
+                                      Get.back();
+                                    },
+                                    btnName: "",
+                                    child: Padding(
+                                      padding: EdgeInsets.only(left: 10.0.w),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                              height: 35.h,
+                                              width: 35.h,
+                                              decoration: BoxDecoration(
+                                                  color: AppColors.primary,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          30.r)),
+                                              child: Center(
+                                                  child: Icon(
+                                                Icons.download,
+                                                color: AppColors.black,
+                                                size: 20,
+                                              ))),
+                                          10.horizontalSpace,
+                                          AppTextWidget(
+                                            txtTitle: "Download Album",
+                                            fontSize: 12,
                                           ),
-                                        ))),
-                                child: Center(
-                                    child: AppButtonWidget(
-                                        width: double.maxFinite,
-                                        borderColor:
-                                            AppColors.white.withOpacity(0.5),
-                                        borderRadius: 10.r,
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 12.h),
-                                        onPressed: () {
-                                          Get.find<BaseController>().deleteSong(
-                                              songId: Get.find<BaseController>()
-                                                  .databaseDownloadedSongList
-                                                  .firstWhere((v) =>
-                                                      v['song_id'] ==
-                                                      track?.songId),
-                                              isAlbum: false,
-                                              index: index);
-                                          Get.back();
-                                        },
-                                        btnName: "",
-                                        child: Padding(
-                                          padding:
-                                              EdgeInsets.only(left: 10.0.w),
-                                          child: Row(
-                                            children: [
-                                              Container(
-                                                  height: 35.h,
-                                                  width: 35.h,
-                                                  decoration: BoxDecoration(
-                                                      color: AppColors.yellow,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              30.r)),
-                                                  child: Center(
-                                                      child: Icon(
-                                                    Icons.download,
-                                                    color: AppColors.black,
-                                                    size: 20,
-                                                  ))),
-                                              10.horizontalSpace,
-                                              Flexible(
-                                                child: AppTextWidget(
-                                                  txtTitle:
-                                                      "Remove Download Album",
-                                                  fontSize: 15,
-                                                ),
-                                              ),
-                                            ],
+                                        ],
+                                      ),
+                                    ))),
+                            child: Center(
+                                child: AppButtonWidget(
+                                    width: double.maxFinite,
+                                    borderColor:
+                                        AppColors.white.withOpacity(0.5),
+                                    borderRadius: 10.r,
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 12.h),
+                                    onPressed: () {
+                                      Get.find<BaseController>().deleteSong(
+                                          songId: Get.find<BaseController>()
+                                              .databaseDownloadedSongList
+                                              .firstWhere((v) =>
+                                                  v['song_id'] ==
+                                                  track?.songId),
+                                          isAlbum: false,
+                                          index: index);
+                                      Get.back();
+                                    },
+                                    btnName: "",
+                                    child: Padding(
+                                      padding: EdgeInsets.only(left: 10.0.w),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                              height: 35.h,
+                                              width: 35.h,
+                                              decoration: BoxDecoration(
+                                                  color: AppColors.yellow,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          30.r)),
+                                              child: Center(
+                                                  child: Icon(
+                                                Icons.download,
+                                                color: AppColors.black,
+                                                size: 20,
+                                              ))),
+                                          10.horizontalSpace,
+                                          Flexible(
+                                            child: AppTextWidget(
+                                              txtTitle: "Remove Download Album",
+                                              fontSize: 15,
+                                            ),
                                           ),
-                                        )))),
-                          ),
+                                        ],
+                                      ),
+                                    )))),
+                      ),
                 20.verticalSpace,
               ],
             ),

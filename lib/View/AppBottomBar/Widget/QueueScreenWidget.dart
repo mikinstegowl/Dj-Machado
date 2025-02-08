@@ -409,7 +409,12 @@ class _QueueScreenWidgetState extends State<QueueScreenWidget> {
                             AppButtonWidget(
                               btnName: '',
                               child: const Icon(Icons.more_vert, color: AppColors.white),
-                              onPressed: () => _showOptionsDialog(index),
+                              onPressed: () {
+                                _showOptionsDialog(index);
+                                setState(() {
+
+                                });
+                              },
                             ),
                             SizedBox(width: 10.w),
                             ReorderableDragStartListener(
@@ -496,5 +501,8 @@ class _QueueScreenWidgetState extends State<QueueScreenWidget> {
         ),
       ),
     );
+    setState(() {
+
+    });
   }
 }

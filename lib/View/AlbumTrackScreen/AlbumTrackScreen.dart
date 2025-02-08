@@ -27,7 +27,6 @@ class AlbumTrackScreen extends GetView<ArtistsController> {
   @override
   Widget build(BuildContext context) {
     final albumId = Get.arguments;
-    print("this is s ${albumId}");
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.darkgrey,
@@ -144,7 +143,8 @@ class AlbumTrackScreen extends GetView<ArtistsController> {
                               ),
                             ),
                             Obx(() => AppTextWidget(
-                                  txtTitle: controller.albumTrackSongData?.data
+                                  txtTitle:
+                                  controller.albumTrackSongData?.data
                                                   ?.length ==
                                               Get.find<BaseController>()
                                                   .songData1
@@ -167,11 +167,12 @@ class AlbumTrackScreen extends GetView<ArtistsController> {
                               onYesCalled: () {
                                 Get.dialog(
                                     AddPlaylistDialog(onCreateNewPlayList: () {
-                                  CreatePlayListDialog(
-                                    onCreateTap: () {},
-                                  );
+                                  Get.dialog(CreatePlayListDialog(
+                                    // onCreateTap: () {
+                                    //
+                                    // },
+                                  ));
                                 }, onAddToExisting: () {
-                                  print("this is albumId ${albumId}");
                                   Get.dialog(
                                       ExistingPlaylistDialog(albumId: albumId));
                                 }));

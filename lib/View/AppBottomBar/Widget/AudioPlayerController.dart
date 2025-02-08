@@ -76,28 +76,30 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        SafeArea(
-          child: Obx(() => Visibility(
-              visible: Get.find<BaseController>().showMusicMenu.value,
-              child: GestureDetector(
-                onTap: () async {
-                  if (Get.find<BaseController>().containerHeight! < 1) {
-                    setState(() {
-                      Get.find<BaseController>().containerHeight?.value =
-                          MediaQuery.sizeOf(context).height.spMax;
-                      Get.find<BaseController>().update();
-                    });
-                  } else {}
-                },
-                child: GetBuilder<HomeController>(
-                    id: 'SongScreen',
-                    init: Get.find<HomeController>(),
-                    builder: (controller) {
-                      return AnimatedContainer(
+    return SafeArea(
+      child: Obx(() => Visibility(
+          visible: Get.find<BaseController>().showMusicMenu.value,
+          child: GestureDetector(
+            onTap: () async {
+              if (Get.find<BaseController>().containerHeight! < 1) {
+                setState(() {
+                  Get.find<BaseController>().containerHeight?.value =
+                      MediaQuery.sizeOf(context).height.spMax;
+                  Get.find<BaseController>().update();
+
+
+                });
+              } else {}
+            },
+            child: GetBuilder<HomeController>(
+                id: 'SongScreen',
+                init: Get.find<HomeController>(),
+                builder: (controller) {
+                  return Stack(
+                    children: [
+                      AnimatedContainer(
                         padding: EdgeInsets.symmetric(vertical: 10.h),
-                        duration: const Duration(milliseconds: 500),
+                        duration: const Duration(milliseconds: 200),
                         width: double.maxFinite,
                         height:
                             (Get.find<BaseController>().containerHeight?.value ??
@@ -179,7 +181,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                             ),
                                           ),
                                           const Spacer(),
-                                          InkWell(
+                                          PlayerService.instance.audioPlayer.sequenceState?.currentSource?.tag.isLive != true?    InkWell(
                                             onTap: () {
                                               Get.toNamed(RoutesName.cueScreen);
                                             },
@@ -188,7 +190,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                               size: 35.r,
                                               color: AppColors.white,
                                             ),
-                                          ),
+                                          ):SizedBox.shrink(),
                                           10.horizontalSpace
                                         ],
                                       ),
@@ -199,7 +201,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                   .connectivityResult[0] ==
                                               ConnectivityResult.none
                                           ? ''
-                                          : PlayerService.instance.audioPlayer.sequenceState?.currentSource?.tag.title !='Radio'? "${Get.find<HomeController>().songDetailDataModel?.data?[0].totalPlayed} Plays":'',
+                                          : PlayerService.instance.audioPlayer.sequenceState?.currentSource?.tag.isLive != true? "${Get.find<HomeController>().songDetailDataModel?.data?[0].totalPlayed} Plays":'',
                                       fontSize: 18,
                                       fontWeight: FontWeight.w600,
                                     ),
@@ -236,7 +238,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                     .featureArtists
                                                     ?.length ==
                                                 3
-                                        ? Padding(
+                                        ? PlayerService.instance.audioPlayer.sequenceState?.currentSource?.tag.isLive != true? Padding(
                                             padding: EdgeInsets.only(top: 10.0),
                                             child: Container(
                                               height: 150.h,
@@ -278,7 +280,6 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                           .featureArtists?[index];
                                                   return InkWell(
                                                     onTap: () async {
-
                                                       await Get.find<
                                                               ArtistsController>()
                                                           .trackSongApi(
@@ -291,14 +292,6 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                                 artist?.artistsId ??
                                                                     0)
                                                             .then((_) {
-                                                          Get.find<BaseController>()
-                                                              .initialListOfBool(Get
-                                                                          .find<
-                                                                              ArtistsController>()
-                                                                      .tracksDataModel
-                                                                      ?.data
-                                                                      ?.length ??
-                                                                  0);
                                                           Get.toNamed(
                                                               RoutesName
                                                                   .songsAlbumsScreen,
@@ -355,7 +348,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                               ),
                                             ),
                                           )
-                                        : Column(
+                                        : PlayerService.instance.audioPlayer.sequenceState?.currentSource?.tag.isLive != true? Column(
                                             children: [
                                               // Carousel Slider
                                               Align(
@@ -502,20 +495,13 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                 ),
                                               ),
                                             ],
-                                          ),
+                                          ):SizedBox.shrink():SizedBox.shrink(),
                                     10.verticalSpace,
                                     Get.find<BaseController>()
                                                 .connectivityResult[0] ==
                                             ConnectivityResult.none
                                         ? SizedBox.shrink()
-                                        : PlayerService
-                                                    .instance
-                                                    .audioPlayer
-                                                    .sequenceState
-                                                    ?.currentSource
-                                                    ?.tag
-                                                    .title !=
-                                                'Radio'
+                                        : PlayerService.instance.audioPlayer.sequenceState?.currentSource?.tag.isLive != true
                                             ? Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.spaceEvenly,
@@ -622,7 +608,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                                         .sequenceState
                                                                         ?.currentSource
                                                                         ?.tag
-                                                                        .id))
+                                                                        .id.toString()??''))
                                                         ? () {}
                                                         : () async {
                                                             await DownloadService.instance
@@ -705,7 +691,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                                               .sequenceState
                                                                               ?.currentSource
                                                                               ?.tag
-                                                                              .id))
+                                                                              .id.toString()??""))
                                                               ? "Downloaded"
                                                               : "Download",
                                                           color: Get.find<
@@ -718,7 +704,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                                               .sequenceState
                                                                               ?.currentSource
                                                                               ?.tag
-                                                                              .id))
+                                                                              .id.toString()??""))
                                                               ? AppColors.primary
                                                               : AppColors.white,
                                                           icons: Get.find<
@@ -731,7 +717,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                                               .sequenceState
                                                                               ?.currentSource
                                                                               ?.tag
-                                                                              .id))
+                                                                              .id.toString()??""))
                                                               ? Icons.cloud
                                                               : Icons.cloud_outlined,
                                                           count:
@@ -835,9 +821,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                               )
                                             : SizedBox.shrink(),
                                     10.verticalSpace,
-                                    PlayerService.instance.audioPlayer.sequenceState
-                                                ?.currentSource?.tag.title !=
-                                            'Radio'
+                                    PlayerService.instance.audioPlayer.sequenceState?.currentSource?.tag.isLive != true
                                         ? StreamBuilder(
                                             stream: PlayerService.instance
                                                 .audioPlayer.positionStream,
@@ -888,8 +872,8 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                       LoopMode.one) {
                                                     PlayerService.instance
                                                         .currentSongIndex++;
-                                                    PlayerService.instance
-                                                        .autoSongPlay();
+                                                    // PlayerService.instance
+                                                    //     .autoSongPlay();
                                                   }
                                                 }
                                               } else {
@@ -930,14 +914,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceAround,
                                       children: [
-                                        PlayerService
-                                                    .instance
-                                                    .audioPlayer
-                                                    .sequenceState
-                                                    ?.currentSource
-                                                    ?.tag
-                                                    .title !=
-                                                'Radio'
+                                        PlayerService.instance.audioPlayer.sequenceState?.currentSource?.tag.isLive != true
                                             ? InkWell(
                                                 onTap: () {
                                                   PlayerService.instance.audioPlayer
@@ -962,14 +939,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                 ),
                                               )
                                             : SizedBox.shrink(),
-                                        PlayerService
-                                                    .instance
-                                                    .audioPlayer
-                                                    .sequenceState
-                                                    ?.currentSource
-                                                    ?.tag
-                                                    .title !=
-                                                'Radio'
+                                        PlayerService.instance.audioPlayer.sequenceState?.currentSource?.tag.isLive != true
                                             ? InkWell(
                                                 onTap: () {
                                                   PlayerService.instance
@@ -996,14 +966,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                 builder: (context, snapDuration) {
                                                   print(
                                                       "is it radio? ${PlayerService.instance.audioPlayer.sequenceState?.currentSource?.tag.title}");
-                                                  if (PlayerService
-                                                          .instance
-                                                          .audioPlayer
-                                                          .sequenceState
-                                                          ?.currentSource
-                                                          ?.tag
-                                                          .title !=
-                                                      "Radio") {
+                                                  if (PlayerService.instance.audioPlayer.sequenceState?.currentSource?.tag.isLive != true) {
                                                     if (currentSource == null ||
                                                         snapDuration.data == null ||
                                                         PlayerService
@@ -1066,14 +1029,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                 });
                                           },
                                         ),
-                                        PlayerService
-                                                    .instance
-                                                    .audioPlayer
-                                                    .sequenceState
-                                                    ?.currentSource
-                                                    ?.tag
-                                                    .title !=
-                                                'Radio'
+                                        PlayerService.instance.audioPlayer.sequenceState?.currentSource?.tag.isLive != true
                                             ? InkWell(
                                                 onTap: () {
                                                   PlayerService.instance.audioPlayer
@@ -1087,25 +1043,20 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                 ),
                                               )
                                             : SizedBox.shrink(),
-                                        PlayerService
-                                                    .instance
-                                                    .audioPlayer
-                                                    .sequenceState
-                                                    ?.currentSource
-                                                    ?.tag
-                                                    .title !=
-                                                'Radio'
+                                        PlayerService.instance.audioPlayer.sequenceState?.currentSource?.tag.isLive != true
                                             ? InkWell(
                                                 onTap: () {
-                                                  PlayerService.instance.audioPlayer
-                                                      .setLoopMode(PlayerService
-                                                                  .instance
-                                                                  .audioPlayer
-                                                                  .loopMode ==
-                                                              LoopMode.all
-                                                          ? LoopMode.one
-                                                          : LoopMode.all);
-                                                  setState(() {});
+
+                                                  setState(() {
+                                                    PlayerService.instance.audioPlayer
+                                                        .setLoopMode(PlayerService
+                                                        .instance
+                                                        .audioPlayer
+                                                        .loopMode ==
+                                                        LoopMode.all
+                                                        ? LoopMode.one
+                                                        : LoopMode.all);
+                                                  });
                                                 },
                                                 child: Icon(
                                                   Icons.repeat,
@@ -1225,14 +1176,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                         .audioPlayer.playingStream,
                                                     builder:
                                                         (context, snapPlaying) {
-                                                          if (PlayerService
-                                                              .instance
-                                                              .audioPlayer
-                                                              .sequenceState
-                                                              ?.currentSource
-                                                              ?.tag
-                                                              .title !=
-                                                              'Radio'){ if (!snapPlaying.hasData ||
+                                                          if (PlayerService.instance.audioPlayer.sequenceState?.currentSource?.tag.isLive != true){ if (!snapPlaying.hasData ||
                                                           PlayerService
                                                                   .instance
                                                                   .audioPlayer
@@ -1312,7 +1256,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                               .instance.audioPlayer.loopMode ==
                                           LoopMode.one) {
                                         PlayerService.instance.currentSongIndex++;
-                                        PlayerService.instance.autoSongPlay();
+                                        // PlayerService.instance.autoSongPlay();
                                       }
                                       // Get.find<HomeController>().update;
                                     }
@@ -1408,14 +1352,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                   stream: PlayerService.instance
                                                       .audioPlayer.playingStream,
                                                   builder: (context, snapPlaying) {
-                                                    if (PlayerService
-                                                            .instance
-                                                            .audioPlayer
-                                                            .sequenceState
-                                                            ?.currentSource
-                                                            ?.tag
-                                                            .title !=
-                                                        'Radio') {
+                                                    if (PlayerService.instance.audioPlayer.sequenceState?.currentSource?.tag.isLive != true) {
                                                       if (!snapPlaying.hasData ||
                                                           PlayerService
                                                                   .instance
@@ -1482,11 +1419,14 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                     ),
                                   );
                                 }),
-                      );
-                    }),
-              ))),
-        ),
-      ],
+                      ),
+                      // Obx(()=>Visibility(
+                      //   visible: Get.find<ArtistsController>().isLoading.value,
+                      //     child: AppLoder()))
+                    ],
+                  );
+                }),
+          ))),
     );
   }
 }

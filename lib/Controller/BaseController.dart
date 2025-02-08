@@ -139,19 +139,24 @@ class BaseController extends GetxController {
   RxInt selectedIndex = 0.obs;
   RxString routeNameNavi = 'homeScreen'.obs;
 
-  void onItemTapped(int index,) {
+  void onItemTapped(int index,BuildContext context) {
 
      switch(index){
        case 0:
          Get.offNamed(RoutesName.homeScreen);
+         // Navigator.of(context).push(MaterialPageRoute(builder: (context)=>HomeScreen()));
          case 1:
          Get.offNamed(RoutesName.exploreScreen);
+         //   Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ExplorScreen()));
          case 2:
          Get.offNamed(RoutesName.mixesScreen);
+         // Navigator.of(context).push(MaterialPageRoute(builder: (context)=>MixesScreen()));
          case 3:
          Get.offNamed(RoutesName.artistsScreen);
+         // Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ArtistsScreen()));
          case 4:
          Get.offNamed(RoutesName.myLibraryScreen);
+         //   Navigator.of(context).push(MaterialPageRoute(builder: (context)=>MyLibraryScreen()));
          update();
     }
   }
@@ -257,6 +262,8 @@ class BaseController extends GetxController {
       };
       SongDatabaseService().insertAlbum(album).then((_) {
         fetchDatabaseAlbumSong();
+        Get.find<BaseController>().convertStringToList1(
+            album_id: albumTrack?.data?[index ?? 0].albumsId);
       });
     } catch (e) {
       isDownloading.value = false;
@@ -277,6 +284,8 @@ class BaseController extends GetxController {
           .updateAlbum(isAlbum??false ?albumId??0 :albumTrack?.data?[index ?? 0].albumsId ?? 0, album)
           .then((_) {
         fetchDatabaseAlbumSong();
+        Get.find<BaseController>().convertStringToList1(
+            album_id: isAlbum??false ?albumId : albumTrack?.data?[index ?? 0].albumsId);
       });
     } catch (e) {
       isDownloading.value = false;

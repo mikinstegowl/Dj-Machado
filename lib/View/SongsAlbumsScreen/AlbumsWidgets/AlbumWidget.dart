@@ -42,6 +42,7 @@ class AlbumWidget extends StatelessWidget {
                       print("object${tracksDataModel?.data?[index].albumsName}");
                       Get.dialog(OptionDialog(
                         isAlbum: true,
+                        isQueue: true,
                         listOfTrackData:tracksDataModel?.data?.map((e)=>MixesTracksData(
                         song: tracksDataModel?.data?[index].song,
                           id: tracksDataModel?.data?[index].id,
@@ -88,7 +89,7 @@ class AlbumWidget extends StatelessWidget {
                     image: tracksDataModel?.data?[index].albumsImage ?? '',
                   );
                 }),
-            // 20.verticalSpace,
+            10.verticalSpace,
           ],
         ): Center(child: AppTextWidget(txtTitle: "No Data Found"),),
         // Obx(()=>Visibility(

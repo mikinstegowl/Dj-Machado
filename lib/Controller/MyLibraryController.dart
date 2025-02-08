@@ -426,6 +426,7 @@ class MyLibraryController extends BaseController{
           .updatePlaylist(playList12??false ?playlistId??0 :playListTrack?.data?[index ?? 0].playListId ?? 0, playList)
           .then((_) {
         fetchDatabasePlayListSong();
+
       });
     } catch (e) {
       print(e.toString());

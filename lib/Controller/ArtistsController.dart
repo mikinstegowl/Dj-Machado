@@ -5,6 +5,7 @@ import 'package:newmusicappmachado/Controller/HomeController.dart';
 import 'package:newmusicappmachado/Utils/ChopperClientService/HomeChopperService.dart';
 import 'package:newmusicappmachado/Utils/Models/ArtistsDataModel.dart';
 import 'package:newmusicappmachado/Utils/Models/MixesTracksDataModel.dart';
+import 'package:newmusicappmachado/Utils/Router/RouteName.dart';
 import 'package:newmusicappmachado/Utils/SharedPreferences/PrefKeys.dart';
 import 'package:newmusicappmachado/Utils/SharedPreferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
@@ -202,9 +203,12 @@ class ArtistsController extends BaseController {
 
   Future<void> trackSongApi(int artistsId) async {
     try {
+      Get.find<ArtistsController>().showLoader(true);
       Get.find<HomeController>().showLoader(true);
       Get.find<ExplorController>().showLoader(true);
-      Get.find<ArtistsController>().showLoader(true);
+      if(tracksDataModel?.data?.isNotEmpty??false){
+        tracksDataModel?.data?.clear();
+      }
       final queryParameters = {
         "user_id": UserPreference.getValue(key: PrefKeys.userId),
         "limit": 30,
@@ -220,13 +224,13 @@ class ArtistsController extends BaseController {
         update();
         maxPages2 = tracksDataModel?.lastPage;
         artistId1 = artistsId;
-        Get.find<ArtistsController>().showLoader(false);
+        // Get.find<ArtistsController>().showLoader(false);
         Get.find<HomeController>().showLoader(false);
         Get.find<ExplorController>().showLoader(false);
 
       }
     } catch (e) {
-      Get.find<ArtistsController>().showLoader(false);
+      // Get.find<ArtistsController>().showLoader(false);
       Get.find<HomeController>().showLoader(false);
       Get.find<ExplorController>().showLoader(false);
       update();
@@ -238,9 +242,12 @@ class ArtistsController extends BaseController {
 
   Future<void> albumSongApi(int artistsId) async {
     try {
-      Get.find<ArtistsController>().showLoader(false);
+      Get.find<ArtistsController>().showLoader(true);
       Get.find<HomeController>().showLoader(true);
       Get.find<ExplorController>().showLoader(true);
+      if(albumDataModel?.data?.isNotEmpty??false){
+        albumDataModel?.data?.clear();
+      }
       final queryParameters = {
         "user_id": UserPreference.getValue(key: PrefKeys.userId),
         "limit": 30,

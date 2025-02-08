@@ -142,7 +142,7 @@ class AuthController extends BaseController {
         fcm = await FirebaseMessaging.instance.getToken();
       } else {
         fcm = await FirebaseMessaging.instance.getToken();
-        print(fcm);
+        print("this is fcm${fcm}");
       }
       final param = {
         "type": 0,
@@ -191,7 +191,7 @@ class AuthController extends BaseController {
         fcm = await FirebaseMessaging.instance.getToken();
       } else {
         fcm = await FirebaseMessaging.instance.getToken();
-        print(fcm);
+        print("this is fcm${fcm}");
       }
       final param = {
         "login_id": userNameOrEmailTextEditingController.text,
