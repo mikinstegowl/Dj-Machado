@@ -31,10 +31,10 @@ import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class SongsAlbumsScreen extends StatefulWidget {
-  final int id;
-  final String type;
+  final int? id;
+  final String? type;
   const SongsAlbumsScreen({
-    super.key, required this.id, required this.type,
+    super.key,  this.id,  this.type,
   });
 
   @override
@@ -53,22 +53,22 @@ class _SongsAlbumsScreenState extends State<SongsAlbumsScreen> {
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      isGenre=!(widget.type.toLowerCase()=='Artists'.toLowerCase());
-      if(widget.type.toLowerCase()=='Artists'.toLowerCase()){
+      isGenre=!(widget.type?.toLowerCase()=='Artists'.toLowerCase());
+      if(widget.type?.toLowerCase()=='Artists'.toLowerCase()){
       await  Get.find<ArtistsController>().trackSongApi(
-            widget.id);
+            widget.id??0);
       await  Get.find<
             ArtistsController>()
             .albumSongApi(
-            widget.id);
+            widget.id??0);
         setState(() {
           songsDataModel = Get.find<ArtistsController>().tracksDataModel;
           albumDataModel = Get.find<ArtistsController>().albumDataModel; });
 
       }else{
-       await Get.find<HomeController>().selectedGenreAlbumApi(widget.id);
+       await Get.find<HomeController>().selectedGenreAlbumApi(widget.id??0);
        await Get.find<HomeController>()
-            .selectedGenreSongsApi(widget.id);
+            .selectedGenreSongsApi(widget.id??0);
         setState(() {
           songsDataModel = Get.find<HomeController>().songsTracksDataModel;
           albumDataModel = Get.find<HomeController>().albumTracksDataModel;

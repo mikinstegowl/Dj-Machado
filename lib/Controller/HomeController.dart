@@ -248,6 +248,8 @@ class HomeController extends BaseController {
   Future<void> selectedGenreAlbumApi(int genresId) async {
     try {
       showLoader(true);
+      Get.find<HomeController>().showLoader(true);
+      Get.find<ExplorController>().showLoader(true);
       final queryParameters = {
         "user_id": UserPreference.getValue(key: PrefKeys.userId),
         "limit": 30,
@@ -261,15 +263,21 @@ class HomeController extends BaseController {
       if (response.body?.status == 200) {
         albumTracksDataModel = response.body;
         showLoader(false);
+        Get.find<HomeController>().showLoader(false);
+        Get.find<ExplorController>().showLoader(false);
         update();
       } else {
         albumTracksDataModel = null;
         showLoader(false);
+        Get.find<HomeController>().showLoader(false);
+        Get.find<ExplorController>().showLoader(false);
         update();
       }
       update();
     } catch (e) {
       showLoader(false);
+      Get.find<HomeController>().showLoader(false);
+      Get.find<ExplorController>().showLoader(false);
       update();
       log('', error: e.toString(), name: "Selected Genre Api Data Error");
     }

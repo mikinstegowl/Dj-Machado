@@ -39,6 +39,7 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
         leadingWidth:isHome?null: 140.w,
         leading:
             isHome?InkWell(
+              splashColor: AppColors.primary,
               onTap: () async {
                 await Get.find<AdvanceSearchController>()
                     .recentSearch()

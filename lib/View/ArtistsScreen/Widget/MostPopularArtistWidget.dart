@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:newmusicappmachado/View/SongsAlbumsScreen/SongsAlbumsScreen.dart';
 
 class MostPopularArtistWidget extends GetView<ArtistsController> {
   final List<PopularArtist>? data;
@@ -43,16 +44,18 @@ class MostPopularArtistWidget extends GetView<ArtistsController> {
               itemBuilder: (context, index) {
                 return InkWell(
                   onTap: () async {
-                    await controller
-                        .trackSongApi(data?[index].artistsId ?? 0)
-                        .then((_) async {
-                      await controller
-                          .albumSongApi(data?[index].artistsId ?? 0)
-                          .then((_) {
-                        Get.toNamed(RoutesName.songsAlbumsScreen,
-                            arguments: {"isGenre": false,'homeScreen':false});
-                      });
-                    });
+                    // await controller
+                    //     .trackSongApi(data?[index].artistsId ?? 0)
+                    //     .then((_) async {
+                    //   await controller
+                    //       .albumSongApi(data?[index].artistsId ?? 0)
+                    //       .then((_) {
+                    //     Get.toNamed(RoutesName.songsAlbumsScreen,
+                    //         arguments: {"isGenre": false,'homeScreen':false});
+                    //   });
+                    // });
+                    Navigator.of(context).push(MaterialPageRoute(builder: (_)=>SongsAlbumsScreen(id: data?[index].artistsId??0, type: 'Artists')));
+
                   },
                   child: Container(
                     color: AppColors.black,

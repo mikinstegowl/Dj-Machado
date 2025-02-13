@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:newmusicappmachado/Utils/Models/ExplorDataModel.dart';
 import 'package:get/get.dart';
+import 'package:newmusicappmachado/View/SongsAlbumsScreen/SongsAlbumsScreen.dart';
 
 class HomeGenreWidget extends StatelessWidget {
   final String? trendingCategoryName;
@@ -79,11 +80,12 @@ class HomeGenreWidget extends StatelessWidget {
                           .genresName,
                       subtitle: "",
                       onTap: () {
-                        Get.find<HomeController>().selectedGenreAlbumApi(data?[index].genresId??0).then((_){
-                          Get.find<HomeController>().selectedGenreSongsApi(data?[index].genresId??0).then((_){
-                            Get.toNamed(RoutesName.songsAlbumsScreen,arguments: {'isGenre':true,'homeScreen':true});
-                          });
-                        });
+                        // Get.find<HomeController>().selectedGenreAlbumApi(data?[index].genresId??0).then((_){
+                        //   Get.find<HomeController>().selectedGenreSongsApi(data?[index].genresId??0).then((_){
+                        //     Get.toNamed(RoutesName.songsAlbumsScreen,arguments: {'isGenre':true,'homeScreen':true});
+                        //   });
+                        // });
+                        Navigator.of(context).push(MaterialPageRoute(builder: (_)=>SongsAlbumsScreen(id: data?[index].genresId??0, type: 'Genres')));
                       },
                     )
                 );

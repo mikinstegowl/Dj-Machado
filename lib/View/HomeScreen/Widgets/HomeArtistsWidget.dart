@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:newmusicappmachado/Utils/Models/ExplorDataModel.dart';
+import 'package:newmusicappmachado/View/SongsAlbumsScreen/SongsAlbumsScreen.dart';
 
 class HomeArtistsWidget extends StatelessWidget {
   final String? trendingCategoryName;
@@ -71,11 +72,13 @@ class HomeArtistsWidget extends StatelessWidget {
                         // Get.find<BaseController>().showLoader(true);
                         // Get.find<BaseController>().update();
 
-                        Get.find<ArtistsController>().trackSongApi(data?[index].artistsId??0).then((_){
-                          Get.find<ArtistsController>().albumSongApi(data?[index].artistsId??0).then((_){
-                            Get.toNamed(RoutesName.songsAlbumsScreen);
-                          });
-                        });
+                        // Get.find<ArtistsController>().trackSongApi(data?[index].artistsId??0).then((_){
+                        //   Get.find<ArtistsController>().albumSongApi(data?[index].artistsId??0).then((_){
+                        //     Get.toNamed(RoutesName.songsAlbumsScreen);
+                        //   });
+                        // });
+                        Navigator.of(context).push(MaterialPageRoute(builder: (_)=>SongsAlbumsScreen(id: data?[index].artistsId??0, type: 'Artists')));
+
                       },
                       title: data?[index]
                           .artistsName,

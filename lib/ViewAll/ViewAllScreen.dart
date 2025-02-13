@@ -32,6 +32,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:newmusicappmachado/View/SongsAlbumsScreen/SongsAlbumsScreen.dart';
 
 class ViewAllScreen extends StatefulWidget {
   final String? title;
@@ -48,105 +49,108 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
     // TODO: implement initState
     super.initState();
 
-      // Get.find<BaseController>().googleAdsApi(homeChopperService: AppChopperClient().getChopperService<HomeChopperService>());
-
-
+    // Get.find<BaseController>().googleAdsApi(homeChopperService: AppChopperClient().getChopperService<HomeChopperService>());
   }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         SafeArea(
           child: GetBuilder<BaseController>(
-            init: Get.find<BaseController>(),
-            builder: (controller) {
-              return Scaffold(
-                  backgroundColor: AppColors.darkgrey,
-                  extendBodyBehindAppBar: true,
-                  bottomSheet: AudioPlayerController(),
-                  bottomNavigationBar: BottomBarWidget(mainScreen: false,routeName: 'Explore',indx: 1,),
-                  appBar: AppBar(
-                    toolbarHeight: 80.h,
-                    bottom: PreferredSize(
-                      preferredSize: Size.fromHeight(1.h), // Adjust height as needed
-                      child: const Divider(
-                        thickness: 2,
-                      ),
+              init: Get.find<BaseController>(),
+              builder: (controller) {
+                return Scaffold(
+                    backgroundColor: AppColors.darkgrey,
+                    extendBodyBehindAppBar: true,
+                    bottomSheet: AudioPlayerController(),
+                    bottomNavigationBar: BottomBarWidget(
+                      mainScreen: false,
+                      routeName: 'Explore',
+                      indx: 1,
                     ),
-                    leadingWidth: 140.w,
-                    leading: InkWell(
-                      splashColor: AppColors.primary,
-                      onTap: () {
-                        Get.back();
-                      },
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            height: 25.h,
-                            width: 25.h,
-                            AppAssets.backIcon,
-                            // size: 28.r,
-                          ),
-                          5.horizontalSpace,
-                          const AppTextWidget(
-                            fontWeight: FontWeight.w600,
-                            txtTitle: "Back",
-                            txtColor: AppColors.white,
-                            fontSize: 18,
-                          )
-                        ],
-                      ),
-                    ),
-                    backgroundColor: AppColors.transparent,
-                    centerTitle: true,
-                    title: AppTextWidget(
-                      txtTitle: widget.title?? '',
-                      txtColor: AppColors.white,
-                      fontSize: 18,
-                    ),
-                    actions: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20),
-                        child: InkWell(
-                          onTap: () {
-                            Get.toNamed(RoutesName.advanceSearchScreen);
-                          },
-                          child: Icon(
-                            AppIcons.search,
-                            size: 30.r,
-                            color: AppColors.primary,
-                          ),
+                    appBar: AppBar(
+                      toolbarHeight: 80.h,
+                      bottom: PreferredSize(
+                        preferredSize:
+                            Size.fromHeight(1.h), // Adjust height as needed
+                        child: const Divider(
+                          thickness: 2,
                         ),
                       ),
-                    ],
-                  ),
-                  body: Container(
-                    height: MediaQuery.sizeOf(context).height,
-                    padding: EdgeInsets.only(top:65.h),
-                    decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            fit: BoxFit.fill,
-                            image: AssetImage(AppAssets.backGroundImage))
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 10.h,left: 0.w,right: 0.w),
-                      child: SingleChildScrollView(
-                        child: Column(
+                      leadingWidth: 140.w,
+                      leading: InkWell(
+                        splashColor: AppColors.primary,
+                        onTap: () {
+                          Get.back();
+                        },
+                        child: Row(
                           children: [
-                              CommonAdWidget(),
-                            10.verticalSpace,
-                            trendingSCategoryWidget(),
-                            50.verticalSpace,
+                            Image.asset(
+                              height: 25.h,
+                              width: 25.h,
+                              AppAssets.backIcon,
+                              // size: 28.r,
+                            ),
+                            5.horizontalSpace,
+                            const AppTextWidget(
+                              fontWeight: FontWeight.w600,
+                              txtTitle: "Back",
+                              txtColor: AppColors.white,
+                              fontSize: 18,
+                            )
                           ],
                         ),
                       ),
+                      backgroundColor: AppColors.transparent,
+                      centerTitle: true,
+                      title: AppTextWidget(
+                        txtTitle: widget.title ?? '',
+                        txtColor: AppColors.white,
+                        fontSize: 18,
+                      ),
+                      actions: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 20),
+                          child: InkWell(
+                            onTap: () {
+                              Get.toNamed(RoutesName.advanceSearchScreen);
+                            },
+                            child: Icon(
+                              AppIcons.search,
+                              size: 30.r,
+                              color: AppColors.primary,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ));
-            }
-          ),
+                    body: Container(
+                      height: MediaQuery.sizeOf(context).height,
+                      padding: EdgeInsets.only(top: 65.h),
+                      decoration: const BoxDecoration(
+                          image: DecorationImage(
+                              fit: BoxFit.fill,
+                              image: AssetImage(AppAssets.backGroundImage))),
+                      child: Padding(
+                        padding:
+                            EdgeInsets.only(top: 10.h, left: 0.w, right: 0.w),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              CommonAdWidget(),
+                              10.verticalSpace,
+                              trendingSCategoryWidget(),
+                              50.verticalSpace,
+                            ],
+                          ),
+                        ),
+                      ),
+                    ));
+              }),
         ),
-        Obx(()=> Visibility(
-          visible: Get.find<ExplorController>().isLoading.value,
+        Obx(() => Visibility(
+            visible: Get.find<ExplorController>().isLoading.value,
             child: AppLoder()))
       ],
     );
@@ -158,7 +162,7 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
       case TrendingSCategoryFor.artists:
         return GridView.builder(
             physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
+            shrinkWrap: true,
             padding: EdgeInsets.only(left: 10.w),
             itemCount:
                 Get.find<ExplorController>().viewAllDataModel?.data?.length,
@@ -172,15 +176,23 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
               return MostPlayedSongsWidget(
                 isTrending: true,
                 onTap: () {
-                  Get.find<ArtistsController>().trackSongApi(Get.find<ExplorController>()
-                      .viewAllDataModel
-                      ?.data?[index].artistsId??0).then((_){
-                    Get.find<ArtistsController>().albumSongApi(Get.find<ExplorController>()
-                        .viewAllDataModel
-                        ?.data?[index].artistsId??0).then((_){
-                      Get.toNamed(RoutesName.songsAlbumsScreen);
-                    });
-                  });
+                  // Get.find<ArtistsController>().trackSongApi(Get.find<ExplorController>()
+                  //     .viewAllDataModel
+                  //     ?.data?[index].artistsId??0).then((_){
+                  //   Get.find<ArtistsController>().albumSongApi(Get.find<ExplorController>()
+                  //       .viewAllDataModel
+                  //       ?.data?[index].artistsId??0).then((_){
+                  //     Get.toNamed(RoutesName.songsAlbumsScreen);
+                  //   });
+                  // });
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => SongsAlbumsScreen(
+                          id: Get.find<ExplorController>()
+                                  .viewAllDataModel
+                                  ?.data?[index]
+                                  .artistsId ??
+                              0,
+                          type: 'Artists')));
                 },
                 title: Get.find<ExplorController>()
                     .viewAllDataModel
@@ -196,11 +208,11 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
 
       case TrendingSCategoryFor.genres:
         return GridView.builder(
-          physics: const NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             padding: EdgeInsets.only(left: 10.w),
             itemCount:
-            Get.find<ExplorController>().viewAllDataModel?.data?.length,
+                Get.find<ExplorController>().viewAllDataModel?.data?.length,
             scrollDirection: Axis.vertical,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
@@ -211,16 +223,32 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
               return MostPlayedSongsWidget(
                 isTrending: true,
                 onTap: () {
-                  Get.find<ExplorController>().selectedGenreAlbumApi(Get.find<ExplorController>()
-                      .viewAllDataModel
-                      ?.data?[index].genresId??0).then((_){
-                    Get.find<ExplorController>().selectedGenreSongsApi(Get.find<ExplorController>()
-                        .viewAllDataModel
-                        ?.data?[index].genresId??0).then((_){
-                      Get.toNamed(RoutesName.songsAlbumsScreen,arguments: {'isGenre':true,'homeScreen': false});
-                    });
-                  });
-
+                  // Get.find<ExplorController>()
+                  //     .selectedGenreAlbumApi(Get.find<ExplorController>()
+                  //             .viewAllDataModel
+                  //             ?.data?[index]
+                  //             .genresId ??
+                  //         0)
+                  //     .then((_) {
+                  //   Get.find<ExplorController>()
+                  //       .selectedGenreSongsApi(Get.find<ExplorController>()
+                  //               .viewAllDataModel
+                  //               ?.data?[index]
+                  //               .genresId ??
+                  //           0)
+                  //       .then((_) {
+                  //     Get.toNamed(RoutesName.songsAlbumsScreen,
+                  //         arguments: {'isGenre': true, 'homeScreen': false});
+                  //   });
+                  // });
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => SongsAlbumsScreen(
+                          id: Get.find<ExplorController>()
+                                  .viewAllDataModel
+                                  ?.data?[index]
+                                  .genresId ??
+                              0,
+                          type: 'Genres')));
                 },
                 title: Get.find<ExplorController>()
                     .viewAllDataModel
@@ -235,12 +263,12 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
             });
 
       case TrendingSCategoryFor.radio:
-       return  GridView.builder(
-         physics: const NeverScrollableScrollPhysics(),
+        return GridView.builder(
+            physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             padding: EdgeInsets.only(left: 10.w),
             itemCount:
-            Get.find<ExplorController>().viewAllDataModel?.data?.length,
+                Get.find<ExplorController>().viewAllDataModel?.data?.length,
             scrollDirection: Axis.vertical,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
@@ -260,10 +288,14 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                   //     Get.toNamed(RoutesName.songsAlbumsScreen,arguments: {'isGenre':true});
                   //   });
                   // });
-                  PlayerService.instance.createPlaylist(Get.find<HomeController>().viewAllDataModel?.data, index: index,type: "radio",id: Get.find<ExplorController>()
-                      .viewAllDataModel
-                      ?.data?[index]
-                      .songId);
+                  PlayerService.instance.createPlaylist(
+                      Get.find<HomeController>().viewAllDataModel?.data,
+                      index: index,
+                      type: "radio",
+                      id: Get.find<ExplorController>()
+                          .viewAllDataModel
+                          ?.data?[index]
+                          .songId);
                 },
                 title: Get.find<ExplorController>()
                     .viewAllDataModel
@@ -277,13 +309,12 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
               );
             });
       case TrendingSCategoryFor.tracks:
-
-        return  GridView.builder(
+        return GridView.builder(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             padding: EdgeInsets.only(left: 10.w),
             itemCount:
-            Get.find<ExplorController>().viewAllDataModel?.data?.length,
+                Get.find<ExplorController>().viewAllDataModel?.data?.length,
             scrollDirection: Axis.vertical,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
@@ -292,62 +323,85 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                 mainAxisSpacing: 10),
             itemBuilder: (context, index) {
               return MostPlayedSongsWidget(
-                onOptionTap: (){
+                onOptionTap: () {
                   Get.dialog(OptionDialog(
                     isQueue: true,
-                    listOfTrackData:Get.find<ExplorController>()
-                        .viewAllDataModel
-                        ?.data?.map((e)=>MixesTracksData(
+                    listOfTrackData: Get.find<ExplorController>()
+                            .viewAllDataModel
+                            ?.data
+                            ?.map((e) => MixesTracksData(
+                                  song: Get.find<ExplorController>()
+                                      .viewAllDataModel
+                                      ?.data?[index]
+                                      .song,
+                                  songId: Get.find<ExplorController>()
+                                      .viewAllDataModel
+                                      ?.data?[index]
+                                      .songId,
+                                  songImage: Get.find<ExplorController>()
+                                      .viewAllDataModel
+                                      ?.data?[index]
+                                      .songImage,
+                                  originalImage: Get.find<ExplorController>()
+                                      .viewAllDataModel
+                                      ?.data?[index]
+                                      .originalImage,
+                                  songName: Get.find<ExplorController>()
+                                      .viewAllDataModel
+                                      ?.data?[index]
+                                      .songName,
+                                  favouritesStatus: Get.find<ExplorController>()
+                                      .viewAllDataModel
+                                      ?.data?[index]
+                                      .favouritesStatus,
+                                  songArtist: Get.find<ExplorController>()
+                                      .viewAllDataModel
+                                      ?.data?[index]
+                                      .songArtist,
+                                ))
+                            .toList() ??
+                        [],
+                    index: index,
+                    track: MixesTracksData(
                       song: Get.find<ExplorController>()
                           .viewAllDataModel
-                          ?.data?[index].song,
+                          ?.data?[index]
+                          .song,
                       songId: Get.find<ExplorController>()
                           .viewAllDataModel
-                          ?.data?[index].songId,
+                          ?.data?[index]
+                          .songId,
                       songImage: Get.find<ExplorController>()
                           .viewAllDataModel
-                          ?.data?[index].songImage,
+                          ?.data?[index]
+                          .songImage,
                       originalImage: Get.find<ExplorController>()
                           .viewAllDataModel
-                          ?.data?[index].originalImage,
+                          ?.data?[index]
+                          .originalImage,
                       songName: Get.find<ExplorController>()
                           .viewAllDataModel
-                          ?.data?[index].songName,
+                          ?.data?[index]
+                          .songName,
                       favouritesStatus: Get.find<ExplorController>()
                           .viewAllDataModel
-                          ?.data?[index].favouritesStatus,
+                          ?.data?[index]
+                          .favouritesStatus,
                       songArtist: Get.find<ExplorController>()
                           .viewAllDataModel
-                          ?.data?[index].songArtist,
-                    )).toList()??[] ,index: index,track:MixesTracksData(
-                    song: Get.find<ExplorController>()
-                        .viewAllDataModel
-                        ?.data?[index].song,
-                    songId: Get.find<ExplorController>()
-                        .viewAllDataModel
-                        ?.data?[index].songId,
-                    songImage: Get.find<ExplorController>()
-                        .viewAllDataModel
-                        ?.data?[index].songImage,
-                    originalImage:Get.find<ExplorController>()
-                        .viewAllDataModel
-                        ?.data?[index].originalImage,
-                    songName: Get.find<ExplorController>()
-                        .viewAllDataModel
-                        ?.data?[index].songName,
-                    favouritesStatus: Get.find<ExplorController>()
-                        .viewAllDataModel
-                        ?.data?[index].favouritesStatus,
-                    songArtist:Get.find<ExplorController>()
-                        .viewAllDataModel
-                        ?.data?[index].songArtist,
-                  ),));
+                          ?.data?[index]
+                          .songArtist,
+                    ),
+                  ));
                 },
                 onTap: () {
-                  PlayerService.instance.createPlaylist(Get.find<ExplorController>().viewAllDataModel?.data, index: index,id: Get.find<ExplorController>()
-                      .viewAllDataModel
-                      ?.data?[index]
-                      .songId);
+                  PlayerService.instance.createPlaylist(
+                      Get.find<ExplorController>().viewAllDataModel?.data,
+                      index: index,
+                      id: Get.find<ExplorController>()
+                          .viewAllDataModel
+                          ?.data?[index]
+                          .songId);
                 },
                 title: Get.find<ExplorController>()
                     .viewAllDataModel
@@ -365,20 +419,19 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
             });
 
       case TrendingSCategoryFor.albums:
-        return  GridView.builder(
+        return GridView.builder(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             padding: EdgeInsets.zero,
             // padding: EdgeInsets.only(left: 10.w),
             itemCount:
-            Get.find<ExplorController>().viewAllDataModel?.data?.length,
+                Get.find<ExplorController>().viewAllDataModel?.data?.length,
             // scrollDirection: Axis.vertical,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 mainAxisExtent: 230.w,
                 crossAxisSpacing: 10,
-                mainAxisSpacing: 10
-            ),
+                mainAxisSpacing: 10),
             itemBuilder: (context, index) {
               return MostPlayedSongsWidget(
                 onOptionTap: () async {
@@ -412,7 +465,7 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                             // Song and artist name
                             AppTextWidget(
                               txtTitle:
-                              '${Get.find<ExplorController>().viewAllDataModel?.data?[index].albumsName}',
+                                  '${Get.find<ExplorController>().viewAllDataModel?.data?[index].albumsName}',
                               txtColor: AppColors.white,
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -435,32 +488,33 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                                             Get.dialog(CreatePlayListDialog(
                                               onCreateTap: () async {
                                                 Get.find<ExplorController>()
-                                                    .viewAllDataModel
-                                                    ?.data?[index]
-                                                    .playlistStatus =
-                                                await Get.dialog(
-                                                    ExistingPlaylistDialog(
-                                                      songId:
-                                                      Get.find<ExplorController>()
-                                                          .viewAllDataModel
-                                                          ?.data?[index]
-                                                          .songId,
-                                                    ));
+                                                        .viewAllDataModel
+                                                        ?.data?[index]
+                                                        .playlistStatus =
+                                                    await Get.dialog(
+                                                        ExistingPlaylistDialog(
+                                                  songId: Get.find<
+                                                          ExplorController>()
+                                                      .viewAllDataModel
+                                                      ?.data?[index]
+                                                      .songId,
+                                                ));
                                               },
                                             ));
                                           },
                                           onAddToExisting: () async {
                                             Get.find<ExplorController>()
-                                                .viewAllDataModel
-                                                ?.data?[index]
-                                                .playlistStatus =
-                                            await Get.dialog(
-                                                ExistingPlaylistDialog(
-                                                  songId: Get.find<ExplorController>()
+                                                    .viewAllDataModel
+                                                    ?.data?[index]
+                                                    .playlistStatus =
+                                                await Get.dialog(
+                                                    ExistingPlaylistDialog(
+                                              songId:
+                                                  Get.find<ExplorController>()
                                                       .viewAllDataModel
                                                       ?.data?[index]
                                                       .songId,
-                                                ));
+                                            ));
                                           },
                                         ));
                                         // track?.playlistStatus =   await Get.find<MyLibraryController>().playListSongAddApi(playlistsId: track?.playListId,songId: track?.songId??0);
@@ -469,10 +523,10 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                                         // Get.find<MyLibraryController>().playListSongDataModel?.data?.removeWhere((v)=>v.playlistStatus==false);
                                       },
                                       message: Get.find<ExplorController>()
-                                          .viewAllDataModel
-                                          ?.data?[index]
-                                          .playlistStatus ??
-                                          false
+                                                  .viewAllDataModel
+                                                  ?.data?[index]
+                                                  .playlistStatus ??
+                                              false
                                           ? "Are you sure you want to remove this song from PlayList?"
                                           : "Are you sure you want to add this song to PlayList?"));
                                 },
@@ -488,13 +542,13 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                                           decoration: BoxDecoration(
                                               color: AppColors.primary,
                                               borderRadius:
-                                              BorderRadius.circular(30.r)),
+                                                  BorderRadius.circular(30.r)),
                                           child: Center(
                                               child: Icon(
-                                                Icons.playlist_add,
-                                                color: AppColors.black,
-                                                size: 20,
-                                              ))),
+                                            Icons.playlist_add,
+                                            color: AppColors.black,
+                                            size: 20,
+                                          ))),
                                       10.horizontalSpace,
                                       AppTextWidget(
                                         txtTitle: "Add To Playlist",
@@ -513,10 +567,10 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                                 onPressed: () async {
                                   await Get.find<ArtistsController>()
                                       .albumsAndTracks(
-                                      albumId: Get.find<HomeController>()
-                                          .viewAllDataModel
-                                          ?.data?[index]
-                                          .albumsId)
+                                          albumId: Get.find<HomeController>()
+                                              .viewAllDataModel
+                                              ?.data?[index]
+                                              .albumsId)
                                       .then((_) {
                                     // DownloadService.instance.playListDownloadAllSongs(
                                     //     tracksDataMode: Get.find<ArtistsController>().albumTrackSongData?.data
@@ -536,13 +590,13 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                                           decoration: BoxDecoration(
                                               color: AppColors.primary,
                                               borderRadius:
-                                              BorderRadius.circular(30.r)),
+                                                  BorderRadius.circular(30.r)),
                                           child: Center(
                                               child: Icon(
-                                                Icons.download,
-                                                color: AppColors.black,
-                                                size: 20,
-                                              ))),
+                                            Icons.download,
+                                            color: AppColors.black,
+                                            size: 20,
+                                          ))),
                                       10.horizontalSpace,
                                       AppTextWidget(
                                         txtTitle: "Download Song",
@@ -568,10 +622,15 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                   ));
                 },
                 onTap: () {
-                  Get.find<ArtistsController>().albumsAndTracks(albumId:Get.find<ExplorController>()
-                      .viewAllDataModel
-                      ?.data?[index].albumsId??0).then((_){
-                      Get.toNamed(RoutesName.albumTrackScreen);
+                  Get.find<ArtistsController>()
+                      .albumsAndTracks(
+                          albumId: Get.find<ExplorController>()
+                                  .viewAllDataModel
+                                  ?.data?[index]
+                                  .albumsId ??
+                              0)
+                      .then((_) {
+                    Get.toNamed(RoutesName.albumTrackScreen);
                   });
                   // PlayerService.instance.createPlaylist(Get.find<ExplorController>().viewAllDataModel?.data, index,);
                 },
@@ -591,12 +650,12 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
             });
 
       case TrendingSCategoryFor.mixes:
-        return  GridView.builder(
+        return GridView.builder(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             padding: EdgeInsets.only(left: 10.w),
             itemCount:
-            Get.find<ExplorController>().viewAllDataModel?.data?.length,
+                Get.find<ExplorController>().viewAllDataModel?.data?.length,
             scrollDirection: Axis.vertical,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
@@ -607,15 +666,19 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
               return MostPlayedSongsWidget(
                 isTrending: true,
                 onTap: () {
-                  Get.find<MixesController>().mixesSubCategoryAndTracksApi(
-                      mixesId: Get.find<ExplorController>().viewAllDataModel
-                          ?.data?[index].mixesId)
+                  Get.find<MixesController>()
+                      .mixesSubCategoryAndTracksApi(
+                          mixesId: Get.find<ExplorController>()
+                              .viewAllDataModel
+                              ?.data?[index]
+                              .mixesId)
                       .then((_) {
-                    Get.toNamed(RoutesName.mixesSongScreen,
-                        arguments: {
-                          'title': Get.find<ExplorController>().viewAllDataModel
-                              ?.data?[index].mixesName
-                        });
+                    Get.toNamed(RoutesName.mixesSongScreen, arguments: {
+                      'title': Get.find<ExplorController>()
+                          .viewAllDataModel
+                          ?.data?[index]
+                          .mixesName
+                    });
                   });
                   // PlayerService.instance.createPlaylist(Get.find<ExplorController>().viewAllDataModel?.data, index,);
                 },
@@ -631,12 +694,12 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
               );
             });
       case TrendingSCategoryFor.playList:
-        return  GridView.builder(
+        return GridView.builder(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             padding: EdgeInsets.only(left: 10.w),
             itemCount:
-            Get.find<ExplorController>().viewAllDataModel?.data?.length,
+                Get.find<ExplorController>().viewAllDataModel?.data?.length,
             scrollDirection: Axis.vertical,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
@@ -647,15 +710,19 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
               return MostPlayedSongsWidget(
                 isTrending: true,
                 onTap: () {
-                  Get.find<MixesController>().plaListTrackSongApi(
-                      flowActivoPlaylistId: Get.find<ExplorController>().viewAllDataModel
-                          ?.data?[index].flowactivoplaylistId)
+                  Get.find<MixesController>()
+                      .plaListTrackSongApi(
+                          flowActivoPlaylistId: Get.find<ExplorController>()
+                              .viewAllDataModel
+                              ?.data?[index]
+                              .flowactivoplaylistId)
                       .then((_) {
-                    Get.toNamed(RoutesName.mixesSongScreen,
-                        arguments: {
-                          'title': Get.find<ExplorController>().viewAllDataModel
-                              ?.data?[index].flowactivoplaylistName
-                        });
+                    Get.toNamed(RoutesName.mixesSongScreen, arguments: {
+                      'title': Get.find<ExplorController>()
+                          .viewAllDataModel
+                          ?.data?[index]
+                          .flowactivoplaylistName
+                    });
                   });
                   // PlayerService.instance.createPlaylist(Get.find<ExplorController>().viewAllDataModel?.data, index,);
                 },

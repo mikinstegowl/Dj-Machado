@@ -18,6 +18,7 @@ import 'package:newmusicappmachado/View/ArtistsScreen/Widget/MostPopularArtistWi
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:newmusicappmachado/View/SongsAlbumsScreen/SongsAlbumsScreen.dart';
 
 class ArtistsScreen extends GetView<ArtistsController> {
   const ArtistsScreen({super.key});
@@ -149,24 +150,30 @@ class ArtistsScreen extends GetView<ArtistsController> {
                                       ...artistList.map((artist) {
                                         return ListTile(
                                           onTap: () async {
-                                            await Get.find<ArtistsController>()
-                                                .trackSongApi(
-                                                artist.artistsId ?? 0)
-                                                .then((_) async {
-                                              await Get.find<ArtistsController>()
-                                                  .albumSongApi(
-                                                  artist.artistsId ?? 0)
-                                                  .then((_) {
-                                                // Get.find<BaseController>().initialListOfBool(controller.tracksDataModel?.data?.length??0);
-                                                Get.toNamed(
-                                                    RoutesName
-                                                        .songsAlbumsScreen,
-                                                    arguments: {
-                                                      'isGenre': false,
-                                                      'homeScreen': false
-                                                    });
-                                              });
-                                            });
+                                            // await Get.find<ArtistsController>()
+                                            //     .trackSongApi(
+                                            //     artist.artistsId ?? 0)
+                                            //     .then((_) async {
+                                            //   await Get.find<ArtistsController>()
+                                            //       .albumSongApi(
+                                            //       artist.artistsId ?? 0)
+                                            //       .then((_) {
+                                            //     // Get.find<BaseController>().initialListOfBool(controller.tracksDataModel?.data?.length??0);
+                                            //     Get.toNamed(
+                                            //         RoutesName
+                                            //             .songsAlbumsScreen,
+                                            //         arguments: {
+                                            //           'isGenre': false,
+                                            //           'homeScreen': false
+                                            //         });
+                                            //   });
+                                            // });
+                                            Navigator.of(context).push(MaterialPageRoute(builder: (_)=>SongsAlbumsScreen(id: artist.artistsId ?? 0, type: 'Artists')));
+                                            // Get.find<ArtistsController>().trackSongApi(artist.artistsId ?? 0).then((_){
+                                            //   Get.find<ArtistsController>().albumSongApi(artist.artistsId ?? 0).then((_){
+                                            //     Get.toNamed(RoutesName.songsAlbumsScreen);
+                                            //   });
+                                            // });
                                           },
                                           leading: Container(
                                             width: 50.h,
