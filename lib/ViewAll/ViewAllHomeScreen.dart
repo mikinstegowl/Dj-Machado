@@ -179,23 +179,6 @@ class _ViewAllHomeScreenState extends State<ViewAllHomeScreen> {
                       ?.data?[index]
                       .artistsId ??
                       0, type: 'Artists')));
-                  // Get.find<ArtistsController>()
-                  //     .trackSongApi(Get.find<HomeController>()
-                  //             .viewAllDataModel
-                  //             ?.data?[index]
-                  //             .artistsId ??
-                  //         0)
-                  //     .then((_) {
-                  //   Get.find<ArtistsController>()
-                  //       .albumSongApi(Get.find<HomeController>()
-                  //               .viewAllDataModel
-                  //               ?.data?[index]
-                  //               .artistsId ??
-                  //           0)
-                  //       .then((_) {
-                  //     Get.toNamed(RoutesName.songsAlbumsScreen);
-                  //   });
-                  // });
                 },
                 title: Get.find<HomeController>()
                     .viewAllDataModel

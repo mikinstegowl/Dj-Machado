@@ -303,7 +303,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                       //   });
                                                       // });
                                                       Navigator.of(context).push(MaterialPageRoute(builder: (_)=>SongsAlbumsScreen(id:  artist?.artistsId ??
-                                                          0, type: 'Artists')));
+                                                          0, type: 'Artists',fromMiniPlayer: true,)));
                                                       setState(() {
                                                         Get.find<BaseController>()
                                                             .containerHeight
@@ -422,7 +422,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                         //   });
                                                         // });
                                                         Navigator.of(context).push(MaterialPageRoute(builder: (_)=>SongsAlbumsScreen(id:  artist?.artistsId ??
-                                                            0, type: 'Artists')));
+                                                            0, type: 'Artists',fromMiniPlayer: true,)));
                                                         setState(() {
                                                           Get.find<BaseController>()
                                                               .containerHeight

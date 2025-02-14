@@ -380,6 +380,7 @@ class _HomeTrendingWidgetsState extends State<HomeTrendingWidgets> {
     Get.find<BaseController>().googleAdsApi(homeChopperService: AppChopperClient().getChopperService<HomeChopperService>());
     // TODO: implement initState
 
+    // print("this is try${widget.firstTrendingData?[0].trendingscategoryName}");
     super.initState();
   }
 
@@ -402,11 +403,14 @@ class _HomeTrendingWidgetsState extends State<HomeTrendingWidgets> {
         physics: const ClampingScrollPhysics(),
         itemCount: widget.firstTrendingData?.length??0,
         itemBuilder: (context, index) {
+          print("this is try${widget.firstTrendingData?[index].data == []}");
+          print("this is try${widget.firstTrendingData?[index].trendingscategoryName}");
+
           switch (TrendingSCategoryFor.values
               .firstWhere((e) => e.value == widget.firstTrendingData?[index].trendingscategoryFor)) {
             case TrendingSCategoryFor.artists:
               print("artists");
-              return HomeArtistsWidget(
+              return widget.firstTrendingData?[index].data?.isNotEmpty??false?HomeArtistsWidget(
                 onViewAll: () {
                   Get.find<HomeController>().viewAllDataApi(trendingscategoryId: widget.firstTrendingData?[index].trendingscategoryId, type: widget.firstTrendingData?[index].trendingscategoryFor).then((_){
                    if(mounted){
@@ -420,10 +424,10 @@ class _HomeTrendingWidgetsState extends State<HomeTrendingWidgets> {
                 data: widget.firstTrendingData?[index].data,
                 trendingCategoryName:
                 widget.firstTrendingData?[index].trendingscategoryName,
-              );
+              ):SizedBox.shrink();
             case TrendingSCategoryFor.genres:
               print("genres1");
-              return HomeGenreWidget(
+              return widget.firstTrendingData?[index].data?.isNotEmpty??false? HomeGenreWidget(
                 onViewAllTap: () {
                   Get.find<HomeController>().viewAllDataApi(type: widget.firstTrendingData?[index].trendingscategoryFor, trendingscategoryId: widget.firstTrendingData?[index].trendingscategoryId).then((_){
                     Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllHomeScreen(
@@ -435,11 +439,11 @@ class _HomeTrendingWidgetsState extends State<HomeTrendingWidgets> {
                 trendingCategoryName:
                 widget.firstTrendingData?[index].trendingscategoryName,
                 data: widget.firstTrendingData?[index].data,
-              );
+              ):SizedBox.shrink();
 
             case TrendingSCategoryFor.radio:
               print("radio");
-              return HomeRadioWidget(
+              return widget.firstTrendingData?[index].data?.isNotEmpty??false? HomeRadioWidget(
 
                 onViewAllTap: () {
                   Get.find<HomeController>().viewAllDataApi(type: widget.firstTrendingData?[index].trendingscategoryFor, trendingscategoryId: widget.firstTrendingData?[index].trendingscategoryId).then((_){
@@ -452,10 +456,10 @@ class _HomeTrendingWidgetsState extends State<HomeTrendingWidgets> {
                 trendingCategoryName:
                 widget.firstTrendingData?[index].trendingscategoryName,
                 data: widget.firstTrendingData?[index].data,
-              );
+              ):SizedBox.shrink();
             case TrendingSCategoryFor.tracks:
               print("tracks");
-              return HomeTrackWidget(
+              return widget.firstTrendingData?[index].data?.isNotEmpty??false?HomeTrackWidget(
                 onViewAllTap: () {
                   Get.find<HomeController>().viewAllDataApi(type: widget.firstTrendingData?[index].trendingscategoryFor, trendingscategoryId: widget.firstTrendingData?[index].trendingscategoryId).then((_){
                     Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllHomeScreen(
@@ -468,10 +472,11 @@ class _HomeTrendingWidgetsState extends State<HomeTrendingWidgets> {
                 trendingCategoryName:
                 widget.firstTrendingData?[index].trendingscategoryName,
                 data: widget.firstTrendingData?[index].data,
-              );
+              ):SizedBox.shrink();
             case TrendingSCategoryFor.mixes:
               print("mixes");
-              return HomeMixesWidget(
+              return widget.firstTrendingData?[index].data?.isNotEmpty??false? HomeMixesWidget(
+
                 onViewAllTap: () {
                   Get.find<HomeController>().viewAllDataApi(type: widget.firstTrendingData?[index].trendingscategoryFor, trendingscategoryId: widget.firstTrendingData?[index].trendingscategoryId).then((_){
                     Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllHomeScreen(
@@ -484,7 +489,7 @@ class _HomeTrendingWidgetsState extends State<HomeTrendingWidgets> {
                 widget.firstTrendingData?[index].trendingscategoryName,
                 data: widget.firstTrendingData?[index].data,
 
-              );
+              ):SizedBox.shrink();
             case TrendingSCategoryFor.albums:
               return HomeAlbumWidget(
                 onViewAllTap: () {
@@ -501,7 +506,7 @@ class _HomeTrendingWidgetsState extends State<HomeTrendingWidgets> {
                 data: widget.firstTrendingData?[index].data,
               );
             case TrendingSCategoryFor.playList:
-              return HomePlaylistWidget(
+              return widget.firstTrendingData?[index].data?.isNotEmpty??false? HomePlaylistWidget(
                 onViewAllTap: () {
                   Get.find<HomeController>().viewAllDataApi(type: widget.firstTrendingData?[index].trendingscategoryFor, trendingscategoryId: widget.firstTrendingData?[index].trendingscategoryId).then((_){
                     Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllHomeScreen(
@@ -513,7 +518,7 @@ class _HomeTrendingWidgetsState extends State<HomeTrendingWidgets> {
                 trendingCategoryName:
                 widget.firstTrendingData?[index].trendingscategoryName,
                 data: widget.firstTrendingData?[index].data, onPlaylistTap: () {  },
-              );
+              ): SizedBox.shrink();
             default:
               return SizedBox.shrink();
           }

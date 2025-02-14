@@ -50,7 +50,7 @@ class ExploreTrendingWidgets extends StatelessWidget {
               );
             case TrendingSCategoryFor.genres:
               print("genres1");
-              return ExploreGenreWidget(
+              return firstTrendingData?[index].data?.isNotEmpty??false? ExploreGenreWidget(
                 onViewAllTap: () {
                   print(firstTrendingData?[index].trendingscategoryId);
                   Get.find<ExplorController>().exploreViewAllDataApi(type: firstTrendingData?[index].trendingscategoryFor, flowavtivotrendingscategoryId: firstTrendingData?[index].trendingscategoryId).then((_){
@@ -63,11 +63,11 @@ class ExploreTrendingWidgets extends StatelessWidget {
                 trendingCategoryName:
                 firstTrendingData?[index].trendingscategoryName,
                 data: firstTrendingData?[index].data,
-              );
+              ):SizedBox.shrink();
 
             case TrendingSCategoryFor.radio:
               print("radio");
-              return HomeRadioWidget(
+              return  firstTrendingData?[index].data?.isNotEmpty??false? HomeRadioWidget(
                 onViewAllTap: () {
                   Get.find<ExplorController>().exploreViewAllDataApi(type: firstTrendingData?[index].trendingscategoryFor, flowavtivotrendingscategoryId: firstTrendingData?[index].trendingscategoryId).then((_){
                     Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllScreen(
@@ -79,10 +79,10 @@ class ExploreTrendingWidgets extends StatelessWidget {
                 trendingCategoryName:
                 firstTrendingData?[index].trendingscategoryName,
                 data: firstTrendingData?[index].data,
-              );
+              ):SizedBox.shrink();
             case TrendingSCategoryFor.tracks:
               print("tracks");
-              return HomeTrackWidget(
+              return  firstTrendingData?[index].data?.isNotEmpty??false? HomeTrackWidget(
                 onViewAllTap: () {
                   Get.find<ExplorController>().exploreViewAllDataApi(type: firstTrendingData?[index].trendingscategoryFor, flowavtivotrendingscategoryId: firstTrendingData?[index].trendingscategoryId).then((_){
                     Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllScreen(
@@ -94,10 +94,10 @@ class ExploreTrendingWidgets extends StatelessWidget {
                 trendingCategoryName:
                 firstTrendingData?[index].trendingscategoryName,
                 data: firstTrendingData?[index].data,
-              );
+              ):SizedBox.shrink();
             case TrendingSCategoryFor.mixes:
               print("mixes");
-              return HomeMixesWidget(
+              return  firstTrendingData?[index].data?.isNotEmpty??false? HomeMixesWidget(
                 onViewAllTap: () {
                   Get.find<ExplorController>().exploreViewAllDataApi(type: firstTrendingData?[index].trendingscategoryFor, flowavtivotrendingscategoryId: firstTrendingData?[index].trendingscategoryId).then((_){
                     Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllScreen(
@@ -109,9 +109,9 @@ class ExploreTrendingWidgets extends StatelessWidget {
                 trendingCategoryName:
                 firstTrendingData?[index].trendingscategoryName,
                 data: firstTrendingData?[index].data,
-              );
+              ):SizedBox.shrink();
             case TrendingSCategoryFor.albums:
-              return HomeAlbumWidget(
+              return firstTrendingData?[index].data?.isNotEmpty??false? HomeAlbumWidget(
                 onViewAllTap: () {
                   Get.find<ExplorController>().exploreViewAllDataApi(type: firstTrendingData?[index].trendingscategoryFor, flowavtivotrendingscategoryId: firstTrendingData?[index].trendingscategoryId).then((_){
                     Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllScreen(
@@ -123,9 +123,9 @@ class ExploreTrendingWidgets extends StatelessWidget {
                 trendingCategoryName:
                 firstTrendingData?[index].trendingscategoryName,
                 data: firstTrendingData?[index].data,
-              );
+              ):SizedBox.shrink();
             case TrendingSCategoryFor.playList:
-              return HomePlaylistWidget(
+              return firstTrendingData?[index].data?.isNotEmpty??false? HomePlaylistWidget(
                 onViewAllTap: () {
                   Get.find<ExplorController>().exploreViewAllDataApi(type: firstTrendingData?[index].trendingscategoryFor, flowavtivotrendingscategoryId: firstTrendingData?[index].trendingscategoryId).then((_){
                     Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllScreen(
@@ -137,7 +137,7 @@ class ExploreTrendingWidgets extends StatelessWidget {
                 trendingCategoryName:
                 firstTrendingData?[index].trendingscategoryName,
                 data: firstTrendingData?[index].data, onPlaylistTap: () {  },
-              );
+              ):SizedBox.shrink();
             default:
               return SizedBox.shrink();
           }

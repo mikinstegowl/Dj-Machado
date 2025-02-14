@@ -26,10 +26,11 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool showTitle;
   final bool isHome;
   final bool showBack;
+
   final Color? titleClr;
 
   const CommonAppBar(
-      {super.key, this.title, this.image, this.searchBarShow = true, this.showLogo=false, this.showImage=false, this.showTitle=true, this.isHome=false, this.showBack=true, this.titleClr});
+      {super.key, this.title, this.image, this.searchBarShow = true, this.showLogo=false, this.showImage=false, this.showTitle=true, this.isHome=false, this.showBack=true, this.titleClr,});
 
   @override
   Widget build(BuildContext context) {

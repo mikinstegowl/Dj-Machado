@@ -27,7 +27,7 @@ class HomeArtistsWidget extends StatelessWidget {
           crossAxisAlignment:
           CrossAxisAlignment.start,
           children: [
-            Padding(
+          data?.isNotEmpty?? false?  Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: 10.w, vertical: 10.h),
               child: Row(
@@ -48,7 +48,7 @@ class HomeArtistsWidget extends StatelessWidget {
                   )
                 ],
               ),
-            ),
+            ):SizedBox.shrink(),
             SizedBox(
               height: 230.h,
               child: GridView.builder(

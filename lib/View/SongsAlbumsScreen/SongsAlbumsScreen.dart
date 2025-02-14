@@ -33,8 +33,10 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 class SongsAlbumsScreen extends StatefulWidget {
   final int? id;
   final String? type;
+  final bool? fromMiniPlayer;
+
   const SongsAlbumsScreen({
-    super.key,  this.id,  this.type,
+    super.key,  this.id,  this.type, this.fromMiniPlayer,
   });
 
   @override
@@ -45,6 +47,7 @@ class _SongsAlbumsScreenState extends State<SongsAlbumsScreen> {
   String view = 'Songs';
   bool isGenre = false;
   bool homeScreen = true;
+
   TracksDataModel? songsDataModel;
   TracksDataModel? albumDataModel;
 
@@ -99,6 +102,7 @@ class _SongsAlbumsScreenState extends State<SongsAlbumsScreen> {
                 titleClr: AppColors.white,
                 title: songsDataModel?.mixesName ?? 'null',
                 searchBarShow: true,
+          showBack: widget.fromMiniPlayer??false? false:true,
               )
             : CommonAppBar(
                 title: songsDataModel?.mixesName ?? 'null',
@@ -106,6 +110,7 @@ class _SongsAlbumsScreenState extends State<SongsAlbumsScreen> {
                 showImage: true,
                 titleClr: AppColors.white,
                 searchBarShow: true,
+          showBack: widget.fromMiniPlayer??false? false:true,
               ),
         body: Stack(
           children: [
