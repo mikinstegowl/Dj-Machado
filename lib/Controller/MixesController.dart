@@ -19,18 +19,24 @@ class MixesController extends BaseController {
   }
 
   int  paginationInt = 1;
+  int  mixesSongPagination = 1;
 
   ScrollController scrollController = ScrollController();
+  ScrollController scrollController1 = ScrollController();
   @override
   void onInit() async {
     super.onInit();
     scrollController.addListener((){
       scrollListener();
     });
+    scrollController1.addListener((){
+      scrollListener1();
+    });
   }
 
 
   int? maxPages;
+  int? maxPages1;
   Future<void> scrollListener() async {
     print("client ${scrollController.hasClients}");
     if (scrollController.hasClients) {
@@ -46,21 +52,43 @@ class MixesController extends BaseController {
       }
     }
   }
+  Future<void> scrollListener1() async {
+
+    if (scrollController1.hasClients) {
+
+      if (scrollController1.position.pixels == scrollController1.position.maxScrollExtent) {
+        print("max ${paginationInt < maxPages1!}");
+        print("max ${maxPages1!}");
+        if (mixesSongPagination < maxPages1!) {
+          mixesSongPagination++;
+          print(mixesSongPagination);
+          await mixesSubCategoryAndTracksApi(mixesId: mixesId1); // Fetch next page
+        }
+      }
+    }
+  }
   MixesDataModel? mixesDataModel;
 
   Future<void> mixesApi() async {
     try {
       showLoader(true);
-      final queryParameters = {"filter": "Mixes", "limit": 50, "page": 1};
+      final queryParameters = {"filter": "Mixes", "limit": 50, "page": paginationInt};
       final response =
           await _homeChopperService.mixesApi(queryParameters: queryParameters);
       if (response.body?.status == 200) {
-        mixesDataModel = response.body;
-        maxPages = mixesDataModel?.lastPage;
-        showLoader(false);
+       if(paginationInt == 1){
+         mixesDataModel = response.body;
+         maxPages = mixesDataModel?.lastPage;
+         showLoader(false);
 
-        update(['mixes']);
-        update();
+         update(['mixes']);
+         update();
+       }else{
+         mixesDataModel?.data?.addAll(response.body?.data??[]);
+         showLoader(false);
+         update();
+
+       }
       } else {
         showLoader(false);
         update();
@@ -72,8 +100,9 @@ class MixesController extends BaseController {
     }
   }
 
-  TracksDataModel? mixesTracksDataModel;
 
+  TracksDataModel? mixesTracksDataModel;
+int? mixesId1;
   Future<void> mixesSubCategoryAndTracksApi({int? mixesId}) async {
     try {
       Get.find<HomeController>().
@@ -87,13 +116,25 @@ class MixesController extends BaseController {
         "filter": "Mixes",
         "recordtype": "Tracks",
         "mixes_id": mixesId,
-        "page": 1,
+        "page": mixesSongPagination,
       };
       final response = await _homeChopperService.mixesSubCategoryAndTracksApi(
           queryParameters: queryParameters);
       if (response.body?.status == 200) {
-        mixesTracksDataModel = response.body;
-        print(mixesTracksDataModel?.mostPlayed?.length);
+            if(mixesSongPagination ==1){
+          mixesTracksDataModel = response.body;
+          maxPages1 = mixesTracksDataModel?.lastPage;
+          mixesId1 = mixesId;
+          print(mixesTracksDataModel?.mostPlayed?.length);
+        }else{
+              mixesTracksDataModel?.data?.addAll(response.body?.data??[]);
+              Get.find<HomeController>().
+              showLoader(false);
+              Get.find<ExplorController>().
+              showLoader(false);
+              showLoader(false);
+              update();
+            }
       } else {
         mixesTracksDataModel = null;
       }

@@ -55,8 +55,8 @@ class _ViewAllHomeScreenState extends State<ViewAllHomeScreen> {
     return Stack(
       children: [
         SafeArea(
-          child: GetBuilder<BaseController>(
-              init: Get.find<BaseController>(),
+          child: GetBuilder<HomeController>(
+              init: Get.find<HomeController>(),
               builder: (controller) {
                 return Scaffold(
                     backgroundColor: AppColors.darkgrey,
@@ -134,12 +134,13 @@ class _ViewAllHomeScreenState extends State<ViewAllHomeScreen> {
                         padding:
                             EdgeInsets.only(top: 10.h, left: 0.w, right: 0.w),
                         child: SingleChildScrollView(
+                          controller: Get.find<HomeController>().controllerFor,
                           child: Column(
                             children: [
                               CommonAdWidget(),
                               10.verticalSpace,
                               trendingSCategoryWidget(),
-                              50.verticalSpace,
+                              60.verticalSpace,
                             ],
                           ),
                         ),
@@ -292,7 +293,8 @@ class _ViewAllHomeScreenState extends State<ViewAllHomeScreen> {
               );
             });
       case TrendingSCategoryFor.tracks:
-        return GridView.builder(
+        return
+          GridView.builder(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             padding: EdgeInsets.only(left: 10.w),

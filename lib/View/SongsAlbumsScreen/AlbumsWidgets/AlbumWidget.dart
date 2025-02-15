@@ -72,6 +72,9 @@ class AlbumWidget extends StatelessWidget {
                       ),));
                     },
                     onTap: () async {
+                      Get.find<ArtistsController>().paginationInt =1;
+                      Get.find<ArtistsController>().paginationAlbumSong =1;
+                      Get.find<ArtistsController>().paginationArtistSong =1;
                       Get.find<BaseController>().convertStringToList1(
                           album_id: tracksDataModel?.data?[index].albumsId);
                       await Get.find<ArtistsController>()

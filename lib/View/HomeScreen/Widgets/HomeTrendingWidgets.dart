@@ -412,6 +412,7 @@ class _HomeTrendingWidgetsState extends State<HomeTrendingWidgets> {
               print("artists");
               return widget.firstTrendingData?[index].data?.isNotEmpty??false?HomeArtistsWidget(
                 onViewAll: () {
+                  Get.find<HomeController>().paginationForTrending =1;
                   Get.find<HomeController>().viewAllDataApi(trendingscategoryId: widget.firstTrendingData?[index].trendingscategoryId, type: widget.firstTrendingData?[index].trendingscategoryFor).then((_){
                    if(mounted){
                      Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllHomeScreen(
@@ -429,6 +430,7 @@ class _HomeTrendingWidgetsState extends State<HomeTrendingWidgets> {
               print("genres1");
               return widget.firstTrendingData?[index].data?.isNotEmpty??false? HomeGenreWidget(
                 onViewAllTap: () {
+                  Get.find<HomeController>().paginationForTrending =1;
                   Get.find<HomeController>().viewAllDataApi(type: widget.firstTrendingData?[index].trendingscategoryFor, trendingscategoryId: widget.firstTrendingData?[index].trendingscategoryId).then((_){
                     Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllHomeScreen(
                       trendingscategoryFor: widget.firstTrendingData?[index].trendingscategoryFor,
@@ -446,6 +448,7 @@ class _HomeTrendingWidgetsState extends State<HomeTrendingWidgets> {
               return widget.firstTrendingData?[index].data?.isNotEmpty??false? HomeRadioWidget(
 
                 onViewAllTap: () {
+                  Get.find<HomeController>().paginationForTrending =1;
                   Get.find<HomeController>().viewAllDataApi(type: widget.firstTrendingData?[index].trendingscategoryFor, trendingscategoryId: widget.firstTrendingData?[index].trendingscategoryId).then((_){
                     Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllHomeScreen(
                       trendingscategoryFor: widget.firstTrendingData?[index].trendingscategoryFor,
@@ -461,6 +464,7 @@ class _HomeTrendingWidgetsState extends State<HomeTrendingWidgets> {
               print("tracks");
               return widget.firstTrendingData?[index].data?.isNotEmpty??false?HomeTrackWidget(
                 onViewAllTap: () {
+                  Get.find<HomeController>().paginationForTrending =1;
                   Get.find<HomeController>().viewAllDataApi(type: widget.firstTrendingData?[index].trendingscategoryFor, trendingscategoryId: widget.firstTrendingData?[index].trendingscategoryId).then((_){
                     Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllHomeScreen(
                       trendingscategoryFor: widget.firstTrendingData?[index].trendingscategoryFor,
@@ -478,6 +482,7 @@ class _HomeTrendingWidgetsState extends State<HomeTrendingWidgets> {
               return widget.firstTrendingData?[index].data?.isNotEmpty??false? HomeMixesWidget(
 
                 onViewAllTap: () {
+                  Get.find<HomeController>().paginationForTrending =1;
                   Get.find<HomeController>().viewAllDataApi(type: widget.firstTrendingData?[index].trendingscategoryFor, trendingscategoryId: widget.firstTrendingData?[index].trendingscategoryId).then((_){
                     Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllHomeScreen(
                       trendingscategoryFor: widget.firstTrendingData?[index].trendingscategoryFor,
@@ -493,6 +498,7 @@ class _HomeTrendingWidgetsState extends State<HomeTrendingWidgets> {
             case TrendingSCategoryFor.albums:
               return HomeAlbumWidget(
                 onViewAllTap: () {
+                  Get.find<HomeController>().paginationForTrending =1;
                   Get.find<HomeController>().viewAllDataApi(type: widget.firstTrendingData?[index].trendingscategoryFor, trendingscategoryId: widget.firstTrendingData?[index].trendingscategoryId).then((_){
                     Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllHomeScreen(
                       trendingscategoryFor: widget.firstTrendingData?[index].trendingscategoryFor,
@@ -508,6 +514,7 @@ class _HomeTrendingWidgetsState extends State<HomeTrendingWidgets> {
             case TrendingSCategoryFor.playList:
               return widget.firstTrendingData?[index].data?.isNotEmpty??false? HomePlaylistWidget(
                 onViewAllTap: () {
+                  Get.find<HomeController>().paginationForTrending =1;
                   Get.find<HomeController>().viewAllDataApi(type: widget.firstTrendingData?[index].trendingscategoryFor, trendingscategoryId: widget.firstTrendingData?[index].trendingscategoryId).then((_){
                     Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ViewAllHomeScreen(
                       trendingscategoryFor: widget.firstTrendingData?[index].trendingscategoryFor,

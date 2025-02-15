@@ -85,10 +85,16 @@ class ArtistsController extends BaseController {
       final response =
           await _homeChopperService.artistApi(queryParameters: queryParameters);
       if (response.body?.status == 200) {
-        artistsDataModel = response.body;
-        maxPages = artistsDataModel?.lastPage;
-        groupArtistsByFirstChar();
-        showLoader(false);
+            if(paginationInt ==1){
+          artistsDataModel = response.body;
+          maxPages = artistsDataModel?.lastPage;
+          groupArtistsByFirstChar();
+          showLoader(false);
+        }else{
+              artistsDataModel?.data?.addAll(response.body?.data??[]);
+              showLoader(false);
+              update();
+            }
       } else {
         showLoader(false);
         Get.snackbar("Error", response.body?.message ?? '');
@@ -220,14 +226,20 @@ class ArtistsController extends BaseController {
       final response = await _homeChopperService.mixesSubCategoryAndTracksApi(
           queryParameters: queryParameters);
       if (response.body?.status == 200) {
-        tracksDataModel = response.body;
-        update();
-        maxPages2 = tracksDataModel?.lastPage;
-        artistId1 = artistsId;
-        // Get.find<ArtistsController>().showLoader(false);
-        Get.find<HomeController>().showLoader(false);
-        Get.find<ExplorController>().showLoader(false);
-
+            if (paginationArtistSong ==1) {
+          tracksDataModel = response.body;
+          update();
+          maxPages2 = tracksDataModel?.lastPage;
+          artistId1 = artistsId;
+          // Get.find<ArtistsController>().showLoader(false);
+          Get.find<HomeController>().showLoader(false);
+          Get.find<ExplorController>().showLoader(false);
+        }else{
+              tracksDataModel?.data?.addAll(response.body?.data??[]);
+              Get.find<HomeController>().showLoader(false);
+              Get.find<ExplorController>().showLoader(false);
+              update();
+            }
       }
     } catch (e) {
       // Get.find<ArtistsController>().showLoader(false);
@@ -269,7 +281,7 @@ class ArtistsController extends BaseController {
         update();
       } else {
         print("object");
-        albumDataModel = null;
+        // albumDataModel = null;
         Get.find<ArtistsController>().showLoader(false);
         Get.find<HomeController>().showLoader(false);
         Get.find<ExplorController>().showLoader(false);
@@ -292,19 +304,14 @@ class ArtistsController extends BaseController {
   int? maxPages3;
   // int? artistId1;
   Future<void> scrollListener3() async {
-    print("client ${scrollControllerForAlbumSong.hasClients}");
     if (scrollControllerForAlbumSong.hasClients) {
-      print(
-          "ture sate ${scrollControllerForAlbumSong.position.pixels == scrollControllerForAlbumSong.position.maxScrollExtent}");
       if (scrollControllerForAlbumSong.position.pixels ==
           scrollControllerForAlbumSong.position.maxScrollExtent) {
-        print("max ${paginationAlbumSong < maxPages2!}");
-        print("max $maxPages2");
-        if (paginationAlbumSong < maxPages2!) {
+        if (paginationAlbumSong < maxPages3!) {
           paginationAlbumSong++;
           print(paginationAlbumSong);
           await albumTrackSongApi(
-              artistsId: artistId1, albumId: albumId1, genresId: genresId1);
+              artistsId: artistId1 ==0 ? null: artistId1, albumId: albumId1, genresId: genresId1 ==0? null:genresId1);
           // Fetch next page
         }
       }
@@ -339,17 +346,29 @@ class ArtistsController extends BaseController {
       final response = await _homeChopperService.mixesSubCategoryAndTracksApi(
           queryParameters: queryParameters);
       if (response.body?.status == 200) {
-        albumTrackSongData = response.body;
-        maxPages3 = albumTrackSongData?.lastPage;
-        artistId1 = artistsId;
-        albumId1 = albumId ?? 0;
-        genresId1 = genresId ?? 0;
-        showLoader(false);
-        update();
+        if(paginationAlbumSong == 1){
+          albumTrackSongData = response.body;
+          maxPages3 = albumTrackSongData?.lastPage;
+          artistId1 = artistsId;
+          albumId1 = albumId ?? 0;
+          genresId1 = genresId ?? 0;
+          showLoader(false);
+          update();
+        }else{
+          print("object");
+          albumTrackSongData?.data?.addAll(response.body?.data??[]);
+          print(albumTrackSongData?.data?.length);
+          showLoader(false);
+          // albumTrackSongData = null;
+          update();
+        }
       } else {
         print("object");
+        // albumTrackSongData?.data?.addAll(response.body?.data??[]);
+        // print(albumTrackSongData?.data?.length);
+        artistsDataModel = null;
         showLoader(false);
-        albumTrackSongData = null;
+        // albumTrackSongData = null;
         update();
       }
     } catch (e) {

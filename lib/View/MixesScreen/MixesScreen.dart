@@ -54,6 +54,7 @@ class MixesScreen extends GetView<MixesController> {
                                   itemBuilder: (context, index) {
                                     return InkWell(
                                       onTap: () async {
+                                        controller.mixesSongPagination = 1;
                                         await controller
                                             .mixesSubCategoryAndTracksApi(
                                             mixesId: controller.mixesDataModel

@@ -142,7 +142,7 @@ class SongsWidget extends StatelessWidget {
                 ],
               );
             }),
-          30.verticalSpace,
+          50.verticalSpace,
         ],
       ):Center(child: AppTextWidget(txtTitle: "No Data Found"),);
   }

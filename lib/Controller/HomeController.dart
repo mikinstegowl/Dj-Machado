@@ -49,6 +49,9 @@ class HomeController extends BaseController {
     scrollController.addListener((){
       scrollListener();
     });
+    controllerFor.addListener((){
+      scrollListenerFor();
+    });
   }
 
   GenresModel? genresModel;
@@ -170,7 +173,7 @@ class HomeController extends BaseController {
 
 
   Future<void> scrollListener() async {
-    print("client ${scrollController.hasClients}");
+
     if (scrollController.hasClients) {
     print("ture sate ${scrollController.position.pixels == scrollController.position.maxScrollExtent}");
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
@@ -210,6 +213,9 @@ class HomeController extends BaseController {
         }
       else{
           homeDataModel?.data?.addAll(response.body?.data ?? []);
+          // trendingscategoryId1 = null;
+          // type1 = null;
+          paginationInt =1;
           showLoader(false);
           update();
         }
@@ -282,38 +288,25 @@ class HomeController extends BaseController {
       log('', error: e.toString(), name: "Selected Genre Api Data Error");
     }
   }
+  int paginationForTrending = 1;
+  ScrollController controllerFor = ScrollController();
+  Future<void> scrollListenerFor() async {
+    if (controllerFor.hasClients) {
 
-  // TracksDataModel? albumTracksDataModel;
-  //
-  // Future<void> selectedGenreAlbumApi(int genresId) async {
-  //   try {
-  //     showLoader(true);
-  //     final queryParameters = {
-  //       "user_id": UserPreference.getValue(key: PrefKeys.userId),
-  //       "limit": 30,
-  //       "filter": "Genres",
-  //       "recordtype": "Albums",
-  //       "genres_id": genresId,
-  //       "page": 1,
-  //     };
-  //     final response = await _homeChopperService.mixesSubCategoryAndTracksApi(
-  //         queryParameters: queryParameters);
-  //     if (response.body?.status == 200) {
-  //       albumTracksDataModel = response.body;
-  //       showLoader(true);
-  //       update();
-  //     } else {
-  //       albumTracksDataModel = null;
-  //       showLoader(true);
-  //       update();
-  //     }
-  //     update();
-  //   } catch (e) {
-  //     showLoader(true);
-  //     update();
-  //     log('', error: e.toString(), name: "Selected Genre Api Data Error");
-  //   }
-  // }
+      if (controllerFor.position.pixels == controllerFor.position.maxScrollExtent) {
+
+        if (paginationForTrending < maxPage!) {
+          paginationForTrending ++;
+          print(paginationForTrending);
+          await viewAllDataApi(trendingscategoryId: trendingscategoryId1,type: type1); // Fetch next page
+        }
+      }
+    }
+  }
+
+  int? maxPage;
+  int? trendingscategoryId1;
+  String? type1;
 ViewAllRadioDataModel? viewAllDataModel;
   Future<void> viewAllDataApi({required int? trendingscategoryId,required String?type}) async {
     try {
@@ -322,16 +315,31 @@ ViewAllRadioDataModel? viewAllDataModel;
         "limit": 50,
         "trendingscategory_id":trendingscategoryId,
         'type': type,
+        'page': paginationForTrending
       };
       final response = await _homeChopperService.viewAllApi(
           queryParameters: queryParameters);
       if (response.body?.status == 200) {
-        Get.back();
-        viewAllDataModel = response.body;
-        // Get.find<BaseController>().googleAdsApi(homeChopperService: _homeChopperService);
+            if(paginationForTrending ==1){
+          Get.back();
+          viewAllDataModel = response.body;
+          maxPage = viewAllDataModel?.lastPage;
+          trendingscategoryId1 = trendingscategoryId;
+          type1 = type;
+          // Get.find<BaseController>().googleAdsApi(homeChopperService: _homeChopperService);
+          Get.find<HomeController>().showLoader(false);
+          update();
+          // Get.find<BaseController>().update();
+          }else{
+              viewAllDataModel?.data?.addAll(response.body?.data??[]);
+              // paginationForTrending = 1;
+              Get.find<HomeController>().showLoader(false);
+            update();
+            }
+      }else{
+        viewAllDataModel = null;
         Get.find<HomeController>().showLoader(false);
         update();
-        // Get.find<BaseController>().update();
       }
     } catch (e) {
       showLoader(false);

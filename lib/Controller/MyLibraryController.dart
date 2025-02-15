@@ -145,10 +145,17 @@ class MyLibraryController extends BaseController{
       final response = await _homeChopperService.favouriteSongDataApi(
           queryParameters: queryParameters);
       if (response.body?.status == 200) {
-        favouriteSongDataModel = response.body;
-        maxPages = favouriteSongDataModel?.lastPage;
-        showLoader(false);
-        update();
+            if(paginationInt ==1){
+          favouriteSongDataModel = response.body;
+          maxPages = favouriteSongDataModel?.lastPage;
+          showLoader(false);
+          update();
+        }else{
+              favouriteSongDataModel?.data?.addAll(response.body?.data??[]);
+              showLoader(false);
+              update();
+            }
+
       }
     } catch (e) {
       showLoader(false);
@@ -192,11 +199,17 @@ class MyLibraryController extends BaseController{
       final response = await _homeChopperService.playListDataApi(
           queryParameters: queryParameters);
       if (response.body?.status == 200) {
-        playListDataModel = response.body;
-        maxPagesPlaylist = playListDataModel?.lastPage;
-        showLoader(false);
-        print(playListDataModel);
-        update();
+            if(paginationPlaylist ==1){
+          playListDataModel = response.body;
+          maxPagesPlaylist = playListDataModel?.lastPage;
+          showLoader(false);
+          print(playListDataModel);
+          update();
+        }else{
+              playListDataModel?.data?.addAll(response.body?.data??[]);
+              showLoader(false);
+              update();
+            }
       }
     } catch (e) {
       showLoader(false);
@@ -275,13 +288,19 @@ class MyLibraryController extends BaseController{
       final response = await _homeChopperService.playListSongDataApi(
           queryParameters: queryParameters);
       if (response.body?.status == 200) {
-        Get.back();
-        playListSongDataModel = response.body;
-        maxPagesPlaylist3 = playListSongDataModel?.lastPage;
-        playlistsId3 = playlistsId;
-        print(playListSongDataModel);
-        showLoader(false);
-        update();
+            if(paginationPlaylist3 ==1){
+          Get.back();
+          playListSongDataModel = response.body;
+          maxPagesPlaylist3 = playListSongDataModel?.lastPage;
+          playlistsId3 = playlistsId;
+          print(playListSongDataModel);
+          showLoader(false);
+          update();
+        }else{
+              playListSongDataModel?.data?.addAll(response.body?.data??[]);
+              showLoader(false);
+              update();
+            }
       }
     } catch (e) {
       log("", error: e.toString(), name: "PlayList Create Add Api Error");

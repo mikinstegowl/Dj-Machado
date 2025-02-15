@@ -175,6 +175,7 @@ class PlayListWidget extends StatelessWidget {
                             ],
                           ),
                           onTap: () {
+                            Get.find<MyLibraryController>().paginationPlaylist3 =1;
                             if (Get.find<BaseController>().connectivityResult[0] !=
                                 ConnectivityResult.none) {
                               Get.find<MyLibraryController>()

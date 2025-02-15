@@ -83,11 +83,18 @@ class ExplorController extends BaseController {
       final response = await _homeChopperService.exploreApi(
           queryParameters: queryParameters);
       if (response.body?.status == 200) {
-        shuffle = true;
-        explorDataModel = response.body;
-        maxPages = explorDataModel?.lastPage;
-        showLoader(false);
-        update();
+            if(paginationInt ==1) {
+          shuffle = true;
+          explorDataModel = response.body;
+          maxPages = explorDataModel?.lastPage;
+          showLoader(false);
+          update();
+        }else{
+              explorDataModel?.data?.addAll(response.body?.data??[]);
+              paginationInt =1;
+              showLoader(false);
+              update();
+            }
       } else {
         showLoader(false);
         update();

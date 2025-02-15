@@ -400,6 +400,8 @@ class _QueueScreenWidgetState extends State<QueueScreenWidget> {
                           txtTitle: song.artist ?? '',
                           txtColor: AppColors.primary,
                           fontSize: 14,
+                          maxLine: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,

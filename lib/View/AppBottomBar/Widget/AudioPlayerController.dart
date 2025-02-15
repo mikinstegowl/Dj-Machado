@@ -166,19 +166,23 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                             ),
                                           ),
                                           const Spacer(),
-                                          Align(
-                                            alignment: Alignment.center,
-                                            child: AppTextWidget(
-                                              txtTitle: PlayerService
-                                                      .instance
-                                                      .audioPlayer
-                                                      .sequenceState
-                                                      ?.currentSource
-                                                      ?.tag
-                                                      .title ??
-                                                  '',
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w800,
+                                          Container(
+                                            width: 250.w,
+                                            child: Center(
+                                              child: AppTextWidget(
+                                                txtTitle: PlayerService
+                                                        .instance
+                                                        .audioPlayer
+                                                        .sequenceState
+                                                        ?.currentSource
+                                                        ?.tag
+                                                        .title ??
+                                                    '',
+                                                fontSize: 20,
+                                                maxLine: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                fontWeight: FontWeight.w800,
+                                              ),
                                             ),
                                           ),
                                           const Spacer(),
@@ -505,7 +509,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                 ),
                                               ),
                                             ],
-                                          ):SizedBox.shrink():SizedBox.shrink(),
+                                          ):Spacer():Spacer(),
                                     Spacer(),
                                     Get.find<BaseController>()
                                                 .connectivityResult[0] ==
@@ -952,8 +956,10 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                         PlayerService.instance.audioPlayer.sequenceState?.currentSource?.tag.isLive != true
                                             ? InkWell(
                                                 onTap: () {
-                                                  PlayerService.instance
-                                                      .previousSong();
+                                                  PlayerService.instance.audioPlayer.seekToPrevious();
+                                                  setState(() {
+
+                                                  });
                                                 },
                                                 child: Icon(
                                                   Icons.skip_previous,
@@ -989,12 +995,6 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                       );
                                                     }
                                                   }
-                                                  // if (currentSource == null || PlayerService.instance.audioPlayer.duration == null) {
-                                                  //   return CircularProgressIndicator(
-                                                  //     color: AppColors.primary,
-                                                  //   );
-                                                  // }
-                                                  // print("${currentSource == null}");
                                                   return GetBuilder<BaseController>(
                                                     // ✅ UI will update when track changes
                                                     builder: (controller) {
@@ -1042,8 +1042,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                         PlayerService.instance.audioPlayer.sequenceState?.currentSource?.tag.isLive != true
                                             ? InkWell(
                                                 onTap: () {
-                                                  PlayerService.instance.audioPlayer
-                                                      .seekToNext();
+                                                  PlayerService.instance.audioPlayer.seekToNext();
                                                   setState(() {});
                                                 },
                                                 child: Icon(
@@ -1056,7 +1055,6 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                         PlayerService.instance.audioPlayer.sequenceState?.currentSource?.tag.isLive != true
                                             ? InkWell(
                                                 onTap: () {
-
                                                   setState(() {
                                                     PlayerService.instance.audioPlayer
                                                         .setLoopMode(PlayerService
@@ -1125,28 +1123,26 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              AppTextWidget(
-                                                txtTitle: PlayerService
-                                                        .instance
-                                                        .audioPlayer
-                                                        .sequenceState
-                                                        ?.currentSource
-                                                        ?.tag
-                                                        .title ??
-                                                    '',
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                                txtColor: AppColors.white,
+                                              Container(
+                                                width: 150.w,
+                                                child: AppTextWidget(
+                                                  txtTitle: PlayerService
+                                                          .instance
+                                                          .audioPlayer
+                                                          .sequenceState
+                                                          ?.currentSource
+                                                          ?.tag
+                                                          .title ??
+                                                      '',
+                                                  fontSize: 16,
+                                                  maxLine: 1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  fontWeight: FontWeight.bold,
+                                                  txtColor: AppColors.white,
+                                                ),
                                               ),
-                                              Visibility(
-                                                visible: PlayerService
-                                                        .instance
-                                                        .audioPlayer
-                                                        .sequenceState
-                                                        ?.currentSource
-                                                        ?.tag
-                                                        .artist !=
-                                                    '',
+                                              Container(
+                                                width: 150.w,
                                                 child: AppTextWidget(
                                                   fontWeight: FontWeight.bold,
                                                   txtTitle: PlayerService
@@ -1158,6 +1154,8 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                           .artist ??
                                                       '',
                                                   fontSize: 12,
+                                                  maxLine: 1,
+                                                  overflow: TextOverflow.ellipsis,
                                                   txtColor: AppColors.white,
                                                 ),
                                               )
@@ -1303,18 +1301,23 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            AppTextWidget(
-                                              txtTitle: PlayerService
-                                                      .instance
-                                                      .audioPlayer
-                                                      .sequenceState
-                                                      ?.currentSource
-                                                      ?.tag
-                                                      .title ??
-                                                  '',
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w700,
-                                              txtColor: AppColors.white,
+                                            Container(
+                                              width: 150.w,
+                                              child: AppTextWidget(
+                                                txtTitle: PlayerService
+                                                        .instance
+                                                        .audioPlayer
+                                                        .sequenceState
+                                                        ?.currentSource
+                                                        ?.tag
+                                                        .title ??
+                                                    '',
+                                                fontSize: 16,
+                                                maxLine: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                fontWeight: FontWeight.w700,
+                                                txtColor: AppColors.white,
+                                              ),
                                             ),
                                             Visibility(
                                               visible: PlayerService
@@ -1325,18 +1328,23 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                                       ?.tag
                                                       .artist !=
                                                   '',
-                                              child: AppTextWidget(
-                                                fontWeight: FontWeight.w700,
-                                                txtTitle: PlayerService
-                                                        .instance
-                                                        .audioPlayer
-                                                        .sequenceState
-                                                        ?.currentSource
-                                                        ?.tag
-                                                        .artist ??
-                                                    '',
-                                                fontSize: 12,
-                                                txtColor: AppColors.white,
+                                              child: Container(
+                                                width: 150.w,
+                                                child: AppTextWidget(
+                                                  fontWeight: FontWeight.w700,
+                                                  txtTitle: PlayerService
+                                                          .instance
+                                                          .audioPlayer
+                                                          .sequenceState
+                                                          ?.currentSource
+                                                          ?.tag
+                                                          .artist ??
+                                                      '',
+                                                  fontSize: 12,
+                                                  maxLine: 1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  txtColor: AppColors.white,
+                                                ),
                                               ),
                                             )
                                           ],
