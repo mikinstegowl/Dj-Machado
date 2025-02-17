@@ -23,7 +23,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class PlayListDetailView extends StatelessWidget {
-  const PlayListDetailView({super.key});
+
+  const PlayListDetailView({super.key,});
 
   @override
   Widget build(BuildContext context) {
@@ -255,8 +256,16 @@ class PlayListDetailView extends StatelessWidget {
                                         ],
                                       ),
                                       onTap: () {
+                                        Get.find<BaseController>().connectivityResult[0] ==
+                                            ConnectivityResult.none
+                                            ? PlayerService.instance.createPlaylist(
+                                            Get.find<MyLibraryController>().databaseDownloadPlayListSongList,
+                                            index: index,
+                                            type: "offline",
+                                            id: Get.find<MyLibraryController>().databaseDownloadPlayListSongList[index]['song_id'])
+                                            :
                                         PlayerService.instance
-                                            .createPlaylist(Get.find<MyLibraryController>().playListSongDataModel?.data, index: index,type: 'song',id: Get.find<MyLibraryController>().databaseDownloadPlayListSongList[index]['song_id']);
+                                            .createPlaylist(Get.find<MyLibraryController>().playListSongDataModel?.data, index: index,type: 'song',id: Get.find<MyLibraryController>().playListSongDataModel?.data?[index].songId);
                                       },
                                     ),
                                     const Divider(

@@ -194,6 +194,7 @@ class _MixesSongScreenState extends State<MixesSongScreen> {
                               ),
                               CommonAdWidget(),
                               SongsWidget(
+
                                 addDownload: false,
                                 tracksDataModel: Get.find<MixesController>()
                                     .mixesTracksDataModel!,

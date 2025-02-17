@@ -84,6 +84,7 @@ class ExplorDataView extends StatelessWidget {
                       color: AppColors.newdarkgrey,
                     ),
                     child: MostPlayedSongsWidget(
+                      gif:  data?[index].songName == PlayerService.instance.audioPlayer.sequenceState?.currentSource?.tag.title,
                       image: data?[index].genresImage,
                       title: data?[index].genresName,
                       subtitle: "",

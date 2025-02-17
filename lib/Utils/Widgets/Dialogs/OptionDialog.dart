@@ -79,7 +79,9 @@ class OptionDialog extends StatelessWidget {
                           Container(
                             width: 100.w,
                             child: Text(
+                              maxLines: 1,
                               '${track?.songName}',
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 color: AppColors.white,
                                 fontSize: 18,
@@ -90,7 +92,9 @@ class OptionDialog extends StatelessWidget {
                           Container(
                             width: 100.w,
                             child: Text(
+                              maxLines: 1,
                               '${track?.songArtist}',
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 color: AppColors.primary,
                                 fontSize: 14,

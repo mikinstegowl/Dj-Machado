@@ -62,6 +62,7 @@ class HomeTrackWidget extends StatelessWidget {
                   mainAxisSpacing: 10),
               itemBuilder: (context, index) {
                 return MostPlayedSongsWidget(
+                  gif:  data?[index].songName == PlayerService.instance.audioPlayer.sequenceState?.currentSource?.tag.title,
                   onOptionTap: (){
                     Get.dialog(OptionDialog(
                       isQueue: true,

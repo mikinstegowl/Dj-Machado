@@ -2,6 +2,7 @@ import 'package:newmusicappmachado/Controller/BaseController.dart';
 import 'package:newmusicappmachado/Controller/ExplorController.dart';
 import 'package:newmusicappmachado/Controller/HomeController.dart';
 import 'package:newmusicappmachado/Utils/Router/RouteName.dart';
+import 'package:newmusicappmachado/Utils/Services/PlayerService.dart';
 import 'package:newmusicappmachado/Utils/Styling/AppColors.dart';
 import 'package:newmusicappmachado/Utils/Widgets/AppLoder.dart';
 import 'package:newmusicappmachado/Utils/Widgets/AppTextWidget.dart';
@@ -75,6 +76,7 @@ class ExploreGenreWidget extends StatelessWidget {
                         ),
                         child:
                         MostPlayedSongsWidget(
+                          gif:  data?[index].songName == PlayerService.instance.audioPlayer.sequenceState?.currentSource?.tag.title,
                           isTrending: true,
                           image: data?[index]
                               .genresImage,

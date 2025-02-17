@@ -8,6 +8,7 @@ import 'package:newmusicappmachado/Utils/ChopperClientService/HomeChopperService
 import 'package:newmusicappmachado/Utils/Constants/AppAssets.dart';
 import 'package:newmusicappmachado/Utils/Constants/AppIcons.dart';
 import 'package:newmusicappmachado/Utils/Enums.dart';
+import 'package:newmusicappmachado/Utils/Models/MixesTracksDataModel.dart';
 import 'package:newmusicappmachado/Utils/Network/AppChopperClient.dart';
 import 'package:newmusicappmachado/Utils/Router/RouteName.dart';
 import 'package:newmusicappmachado/Utils/Services/PlayerService.dart';
@@ -19,6 +20,7 @@ import 'package:newmusicappmachado/Utils/Widgets/CachedNetworkImageWidget.dart';
 import 'package:newmusicappmachado/Utils/Widgets/Dialogs/AddPlayListDialog.dart';
 import 'package:newmusicappmachado/Utils/Widgets/Dialogs/CreatePlayListDialog.dart';
 import 'package:newmusicappmachado/Utils/Widgets/Dialogs/ExistingPlaylistDialog.dart';
+import 'package:newmusicappmachado/Utils/Widgets/Dialogs/OptionDialog.dart';
 import 'package:newmusicappmachado/Utils/Widgets/Dialogs/YesNoDialog.dart';
 import 'package:newmusicappmachado/Utils/Widgets/MostPlayedSongsWidget.dart';
 import 'package:newmusicappmachado/View/AppBottomBar/AppBottomBar.dart';
@@ -173,6 +175,11 @@ class _ViewAllHomeScreenState extends State<ViewAllHomeScreen> {
                 mainAxisSpacing: 10),
             itemBuilder: (context, index) {
               return MostPlayedSongsWidget(
+                gif:  Get.find<HomeController>()
+                    .viewAllDataModel
+                    ?.data?[index]
+                    .songName == PlayerService.instance.audioPlayer.sequenceState?.currentSource?.tag.title,
+
                 isTrending: true,
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(builder: (_)=>SongsAlbumsScreen(id: Get.find<HomeController>()
@@ -262,6 +269,11 @@ class _ViewAllHomeScreenState extends State<ViewAllHomeScreen> {
                 mainAxisSpacing: 10),
             itemBuilder: (context, index) {
               return MostPlayedSongsWidget(
+                gif:  Get.find<HomeController>()
+                    .viewAllDataModel
+                    ?.data?[index]
+                    .trendingsradioName == PlayerService.instance.audioPlayer.sequenceState?.currentSource?.tag.title,
+
                 onTap: () {
                   // Get.find<HomeController>().selectedGenreAlbumApi(Get.find<HomeController>()
                   //     .viewAllDataModel
@@ -308,6 +320,33 @@ class _ViewAllHomeScreenState extends State<ViewAllHomeScreen> {
                 mainAxisSpacing: 10),
             itemBuilder: (context, index) {
               return MostPlayedSongsWidget(
+                // isTrending: false,
+                onOptionTap: (){
+                  Get.dialog(OptionDialog(
+                    isQueue: true,
+                    listOfTrackData:Get.find<HomeController>().viewAllDataModel?.data?.map((e)=>MixesTracksData(
+                      song: Get.find<HomeController>().viewAllDataModel?.data?[index].song,
+                      songId: Get.find<HomeController>().viewAllDataModel?.data?[index].songId,
+                      songImage: Get.find<HomeController>().viewAllDataModel?.data?[index].songImage,
+                      originalImage: Get.find<HomeController>().viewAllDataModel?.data?[index].originalImage,
+                      songName: Get.find<HomeController>().viewAllDataModel?.data?[index].songName,
+                      favouritesStatus: Get.find<HomeController>().viewAllDataModel?.data?[index].favouritesStatus,
+                      songArtist: Get.find<HomeController>().viewAllDataModel?.data?[index].songArtist,
+                    )).toList()??[] ,index: index,track:MixesTracksData(
+                    song: Get.find<HomeController>().viewAllDataModel?.data?[index].song,
+                    songId: Get.find<HomeController>().viewAllDataModel?.data?[index].songId,
+                    songImage: Get.find<HomeController>().viewAllDataModel?.data?[index].songImage,
+                    originalImage: Get.find<HomeController>().viewAllDataModel?.data?[index].originalImage,
+                    songName: Get.find<HomeController>().viewAllDataModel?.data?[index].songName,
+                    favouritesStatus: Get.find<HomeController>().viewAllDataModel?.data?[index].favouritesStatus,
+                    songArtist: Get.find<HomeController>().viewAllDataModel?.data?[index].songArtist,
+                  ),));
+                },
+                gif: Get.find<HomeController>()
+                    .viewAllDataModel
+                    ?.data?[index]
+                    .songName == PlayerService.instance.audioPlayer.sequenceState?.currentSource?.tag.title,
+
                 onTap: () {
                   PlayerService.instance.createPlaylist(
                       Get.find<HomeController>().viewAllDataModel?.data,
@@ -577,6 +616,7 @@ class _ViewAllHomeScreenState extends State<ViewAllHomeScreen> {
                 mainAxisSpacing: 10),
             itemBuilder: (context, index) {
               return MostPlayedSongsWidget(
+                isTrending: true,
                 onTap: () {
                   Get.find<MixesController>()
                       .mixesSubCategoryAndTracksApi(

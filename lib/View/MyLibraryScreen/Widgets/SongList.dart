@@ -1,4 +1,6 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:newmusicappmachado/Controller/BaseController.dart';
+import 'package:newmusicappmachado/Utils/Constants/AppAssets.dart';
 import 'package:newmusicappmachado/Utils/Models/MixesTracksDataModel.dart';
 import 'package:newmusicappmachado/Utils/Services/PlayerService.dart';
 import 'package:newmusicappmachado/Utils/Styling/AppColors.dart';
@@ -13,7 +15,9 @@ class SongListWidget extends StatelessWidget {
   final int index;
   final String subTitle;
   final int? songId;
+  final bool gif;
   final Function() onOptionTap;
+  final bool online;
 
   final List<MixesTracksData>? tracksDataModel;
   final String imageUrl;
@@ -24,27 +28,73 @@ class SongListWidget extends StatelessWidget {
       required this.onOptionTap,
       required this.imageUrl,
       required this.index,
-      this.tracksDataModel,  this.songId});
+      this.tracksDataModel,
+      this.songId,  this.online = true,  this.gif = false});
 
   @override
   Widget build(BuildContext context) {
-    print(Get.find<BaseController>()
-        .progress
-        .any((v) => v['song_Id'] == Get.find<BaseController>().databaseDownloadedSongList[index]['song_id']));
+    print(Get.find<BaseController>().progress.any((v) =>
+        v['song_Id'] ==
+        Get.find<BaseController>().databaseDownloadedSongList[index]
+            ['song_id']));
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      // crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         ListTile(
           onTap: () {
+            // Get.find<BaseController>().connectivityResult[0] ==
+            //         ConnectivityResult.none
+            //     ?
+            online == false?
             PlayerService.instance.createPlaylist(
-                Get.find<BaseController>().databaseDownloadedSongList, index: index,
-                type: "offline",id: Get.find<BaseController>().databaseDownloadedSongList[index]['song_id']);
+                    Get.find<BaseController>().databaseDownloadedSongList,
+                    index: index,
+                    type: "offline",
+                    id: Get.find<BaseController>()
+                        .databaseDownloadedSongList[index]['song_id'])
+                :
+            PlayerService.instance.createPlaylist(tracksDataModel,
+                    index: index, id: tracksDataModel?[index].songId);
           },
-          minLeadingWidth: 50.h,
-          leading: SizedBox(
-            height: 40.h,
-            width: 40.h,
-            child: CachedNetworkImageWidget(image: imageUrl),
+          // minLeadingWidth: 50.h,
+          leading: Stack(
+            children: [
+              SizedBox(
+                height: 40.h,
+                width: 40.h,
+                child: CachedNetworkImageWidget(image: imageUrl),
+              ),
+            online ?
+              Obx(() => PlayerService.instance.currentSong.value == tracksDataModel?[index].songName
+                  ? Positioned.fill(
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Image.asset(
+                    AppAssets.gif,
+                    height: 30.h,
+                    width: 30.w,
+                    color: AppColors.primary,
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              )
+                  : SizedBox.shrink()): Obx(() => PlayerService.instance.currentSong.value == Get.find<BaseController>()
+                  .databaseDownloadedSongList[index]['song_name']
+                  ? Positioned.fill(
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Image.asset(
+                    AppAssets.gif,
+                    height: 30.h,
+                    width: 30.w,
+                    color: AppColors.primary,
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              )
+                  : SizedBox.shrink()),
+            ],
           ),
           contentPadding: EdgeInsets.only(left: 10.w),
           title: AppTextWidget(
@@ -62,53 +112,6 @@ class SongListWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Center(
-                child:
-                //
-                // Container(
-                //   decoration: const BoxDecoration(
-                //     color: AppColors.error, // Red background
-                //     shape: BoxShape.circle, // Circular shape
-                //   ),
-                //   width: 25.h, // Adjust the size
-                //   height: 25.h,
-                //   child: Center(
-                //     child: InkWell(
-                //       onTap: (){
-                //         Get.find<BaseController>().deleteSong(songId: Get.find<BaseController>().databaseDownloadedSongList[index],isAlbum: false,index: index);
-                //       },
-                //       child: Icon(
-                //         Icons.remove, // Minus symbol
-                //         color: Colors.black, // Black minus sign
-                //         size: 22.r,
-                //         weight: 15, // Adjust size as needed
-                //       ),
-                //     ),
-                //   ),
-                // ),
-                GetBuilder<BaseController>(
-                  init: Get.find<BaseController>(),
-                  builder: (controller) {
-                    return Visibility(
-                        visible: Get.find<BaseController>().progress.any(
-                                (v) => v['song_Id'] == Get.find<BaseController>().databaseDownloadedSongList[index]['song_id']),
-                        replacement: SizedBox.shrink(),
-                        child: AppTextWidget(
-                          txtColor: AppColors.white,
-                            txtTitle: Get.find<BaseController>().progress.any((v) =>
-                        v['song_Id'] == Get.find<BaseController>().databaseDownloadedSongList[index]['song_id'])
-                            ? Get.find<BaseController>()
-                            .progress
-                            .firstWhere((v) =>
-                        v['song_Id'] ==
-                            Get.find<BaseController>().databaseDownloadedSongList[index]['song_id'])['progress']
-                            .toString() +
-                            "%"
-                            : ''));
-                  }
-                ),
-              ),
-              10.horizontalSpace,
               InkWell(
                 onTap: onOptionTap,
                 child: Icon(

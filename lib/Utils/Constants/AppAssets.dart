@@ -10,6 +10,7 @@ class AppAssets {
   static const String placeHolderImage = '$_images/djmachado.png';
   static const String logo = '$_images/djmachado.png';
   static const String editIcon = '$_icons/editing.svg';
+  static const String gif = '$_icons/PlayGif.gif';
 
   static const String homeIcon = "$_images/homeIcon.png";
   static const String exploreIcon = "$_images/exploreIcon.png";

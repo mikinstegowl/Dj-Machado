@@ -316,6 +316,198 @@
 //   }
 // }
 
+// import 'package:audio_service/audio_service.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_screenutil/flutter_screenutil.dart';
+// import 'package:get/get.dart';
+// import 'package:just_audio/just_audio.dart';
+// import 'package:newmusicappmachado/Controller/BaseController.dart';
+// import 'package:newmusicappmachado/Utils/Constants/AppAssets.dart';
+// import 'package:newmusicappmachado/Utils/Models/MixesTracksDataModel.dart';
+// import 'package:newmusicappmachado/Utils/Services/DownloadService.dart';
+// import 'package:newmusicappmachado/Utils/Services/PlayerService.dart';
+// import 'package:newmusicappmachado/Utils/Styling/AppColors.dart';
+// import 'package:newmusicappmachado/Utils/Widgets/AppButtonWidget.dart';
+// import 'package:newmusicappmachado/Utils/Widgets/AppTextWidget.dart';
+// import 'package:newmusicappmachado/Utils/Widgets/CachedNetworkImageWidget.dart';
+// import 'package:newmusicappmachado/Utils/Widgets/CommonAppBar.dart';
+// import 'package:newmusicappmachado/Utils/Widgets/Dialogs/OptionDialog.dart';
+//
+// class QueueScreenWidget extends StatefulWidget {
+//   const QueueScreenWidget({super.key});
+//
+//   @override
+//   State<QueueScreenWidget> createState() => _QueueScreenWidgetState();
+// }
+//
+// class _QueueScreenWidgetState extends State<QueueScreenWidget> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       extendBodyBehindAppBar: true,
+//       appBar: const CommonAppBar(
+//         title: "Queue",
+//         searchBarShow: false,
+//       ),
+//       body: Container(
+//         height: MediaQuery.sizeOf(context).height,
+//         padding: EdgeInsets.only(top: AppBar().preferredSize.height.h + 60.h),
+//         decoration: const BoxDecoration(
+//           image: DecorationImage(
+//             fit: BoxFit.fill,
+//             image: AssetImage(AppAssets.backGroundImage),
+//           ),
+//         ),
+//         child: GetBuilder<BaseController>(
+//           init: Get.find<BaseController>(),
+//           builder: (context) {
+//             return Column(
+//               children: [
+//                 Expanded(
+//                   child: ReorderableListView.builder(
+//                     itemCount: PlayerService.instance.playlist.length,
+//                     onReorder: (int oldIndex, int newIndex) {
+//                       if (newIndex > oldIndex) newIndex--;
+//                       if (newIndex >= 0 &&
+//                           newIndex < PlayerService.instance.playlist.length) {
+//                         final item = PlayerService.instance.playlist.removeAt(oldIndex);
+//                         PlayerService.instance.playlist.insert(newIndex, item);
+//                         setState(() {});
+//                       }
+//                     },
+//                     itemBuilder: (context, index) {
+//                       final song = PlayerService.instance.playlist[index].sequence.first.tag;
+//                       return ListTile(
+//                         key: ValueKey(song.id),
+//                         contentPadding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+//                         tileColor: AppColors.black,
+//                         shape: RoundedRectangleBorder(
+//                           borderRadius: BorderRadius.circular(8),
+//                         ),
+//                         leading: CachedNetworkImageWidget(
+//                           image: song.artUri.toString() ?? '',
+//                           width: 50,
+//                           height: 50,
+//                           fit: BoxFit.cover,
+//                         ),
+//                         title: AppTextWidget(
+//                           txtTitle: song.title ?? '',
+//                           txtColor: AppColors.white,
+//                           fontWeight: FontWeight.bold,
+//                           fontSize: 16,
+//                         ),
+//                         subtitle: AppTextWidget(
+//                           txtTitle: song.artist ?? '',
+//                           txtColor: AppColors.primary,
+//                           fontSize: 14,
+//                           maxLine: 1,
+//                           overflow: TextOverflow.ellipsis,
+//                         ),
+//                         trailing: Row(
+//                           mainAxisSize: MainAxisSize.min,
+//                           children: [
+//                             _buildDownloadButton(song),
+//                             SizedBox(width: 10.w),
+//                             AppButtonWidget(
+//                               btnName: '',
+//                               child: const Icon(Icons.more_vert, color: AppColors.white),
+//                               onPressed: () {
+//                                 _showOptionsDialog(index);
+//                                 setState(() {
+//
+//                                 });
+//                               },
+//                             ),
+//                             SizedBox(width: 10.w),
+//                             ReorderableDragStartListener(
+//                               index: index,
+//                               child: Icon(Icons.drag_handle, color: Colors.white),
+//                             ),
+//                           ],
+//                         ),
+//                       );
+//                     },
+//                   ),
+//                 ),
+//               ],
+//             );
+//           },
+//         ),
+//       ),
+//     );
+//   }
+//
+//   Widget _buildDownloadButton(MediaItem song) {
+//     return Visibility(
+//       visible: Get.find<BaseController>().progress
+//           .any((v) => v['song_Id'] == song.id),
+//       replacement: !Get.find<BaseController>().isDownload(songId: int.tryParse(song.id))
+//           ? InkWell(
+//         onTap: () async {
+//           DownloadService.instance.downloadSong(
+//             downloadSongUrl: (PlayerService.instance.playlist
+//                 .firstWhere((element) => element.sequence.first.tag.id == song.id) as UriAudioSource)
+//                 .uri
+//                 .toString(),
+//             SongData: MixesTracksData(
+//               songId: int.parse(song.id ?? ''),
+//               song: (PlayerService.instance.playlist
+//                   .firstWhere((element) => element.sequence.first.tag.id == song.id) as UriAudioSource)
+//                   .uri
+//                   .toString(),
+//               songName: song.title,
+//               songArtist: song.artist,
+//               songImage: song.artUri.toString() ?? '',
+//             ),
+//           );
+//         },
+//         child: Icon(
+//           Icons.download,
+//           color: AppColors.white,
+//           size: 30.r,
+//         ),
+//       )
+//           : const SizedBox.shrink(),
+//       child: Text(
+//         Get.find<BaseController>().progress
+//             .firstWhere((v) => v['song_Id'] == song.id, orElse: () => {'progress': '0'})['progress']
+//             .toString() +
+//             "%",
+//       ),
+//     );
+//   }
+//
+//   void _showOptionsDialog(int index) {
+//     final song = PlayerService.instance.playlist[index].sequence.first.tag;
+//     Get.dialog(
+//       OptionDialog(
+//         index: index,
+//         listOfTrackData: PlayerService.instance.playlist.map((v) {
+//           final item = v.sequence.first.tag;
+//           return MixesTracksData(
+//             songId: int.parse(item.id ?? ''),
+//             originalImage: item.artUri.toString() ?? '',
+//             songArtist: item.artist,
+//             songName: item.title,
+//             songImage: item.artUri.toString() ?? '',
+//             song: (v as UriAudioSource).uri.toString(),
+//           );
+//         }).toList(),
+//         track: MixesTracksData(
+//           songId: int.parse(song.id ?? ''),
+//           song: (PlayerService.instance.playlist[index] as UriAudioSource).uri.toString(),
+//           originalImage: song.artUri.toString() ?? '',
+//           songName: song.title,
+//           songArtist: song.artist,
+//           songImage: song.artUri.toString() ?? '',
+//         ),
+//       ),
+//     );
+//     setState(() {
+//
+//     });
+//   }
+// }
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -366,16 +558,57 @@ class _QueueScreenWidgetState extends State<QueueScreenWidget> {
                 Expanded(
                   child: ReorderableListView.builder(
                     itemCount: PlayerService.instance.playlist.length,
-                    onReorder: (int oldIndex, int newIndex) {
-                      if (newIndex > oldIndex) newIndex--;
-                      if (newIndex >= 0 &&
-                          newIndex < PlayerService.instance.playlist.length) {
-                        final item = PlayerService.instance.playlist.removeAt(oldIndex);
-                        PlayerService.instance.playlist.insert(newIndex, item);
-                        setState(() {});
-                      }
-                    },
-                    itemBuilder: (context, index) {
+                // onReorder: (int oldIndex, int newIndex) async {
+                //   if (newIndex > oldIndex) newIndex--; // Fix for reordering beyond the range.
+                //   if (newIndex >= 0 && newIndex < PlayerService.instance.playlist.length) {
+                //     final currentIndex = PlayerService.instance.audioPlayer.currentIndex;  // Track the current song index.
+                //     final currentPosition = PlayerService.instance.audioPlayer.position;  // Track the current song's position.
+                //
+                //     // Reorder the playlist
+                //     final item = PlayerService.instance.playlist.removeAt(oldIndex);
+                //     PlayerService.instance.playlist.insert(newIndex, item);
+                //
+                //     // Update the audio source with the reordered playlist
+                //     await PlayerService.instance.audioPlayer.setAudioSource(
+                //       ConcatenatingAudioSource(children: PlayerService.instance.playlist),
+                //       initialIndex: currentIndex,  // Keep the current song index.
+                //     );
+                //
+                //     // Seek to the same position of the current song, to prevent restarting
+                //     await PlayerService.instance.audioPlayer.seek(currentPosition);
+                //
+                //     // Refresh the UI after reordering
+                //     setState(() {});
+                //   }
+                // },
+                onReorder: (int oldIndex, int newIndex) async {
+                  if (newIndex > oldIndex) newIndex--; // Fix for reordering beyond the range.
+                  if (newIndex >= 0 && newIndex < PlayerService.instance.playlist.length) {
+                    final currentIndex = PlayerService.instance.audioPlayer.currentIndex;  // Track the current song index.
+                    final currentPosition = PlayerService.instance.audioPlayer.position;  // Track the current song's position.
+
+                    // Reorder the playlist
+                    final item = PlayerService.instance.playlist.removeAt(oldIndex);
+                    PlayerService.instance.playlist.insert(newIndex, item);
+                    // Update the audio source with the reordered playlist
+                    await PlayerService.instance.audioPlayer.setAudioSource(
+                      ConcatenatingAudioSource(children: PlayerService.instance.playlist),
+                      initialIndex: currentIndex,  // Keep the current song index.
+                    );
+                    await PlayerService.instance.audioPlayer.seek(currentPosition);
+                    // Wait for the audio source to be ready and then seek to the same position
+                    // await Future.delayed(Duration(milliseconds: 100));  // Give a small delay to ensure the player is ready.
+
+                    // Seek to the position
+
+                    // Explicitly call play to ensure playback continues without delay
+                    // await PlayerService.instance.audioPlayer.play();
+
+                    // Refresh the UI after reordering
+                    setState(() {});
+                  }
+                },
+                itemBuilder: (context, index) {
                       final song = PlayerService.instance.playlist[index].sequence.first.tag;
                       return ListTile(
                         key: ValueKey(song.id),
@@ -384,11 +617,29 @@ class _QueueScreenWidgetState extends State<QueueScreenWidget> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        leading: CachedNetworkImageWidget(
-                          image: song.artUri.toString() ?? '',
-                          width: 50,
-                          height: 50,
-                          fit: BoxFit.cover,
+                        leading: Stack(
+                          children: [
+                            CachedNetworkImageWidget(
+                              image: song.artUri.toString() ?? '',
+                              width: 50,
+                              height: 50,
+                              fit: BoxFit.cover,
+                            ),
+                            Obx(() => PlayerService.instance.currentSong.value == song.title
+                                ? Positioned.fill(
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Image.asset(
+                                  AppAssets.gif,
+                                  height: 30.h,
+                                  width: 30.w,
+                                  color: AppColors.primary,
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                            )
+                                : SizedBox.shrink()),
+                          ],
                         ),
                         title: AppTextWidget(
                           txtTitle: song.title ?? '',
@@ -413,9 +664,7 @@ class _QueueScreenWidgetState extends State<QueueScreenWidget> {
                               child: const Icon(Icons.more_vert, color: AppColors.white),
                               onPressed: () {
                                 _showOptionsDialog(index);
-                                setState(() {
-
-                                });
+                                setState(() {});
                               },
                             ),
                             SizedBox(width: 10.w),
@@ -503,8 +752,6 @@ class _QueueScreenWidgetState extends State<QueueScreenWidget> {
         ),
       ),
     );
-    setState(() {
-
-    });
+    setState(() {});
   }
 }

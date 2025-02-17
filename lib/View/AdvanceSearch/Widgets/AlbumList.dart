@@ -1,3 +1,4 @@
+import 'package:newmusicappmachado/Controller/AdvanceSearchController.dart';
 import 'package:newmusicappmachado/Controller/ArtistsController.dart';
 import 'package:newmusicappmachado/Controller/BaseController.dart';
 import 'package:newmusicappmachado/Utils/Models/MixesTracksDataModel.dart';
@@ -19,6 +20,7 @@ class AlbumList extends StatelessWidget {
           visible: !Get.find<BaseController>().isLoading.value,
           replacement: AppLoder(),
           child: GridView.builder(
+              controller: Get.find<AdvanceSearchController>().controllerFor,
               itemCount: data?.length??0,
               padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 10.h),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

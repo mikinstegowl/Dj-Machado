@@ -69,14 +69,6 @@ class HomeArtistsWidget extends StatelessWidget {
                       isTrending: true,
                       onTap: (){
                         print(data?[index].artistsId);
-                        // Get.find<BaseController>().showLoader(true);
-                        // Get.find<BaseController>().update();
-
-                        // Get.find<ArtistsController>().trackSongApi(data?[index].artistsId??0).then((_){
-                        //   Get.find<ArtistsController>().albumSongApi(data?[index].artistsId??0).then((_){
-                        //     Get.toNamed(RoutesName.songsAlbumsScreen);
-                        //   });
-                        // });
                         Navigator.of(context).push(MaterialPageRoute(builder: (_)=>SongsAlbumsScreen(id: data?[index].artistsId??0, type: 'Artists')));
 
                       },

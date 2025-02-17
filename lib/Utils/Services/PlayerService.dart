@@ -523,6 +523,7 @@ class PlayerService extends GetxService {
   static final PlayerService _singleton = PlayerService._internal();
 
   factory PlayerService() => _singleton;
+  Rx<String?> currentSong = Rx<String?>(null);
 
   PlayerService._internal();
 
@@ -533,9 +534,15 @@ class PlayerService extends GetxService {
   final List<AudioSource> playlist = [];
   int currentSongIndex = 0;
 
+  void setCurrentSong(String songTitle) {
+    currentSong.value = songTitle;
+    Get.find<BaseController>().update();
+    Get.find<HomeController>().update();
+  }
   /// ✅ Creates and initializes the playlist
   Future<void> createPlaylist(dynamic data,
       {int? index, id, String type = 'song'}) async {
+    print("this is data ${data}");
     if (audioPlayer.sequenceState?.currentSource?.tag.id.toString() ==
         id.toString()) {
       return;
@@ -617,6 +624,7 @@ class PlayerService extends GetxService {
       );
       audioPlayer.setLoopMode(LoopMode.all);
       listenToSongChanges();
+      // listenToSongChanges1();
       if (Get.find<BaseController>().connectivityResult[0] != ConnectivityResult.none) {
         await Get.find<HomeController>()
             .songDetailsDataApi(
@@ -685,6 +693,8 @@ class PlayerService extends GetxService {
     try {
       if (audioPlayer.hasNext) {
         await audioPlayer.seekToNext();
+        // _initializePlayer(currentSongIndex++);
+        // currentSongIndex++;
       }
     } catch (e) {
       log('Error skipping to next song: $e');
@@ -696,8 +706,12 @@ class PlayerService extends GetxService {
     try {
       if (audioPlayer.hasPrevious) {
         await audioPlayer.seekToPrevious();
+        // _initializePlayer(currentSongIndex--);
+        // currentSongIndex--;
       } else {
-        await audioPlayer.seek(Duration.zero); // Restart the current song if no previous exists
+        await audioPlayer.seek(Duration.zero);
+        // _initializePlayer(currentSongIndex--);
+        // currentSongIndex--;// Restart the current song if no previous exists
       }
     } catch (e) {
       log('Error skipping to previous song: $e');
@@ -722,15 +736,42 @@ class PlayerService extends GetxService {
         final currentSource = audioPlayer.sequenceState?.currentSource;
         final songId = currentSource?.tag.id;
 
-        Get.find<HomeController>().songDetailsDataApi(songId: int.tryParse(songId) ?? 0).then((_){
+        Get.find<BaseController>().connectivityResult[0] ==
+            ConnectivityResult.none? null:  Get.find<HomeController>().songDetailsDataApi(songId: int.tryParse(songId) ?? 0).then((_){
           Get.find<BaseController>().update();
           Get.find<HomeController>().update();
+          currentSongIndex++;
         });
 
+        Get.find<BaseController>().update();
+        Get.find<HomeController>().update();
+        setCurrentSong(currentSource?.tag.title);
         _logButtonClick(
           songId: songId,
           songName: currentSource?.tag.title,
         );
+        // if (state.processingState == ProcessingState.completed) {
+        //   // Current song has finished, play the next song
+        //   final nextIndex = audioPlayer.currentIndex! + 1;
+        //   if (nextIndex < playlist.length) {
+        //     // Proceed to next song in the list
+        //     audioPlayer.seek(Duration.zero, index: nextIndex);
+        //     audioPlayer.play();
+        //   }
+        // }
+      }
+    });
+  }
+  void listenToSongChanges1() {
+    audioPlayer.playerStateStream.listen((state) {
+      if (state.processingState == ProcessingState.completed) {
+        // Current song has finished, play the next song
+        final nextIndex = audioPlayer.currentIndex! + 1;
+        if (nextIndex < playlist.length) {
+          // Proceed to next song in the list
+          audioPlayer.seek(audioPlayer.sequenceState?.currentSource?.duration, index: nextIndex);
+          // audioPlayer.play();
+        }
       }
     });
   }

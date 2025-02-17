@@ -60,6 +60,8 @@ class HomeRadioWidget extends StatelessWidget {
                   mainAxisSpacing: 10),
               itemBuilder: (context, index) {
                 return MostPlayedSongsWidget(
+                  gif:  data?[index].trendingsradioName == PlayerService.instance.audioPlayer.sequenceState?.currentSource?.tag.title,
+
                   isTrending: true,
                   onTap: (){
                     PlayerService.instance.createPlaylist(data, index: index,id: data?[index].songId,type: "radio");

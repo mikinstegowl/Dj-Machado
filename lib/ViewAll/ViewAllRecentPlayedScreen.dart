@@ -1,11 +1,13 @@
 import 'package:newmusicappmachado/Controller/BaseController.dart';
 import 'package:newmusicappmachado/Controller/HomeController.dart';
 import 'package:newmusicappmachado/Utils/Constants/AppAssets.dart';
+import 'package:newmusicappmachado/Utils/Models/MixesTracksDataModel.dart';
 import 'package:newmusicappmachado/Utils/Router/RouteName.dart';
 import 'package:newmusicappmachado/Utils/Services/PlayerService.dart';
 import 'package:newmusicappmachado/Utils/Styling/AppColors.dart';
 import 'package:newmusicappmachado/Utils/Widgets/AppTextWidget.dart';
 import 'package:newmusicappmachado/Utils/Widgets/CommonAppBar.dart';
+import 'package:newmusicappmachado/Utils/Widgets/Dialogs/OptionDialog.dart';
 import 'package:newmusicappmachado/Utils/Widgets/MostPlayedSongsWidget.dart';
 import 'package:newmusicappmachado/View/AppBottomBar/Widget/AdWidget.dart';
 import 'package:newmusicappmachado/View/AppBottomBar/Widget/AudioPlayerController.dart';
@@ -58,6 +60,30 @@ class ViewAllRecentPlayedScreen extends StatelessWidget {
                       Get.find<HomeController>().homeDataModel?.recentPlayed?.length,
                       itemBuilder: (context,index){
                         return  MostPlayedSongsWidget(
+                          onOptionTap: (){
+                            Get.dialog(OptionDialog(
+                              isQueue: true,
+                              listOfTrackData:Get.find<HomeController>().homeDataModel?.recentPlayed?.map((e)=>MixesTracksData(
+                                song: Get.find<HomeController>().homeDataModel?.recentPlayed?[index].song,
+                                songId:Get.find<HomeController>().homeDataModel?.recentPlayed?[index].songId,
+                                songImage: Get.find<HomeController>().homeDataModel?.recentPlayed?[index].songImage,
+                                originalImage: Get.find<HomeController>().homeDataModel?.recentPlayed?[index].originalImage,
+                                songName:Get.find<HomeController>().homeDataModel?.recentPlayed?[index].songName,
+                                favouritesStatus: Get.find<HomeController>().homeDataModel?.recentPlayed?[index].favouritesStatus,
+                                songArtist: Get.find<HomeController>().homeDataModel?.recentPlayed?[index].songArtist,
+                              )).toList()??[] ,index: index,track:MixesTracksData(
+                              song: Get.find<HomeController>().homeDataModel?.recentPlayed?[index].song,
+                              songId: Get.find<HomeController>().homeDataModel?.recentPlayed?[index].songId,
+                              songImage:Get.find<HomeController>().homeDataModel?.recentPlayed?[index].songImage,
+                              originalImage:Get.find<HomeController>().homeDataModel?.recentPlayed?[index].originalImage,
+                              songName:Get.find<HomeController>().homeDataModel?.recentPlayed?[index].songName,
+                              favouritesStatus:Get.find<HomeController>().homeDataModel?.recentPlayed?[index].favouritesStatus,
+                              songArtist:Get.find<HomeController>().homeDataModel?.recentPlayed?[index].songArtist,
+                            ),));
+                          },
+                          gif: Get.find<HomeController>().homeDataModel?.recentPlayed?[index]
+                              .songName == PlayerService.instance.audioPlayer.sequenceState?.currentSource?.tag.title,
+
                           onTap: () {
                             PlayerService.instance.createPlaylist(Get.find<HomeController>().homeDataModel?.recentPlayed, index: index,id:Get.find<HomeController>().homeDataModel?.recentPlayed?[index]
                                 .songId );

@@ -19,10 +19,12 @@ import 'package:newmusicappmachado/Utils/Styling/AppColors.dart';
 import 'package:newmusicappmachado/Utils/Widgets/AppLoder.dart';
 import 'package:newmusicappmachado/Utils/Widgets/AppTextWidget.dart';
 import 'package:newmusicappmachado/Utils/Widgets/CachedNetworkImageWidget.dart';
+import 'package:newmusicappmachado/Utils/Widgets/CommonAppBar.dart';
 import 'package:newmusicappmachado/Utils/Widgets/Dialogs/AddPlayListDialog.dart';
 import 'package:newmusicappmachado/Utils/Widgets/Dialogs/CreatePlayListDialog.dart';
 import 'package:newmusicappmachado/Utils/Widgets/Dialogs/ExistingPlaylistDialog.dart';
 import 'package:newmusicappmachado/Utils/Widgets/Dialogs/YesNoDialog.dart';
+import 'package:newmusicappmachado/View/AppBottomBar/Widget/AdWidget.dart';
 import 'package:newmusicappmachado/View/AppBottomBar/Widget/OptionInAudioPlayer.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -1084,6 +1086,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
                                     const Spacer(
                                       flex: 2,
                                     ),
+                                    CommonAdWidget()
                                   ],
                                 ),
                               )

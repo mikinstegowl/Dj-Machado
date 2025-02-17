@@ -74,7 +74,7 @@ class _MyLibraryScreenState extends State<MyLibraryScreen> {
                   children: [
                     // Custom Tab Bar
                     _buildCustomTabBar(),
-      
+
                     // 20.verticalSpace,
                     // Page View with smooth animations
                     Expanded(
@@ -151,7 +151,7 @@ class _MyLibraryScreenState extends State<MyLibraryScreen> {
                                                 songCount: e["song_id"].toString().toIntList().toList().length,
                                                 playlistsName: e['playlist_name'],
                                                 playlistImages1: e['imageUrl']
-      
+
                                               ))
                                                   .toList()),
                                         ):Center(child: AppTextWidget(txtTitle: "No Data Found !")));

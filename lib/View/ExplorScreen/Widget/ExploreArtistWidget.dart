@@ -1,6 +1,7 @@
 import 'package:newmusicappmachado/Controller/ArtistsController.dart';
 import 'package:newmusicappmachado/Controller/BaseController.dart';
 import 'package:newmusicappmachado/Utils/Router/RouteName.dart';
+import 'package:newmusicappmachado/Utils/Services/PlayerService.dart';
 import 'package:newmusicappmachado/Utils/Styling/AppColors.dart';
 import 'package:newmusicappmachado/Utils/Widgets/AppLoder.dart';
 import 'package:newmusicappmachado/Utils/Widgets/AppTextWidget.dart';
@@ -63,6 +64,7 @@ class ExploreArtistWidget extends StatelessWidget {
                   mainAxisSpacing: 10),
               itemBuilder: (context, index) {
                 return MostPlayedSongsWidget(
+                  gif:  data?[index].songName == PlayerService.instance.audioPlayer.sequenceState?.currentSource?.tag.title,
                   isTrending: true,
                   onTap: (){
                     print(data?[index].artistsId);

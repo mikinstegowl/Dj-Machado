@@ -1,3 +1,4 @@
+import 'package:newmusicappmachado/Controller/AdvanceSearchController.dart';
 import 'package:newmusicappmachado/Controller/BaseController.dart';
 import 'package:newmusicappmachado/Controller/MyLibraryController.dart';
 import 'package:newmusicappmachado/Utils/Models/MixesTracksDataModel.dart';
@@ -22,6 +23,8 @@ class PlayListList extends StatelessWidget {
           visible: !Get.find<BaseController>().isLoading.value,
           replacement: AppLoder(),
           child: ListView.builder(
+            physics: ClampingScrollPhysics(),
+              controller: Get.find<AdvanceSearchController>().controllerFor,
               itemCount: data?.length??0,
               itemBuilder: (context, index) {
                 return ListTile(

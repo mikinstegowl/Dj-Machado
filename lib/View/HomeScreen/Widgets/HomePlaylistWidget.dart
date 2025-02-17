@@ -2,6 +2,7 @@ import 'package:newmusicappmachado/Controller/ArtistsController.dart';
 import 'package:newmusicappmachado/Controller/ExplorController.dart';
 import 'package:newmusicappmachado/Controller/MixesController.dart';
 import 'package:newmusicappmachado/Utils/Router/RouteName.dart';
+import 'package:newmusicappmachado/Utils/Services/PlayerService.dart';
 import 'package:newmusicappmachado/Utils/Styling/AppColors.dart';
 import 'package:newmusicappmachado/Utils/Widgets/AppTextWidget.dart';
 import 'package:newmusicappmachado/Utils/Widgets/MostPlayedSongsWidget.dart';
@@ -63,6 +64,7 @@ class HomePlaylistWidget extends StatelessWidget {
                   mainAxisSpacing: 10),
               itemBuilder: (context, index) {
                 return MostPlayedSongsWidget(
+                  gif:  data?[index].songName == PlayerService.instance.audioPlayer.sequenceState?.currentSource?.tag.title,
                   isTrending: true,
                   onTap: (){
                     Get.find<MixesController>().plaListTrackSongApi(

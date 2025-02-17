@@ -1,3 +1,4 @@
+import 'package:newmusicappmachado/Utils/Constants/AppAssets.dart';
 import 'package:newmusicappmachado/Utils/Styling/AppColors.dart';
 import 'package:newmusicappmachado/Utils/Widgets/AppTextWidget.dart';
 import 'package:newmusicappmachado/Utils/Widgets/CachedNetworkImageWidget.dart';
@@ -11,9 +12,9 @@ class MostPlayedSongsWidget extends StatelessWidget {
   final String? title;
   final String? subtitle;
   final bool isTrending;
-
+final bool gif;
   const MostPlayedSongsWidget(
-      {super.key, this.onTap, this.image, this.title, this.subtitle, this.onOptionTap, this.isTrending=false});
+      {super.key, this.onTap, this.image, this.title, this.subtitle, this.onOptionTap, this.isTrending=false, this.gif =false});
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +25,31 @@ class MostPlayedSongsWidget extends StatelessWidget {
         children: [
           Column(
             children: [
-              CachedNetworkImageWidget(
-                image: image,
-                height: 165.h,
-                width: double.maxFinite,
-                fit: BoxFit.cover,
+              Stack(
+                children: [
+                  CachedNetworkImageWidget(
+                    image: image,
+                    height: 165.h,
+                    width: double.maxFinite,
+                    fit: BoxFit.cover,
+                  ),
+                  gif
+                      ? Positioned.fill(
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Image.asset(
+                        AppAssets.gif,
+                        height: 80.h,
+                        width: 80.w,
+                        color: AppColors.primary,
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  )
+                      : SizedBox.shrink(),
+                ],
               ),
+
               Container(
                 height: 50.h,
                 color: AppColors.newdarkgrey,
@@ -44,7 +64,7 @@ class MostPlayedSongsWidget extends StatelessWidget {
                       child: AppTextWidget(
                         fontWeight: FontWeight.bold,
                         // fontFamily: 'Century Gothic',
-                        txtTitle: "${title}" ?? '',
+                        txtTitle: title ?? '',
                         maxLine: 1,
                         letterSpacing: 1,
                         fontSize: 14,

@@ -237,23 +237,42 @@ class AlbumTrackScreen extends GetView<ArtistsController> {
                                                 AppTextWidget(txtTitle: "${index + 1}"),
                                               ),
                                               10.horizontalSpace,
-                                              Container(
-                                                clipBehavior: Clip.antiAlias,
-                                                decoration: BoxDecoration(
-                                                    color: AppColors.white,
-                                                    shape: Platform.isAndroid
-                                                        ? BoxShape.rectangle
-                                                        : BoxShape.circle),
-                                                child: CachedNetworkImageWidget(
-                                                  image: controller.albumTrackSongData
-                                                      ?.data?[index].originalImage ??
-                                                      '',
-                                                  width: 50.h,
-                                                  height: 50.h,
-                                                  fit: Platform.isAndroid
-                                                      ? BoxFit.cover
-                                                      : BoxFit.contain,
-                                                ),
+                                              Stack(
+                                                children: [
+                                                  Container(
+                                                    clipBehavior: Clip.antiAlias,
+                                                    decoration: BoxDecoration(
+                                                        color: AppColors.white,
+                                                        shape: Platform.isAndroid
+                                                            ? BoxShape.rectangle
+                                                            : BoxShape.circle),
+                                                    child: CachedNetworkImageWidget(
+                                                      image: controller.albumTrackSongData
+                                                          ?.data?[index].originalImage ??
+                                                          '',
+                                                      width: 50.h,
+                                                      height: 50.h,
+                                                      fit: Platform.isAndroid
+                                                          ? BoxFit.cover
+                                                          : BoxFit.contain,
+                                                    ),
+                                                  ),
+                                                  Obx(() => PlayerService.instance.currentSong.value == controller.albumTrackSongData
+                                                      ?.data?[index].songName
+                                                      ? Positioned.fill(
+                                                    child: Align(
+                                                      alignment: Alignment.center,
+                                                      child: Image.asset(
+                                                        AppAssets.gif,
+                                                        height: 30.h,
+                                                        width: 30.w,
+                                                        color: AppColors.primary,
+                                                        fit: BoxFit.fill,
+                                                      ),
+                                                    ),
+                                                  )
+                                                      : SizedBox.shrink()),
+                                                ],
                                               ),
                                             ],
                                           ),
